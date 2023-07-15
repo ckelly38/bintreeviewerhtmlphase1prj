@@ -22,6 +22,21 @@ function loadBinaryOrSearchTree(usesrchtree)
     });
 }
 
+class Bintreend {
+    constructor(myid, myptnd, myleftkdnd, myrightkdnd)
+    {
+        this.id = myid;
+        this.ptnd = myptnd;
+        this.leftkd = myleftkdnd;
+        this.rightkd = myrightkdnd;
+    }
+}
+
+function getDOMElements(ndobj)
+{
+    //
+}
+
 function buildUserBinaryTree()
 {
     //build the root node for the user here
@@ -35,7 +50,7 @@ function buildUserBinaryTree()
     mycntelem.style.resize = "none";
     mycntelem.style.marginLeft = "auto";
     mycntelem.style.marginRight = "auto";
-    mydiv.id = "rtnd";
+    //mydiv.id = "rtnd";
     mydiv.style.marginLeft = "40%";
     let myleftbtn = document.createElement("button");
     let myrightbtn = document.createElement("button");
@@ -69,14 +84,14 @@ document.addEventListener("DOMContentLoaded", function(event){
     myloadopts[3].disabled = true;
     myloadfrm.addEventListener("submit", function(oevent){
         oevent.preventDefault();
-        console.log("oevent.target = " + oevent.target);
-        console.log("oevent.target[0].checked = " + oevent.target[0].checked);
-        console.log("oevent.target[1].checked = " + oevent.target[1].checked);
-        console.log("oevent.target[2].checked = " + oevent.target[2].checked);
+        //console.log("oevent.target = " + oevent.target);
+        //console.log("oevent.target[0].checked = " + oevent.target[0].checked);
+        //console.log("oevent.target[1].checked = " + oevent.target[1].checked);
+        //console.log("oevent.target[2].checked = " + oevent.target[2].checked);
         loadbintree = oevent.target[0].checked;
         loadbinsrchtree = oevent.target[1].checked;
         userbuildowntree = oevent.target[2].checked;
-        debugger;
+        //debugger;
         if (loadbinsrchtree === true || loadbintree === true) loadBinaryOrSearchTree(loadbinsrchtree);
         else buildUserBinaryTree();
     });
