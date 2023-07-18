@@ -77,6 +77,67 @@ class Bintreend {
             }
         }
     }
+    get root()
+    {
+        return getRootNode(null);
+    }
+    getNumberOfNodesBelowNode(nd, vlist=null)
+    {
+        if (nd == undefined || nd == null) return 0;
+        else
+        {
+            //first find the root node
+            //then decend tree using parent child relationships compile a vlist
+            //if we have already visited the node, then throw an error
+            //if the node is null, do not add it
+
+            //visit this node
+            //then call method on child nodes
+            for (let n = 0; n < vlist.length; n++)
+            {
+                if (vlist[n] == null)
+                {
+                    throw "no null nodes allowed on the list!";
+                }
+                else if (vlist[n] === this)
+                {
+                    throw "CircularReferenceError: not a tree! Already visited this node; " +
+                        "root not found!";
+                }
+                //else;//do nothing
+            }
+
+            if (this.leftkd == null && this.rightkd == null) return 1;
+            else
+            {
+                let myvlist = new Array();
+                if (vlist == null || vlist.length < 1);
+                else
+                {
+                    for (let n = 0; n < vlist.length; n++)
+                    {
+                        if (vlist[n] == null)
+                        {
+                            throw "no null nodes allowed on the list!";
+                        }
+                        else if (vlist[n] === this)
+                        {
+                            throw "CircularReferenceError: not a tree! Already visited this node; " +
+                                "root not found!";
+                        }
+                        else myvlist.push(vlist[n]);
+                    }
+                }
+                myvlist.push(this);
+                return getNumberOfNodesBelowNode(this.leftkd, myvlist) +
+                getNumberOfNodesBelowNode(this.rightkd, myvlist);
+            }
+        }
+    }
+    get numNodesOnTree()
+    {
+        return this.getNumberOfNodesBelowNode(this.root);
+    }
 }
 
 function getDOMElements(ndobj)
