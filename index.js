@@ -145,6 +145,7 @@ function getDOMElements(ndobj)
     console.error("NOT DONE YET 7-15-2023 2:53 AM!");
 }
 
+let mygenndsarr = null;
 function buildUserBinaryTree()
 {
     //build the root node for the user here
@@ -169,14 +170,16 @@ function buildUserBinaryTree()
     mycntelem.style.resize = "none";
     mycntelem.style.marginLeft = "auto";
     mycntelem.style.marginRight = "auto";
-    mydiv.id = "rtnd";
+    const mynwndidstr = "nwnd";
+    mydiv.id = "" + mynwndidstr;
     mytable.style.display = "inline";
-    //mydiv.style.marginLeft = "40%";
     let myleftbtn = document.createElement("button");
     let myrightbtn = document.createElement("button");
     let mydelbtn = document.createElement("button");
     let mynl = document.createElement("br");
     //let myobr = document.createElement("br");
+    myleftbtn.disabled = true;
+    myrightbtn.disabled = true;
     myleftbtn.textContent = "add left kid";
     myrightbtn.textContent = "add right kid";
     mydelbtn.textContent = "delete node";
@@ -203,7 +206,7 @@ function buildUserBinaryTree()
     document.getElementById("tree").appendChild(mylkddiv);
     document.getElementById("tree").appendChild(mytable);
     document.getElementById("tree").appendChild(myrkddiv);
-    let mydivondoc = document.getElementById("rtnd");
+    let mydivondoc = document.getElementById(mynwndidstr);
     //let myelemcoords = mydivondoc.getBoundingClientRect();
     //console.log("myelemcoords.x = " + myelemcoords.x);
     //console.log("myelemcoords.y = " + myelemcoords.y);
@@ -211,11 +214,12 @@ function buildUserBinaryTree()
     //console.log("myelemcoords.left = " + myelemcoords.left);
     //console.log("myelemcoords.right = " + myelemcoords.right);
     //console.log("myelemcoords.bottom = " + myelemcoords.bottom);
-    //console.log("topoffset = " + document.getElementById("rtnd").offsetTop);
-    //console.log("leftoffset = " + document.getElementById("rtnd").offsetLeft);
-    //console.log("heightoffset = " + document.getElementById("rtnd").offsetHeight);//actual of element
-    //console.log("widthoffset = " + document.getElementById("rtnd").offsetWidth);//actual of element
-    let mywdthstr = "" + mydivondoc.getElementsByTagName("textarea")[0].offsetWidth;
+    //console.log("topoffset = " + mydivondoc.offsetTop);
+    //console.log("leftoffset = " + mydivondoc.offsetLeft);
+    //console.log("heightoffset = " + mydivondoc.offsetHeight);//actual of element
+    //console.log("widthoffset = " + mydivondoc.offsetWidth);//actual of element
+    let mynwtextareaelem = mydivondoc.getElementsByTagName("textarea")[0];
+    let mywdthstr = "" + mynwtextareaelem.offsetWidth;
     let mywdthnumstr = "" + mywdthstr;//.substring(0, mywdthstr.length - 2);
     console.log("mywdthnumstr = " + mywdthnumstr);
     myleftimg.style.width = "" + mywdthstr;
@@ -237,11 +241,7 @@ function buildUserBinaryTree()
     myleftimg.textContent = "your browser does not support svg images";
     myleftimg.appendChild(myleftline);
     myleftimg.appendChild(myrightline);
-    //mydivondoc.appendChild(myleftbtn);
     mydivondoc.appendChild(myleftimg);
-    //mydivondoc.appendChild(myrightbtn);
-    //mydivondoc.appendChild(myobr);
-    //mydivondoc.appendChild(mydelbtn);
     //console.log("myleftline.x1 = " + myleftline.x1);
     //console.log("myleftline.y1 = " + myleftline.y1);
     //console.log("myleftline.x2 = " + myleftline.x2);
@@ -251,7 +251,168 @@ function buildUserBinaryTree()
     //console.log("leftoffset = " + mydivondoc.offsetLeft);
     //console.log("heightoffset = " + mydivondoc.offsetHeight);//actual of element
     //console.log("widthoffset = " + mydivondoc.offsetWidth);//actual of element
-    console.error("NOT DONE YET 7-15-2023 2:53 AM!");
+    console.error("NOT DONE YET 7-18-2023 1:50 AM!");
+    
+    mynwtextareaelem.addEventListener("change", function(bl, br, event){
+        console.log("the textarea was changed!");
+        console.log("event = " + event);
+        console.log("this = " + this);
+        console.log("this.parentNode = " + this.parentNode);
+        console.log("this.parentNode.id = " + this.parentNode.id);
+        console.log("this.value = " + this.value);
+        console.log("event.target = " + event.target);
+        console.log("event.target.value = " + event.target.value);
+        console.log("event.target.parentNode = " + event.target.parentNode);
+        console.log("event.target.parentNode.id = " + event.target.parentNode.id);
+        console.log("bl = " + bl);
+        console.log("br = " + br);
+        //if empty, do not update server and disable the add child buttons until not empty
+        //need to get the left and right buttons that correspond with this and then enable them
+        //bl.disabled = false;
+        //br.disabled = false;
+        //we also need to set the listeners for the left and right buttons
+        //build the binary tree node object (only once, and only once do a post otherwise do patch)
+        //id, data, ptnd, leftkdnd, rightkdnd
+        
+        //validate the data here first
+        console.error("NOT DONE YET 7-18-2023 1:50 AM!");
+
+        let usepost = true;
+        if (event.target.parentNode.id === mynwndidstr) usepost = true;
+        else usepost = false;
+        console.log("usepost = " + usepost);
+
+        let mybinnd = null;
+        if (usepost)
+        {
+            mybinnd = new Bintreend("", "" + event.target.value, null, null, null);
+        }
+        else
+        {
+            //need to get the Bintreend object here with the id we are looking for
+            //in this case it will match the parent node id
+            //console.log("mygenndsarr = " + mygenndsarr);
+            //debugger;
+            if (mygenndsarr == undefined || mygenndsarr == null || mygenndsarr.length < 1);
+            else
+            {
+                for (let n = 0; n < mygenndsarr.length; n++)
+                {
+                    if (mygenndsarr[n] == null) throw "not allowed to have null nodes on this list!";
+                    else
+                    {
+                        //console.log("mygenndsarr[" + n + "] = " + mygenndsarr[n]);
+                        //console.log("mygenndsarr[" + n + "].id = " + mygenndsarr[n].id);
+                        //console.log("event.target.parentNode.id = " + event.target.parentNode.id);
+                        if (mygenndsarr[n].id == event.target.parentNode.id)
+                        {
+                            //console.log("found the node we were looking for!");
+                            mybinnd = mygenndsarr[n];
+                            break;
+                        }
+                        //else;//do nothing
+                    }
+                }//end of n for loop
+            }
+            
+            if (mybinnd == null) throw "the node must have been on the list!";
+            else
+            {
+                //set the new data value here...
+                mybinnd.data = "" + event.target.value;
+            }
+        }
+
+        let myptchbdystr = JSON.stringify(mybinnd);
+        console.log("myptchbdystr = " + myptchbdystr);
+        let myidindx = myptchbdystr.indexOf('"id":');
+        let cmaafteridindx = -1;
+        for (let i = myidindx + 5; i < myptchbdystr.length; i++)
+        {
+            if (myptchbdystr.charAt(i) == ',')
+            {
+                cmaafteridindx = i;
+                break;
+            }
+            //else;//do nothing
+        }
+        console.log("cmaafteridindx = " + cmaafteridindx);
+        if (cmaafteridindx < 0 || cmaafteridindx > myptchbdystr.length - 1)
+        {
+            throw "illegal value found and used for the cmaafteridindx index!";
+        }
+        let mypstbdystr = myptchbdystr.substring(0, myidindx) + myptchbdystr.substring(cmaafteridindx + 1);
+        console.log("mypstbdystr = " + mypstbdystr);
+        
+        let mymethdstr = "";
+        let mybdystr = "";
+        let myresurl = "http://localhost:3000/nodes";
+        if (usepost)
+        {
+            mymethdstr = "POST";
+            mybdystr = "" + mypstbdystr;
+        }
+        else
+        {
+            mymethdstr = "PATCH";
+            mybdystr = "" + myptchbdystr;
+            myresurl += "/" + mybinnd.id;
+        }
+        console.log("mymethdstr = " + mymethdstr);
+        console.log("mybdystr = " + mybdystr);
+        console.log("myresurl = " + myresurl);
+
+        //we need to asynchronously add this to the server
+        //get the id and then update said object
+        //set the dom node id correctly
+        let myconfigobj = {
+            method: mymethdstr,
+            headers: {
+                "Content-Type" : "application/json",
+                "Accept" : "application/json"
+            },
+            body: mybdystr
+        }
+        fetch(myresurl, myconfigobj).then((response) => response.json()).
+        then(function(response){
+            console.log("response = " + response);
+            console.log("response.id = " + response.id);
+            let myresidstr = "" + response.id;
+            console.log("usepost = " + usepost);
+            debugger;
+            if (response.id == undefined || response.id == null || myresidstr.length < 1)
+            {
+                throw "illegal response id found and used here!";
+            }
+            //else;//do nothing
+
+            if (usepost)
+            {
+                mybinnd.id = response.id;
+                //add the object to the list of nodes now
+                if (mygenndsarr == null) mygenndsarr = new Array();
+                //else;//do nothing
+                mygenndsarr.push(mybinnd);
+                //then enable the buttons
+                bl.disabled = false;
+                br.disabled = false;
+                this.parentNode.id = response.id;
+                console.log("successfully posted the new binary tree object to the server!");
+            }
+            else
+            {
+                console.log("response.data = " + response.data);
+                console.log("successfully updated the binary tree node object on the server!");
+            }
+            debugger;
+        }.bind(mynwtextareaelem)).catch(function(err){
+            console.error("there was a problem updating the data on the server or adding data on the " +
+                "server!");
+            console.error(err);
+        });
+        debugger;
+    }.bind(mynwtextareaelem, myleftbtn, myrightbtn));
+    console.log("successfully added my on edit listener for the textarea for my node here!");
     debugger;
 }
 
@@ -278,7 +439,9 @@ document.addEventListener("DOMContentLoaded", function(event){
         loadbinsrchtree = oevent.target[1].checked;
         userbuildowntree = oevent.target[2].checked;
         //debugger;
+        //hide this form now
+        this.style.display = "none";
         if (loadbinsrchtree === true || loadbintree === true) loadBinaryOrSearchTree(loadbinsrchtree);
         else buildUserBinaryTree();
-    });
+    }.bind(myloadfrm));
 });
