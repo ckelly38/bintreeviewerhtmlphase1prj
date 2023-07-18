@@ -56,7 +56,8 @@ class Bintreend {
                     }
                     else if (vlistnds[n] === this)
                     {
-                        throw "CircularReferenceError: not a tree! Already visited this node; root not found!";
+                        throw "CircularReferenceError: not a tree! Already visited this node; " +
+                            "root not found!";
                     }
                     //else;//do nothing
                 }
@@ -90,12 +91,18 @@ function buildUserBinaryTree()
     //have a spot for the left kid and a spot for the right kid
     //need to have an add left, add right, edit data or remove option
     let mytable = document.createElement("table");
+    let myotable = document.createElement("table");
     let mytrw = document.createElement("tr");
     let mytcol = document.createElement("td");
-    let myotrw = document.createElement("tr");
-    let myotcol = document.createElement("td");
+    let myotrwa = document.createElement("tr");
+    let myotrwb = document.createElement("tr");
+    let myotcolb = document.createElement("td");
+    let myotcolc = document.createElement("td");
+    let myotcold = document.createElement("td");
     let mydiv = document.createElement("div");
     let mycntelem = document.createElement("textarea");
+    myotcolc.style.width = "80px";
+    myotcold.style.width = "80px";
     mycntelem.style.width = "248px";
     mycntelem.style.height = "38px";
     mycntelem.style.resize = "none";
@@ -117,8 +124,13 @@ function buildUserBinaryTree()
     let myrightline = document.createElementNS("http://www.w3.org/2000/svg", "line");
     mydiv.appendChild(mycntelem);
     mydiv.appendChild(mynl);
-    myotcol.appendChild(mydelbtn);
-    myotrw.appendChild(myotcol);
+    myotcolb.appendChild(mydelbtn);
+    myotrwb.appendChild(myotcolc);
+    myotrwb.appendChild(myotcolb);
+    myotrwb.appendChild(myotcold);
+    myotable.appendChild(myotrwb);
+    myotrwa.appendChild(myotable);
+    
     let mylkddiv = document.createElement("span");
     let myrkddiv = document.createElement("span");
     mylkddiv.appendChild(myleftbtn);
@@ -126,7 +138,7 @@ function buildUserBinaryTree()
     mytcol.appendChild(mydiv);
     mytrw.appendChild(mytcol);
     mytable.appendChild(mytrw);
-    mytable.appendChild(myotrw);
+    mytable.appendChild(myotrwa);
     document.getElementById("tree").appendChild(mylkddiv);
     document.getElementById("tree").appendChild(mytable);
     document.getElementById("tree").appendChild(myrkddiv);
