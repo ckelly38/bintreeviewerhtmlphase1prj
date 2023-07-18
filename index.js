@@ -32,6 +32,50 @@ class Bintreend {
         this.rightkd = myrightkdnd;
     }
     isRootNode() { return ((this.ptnd == null) ? true : false); }
+    getRootNode(vlistnds=null)
+    {
+        if (this.isRootNode()) return this;
+        else
+        {
+            //check to see if already on visited list of nodes circle reference error
+            //add the current node to the visited list
+            let myvlistnds = null;
+            if (vlistnds == null || vlistnds.length < 1)
+            {
+                myvlistnds = new Array();
+                myvlistnds.push(this);
+                return this.getRootNode(myvlistnds);
+            }
+            else
+            {
+                for (let n = 0; n < vlistnds.length; n++)
+                {
+                    if (vlistnds[n] == null)
+                    {
+                        throw "no null nodes allowed on the list!";
+                    }
+                    else if (vlistnds[n] === this)
+                    {
+                        throw "CircularReferenceError: not a tree! Already visited this node; root not found!";
+                    }
+                    //else;//do nothing
+                }
+
+                myvlistnds = new Array();
+                for (let n = 0; n < vlistnds.length; n++)
+                {
+                    if (vlistnds[n] == null)
+                    {
+                        throw "no null nodes allowed on the list!";
+                    }
+                    else myvlistnds.push(vlistnds[n]);
+                }
+
+                myvlistnds.push(this);
+                return this.getRootNode(myvlistnds);
+            }
+        }
+    }
 }
 
 function getDOMElements(ndobj)
