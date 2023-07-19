@@ -1,3 +1,11 @@
 {
-  "nodes": []
+  "nodes": [
+    {
+      "data": "2",
+      "ptnd": null,
+      "leftkd": null,
+      "rightkd": null,
+      "id": 1
+    }
+  ]
 }

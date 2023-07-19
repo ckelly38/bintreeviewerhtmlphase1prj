@@ -146,6 +146,41 @@ function getDOMElements(ndobj)
 }
 
 let mygenndsarr = null;
+function getBintreendObjForIdFromArray(myid)
+{
+    if (myid == undefined || myid == null) throw "myid must be defined!";
+    else
+    {
+        let myidstr = "" + myid;
+        if (myidstr.length < 1) throw "myid must not be empty!";
+        //else;//do nothing
+    }
+
+    let mybinnd = null;
+    if (mygenndsarr == undefined || mygenndsarr == null || mygenndsarr.length < 1);
+    else
+    {
+        for (let n = 0; n < mygenndsarr.length; n++)
+        {
+            if (mygenndsarr[n] == null) throw "not allowed to have null nodes on this list!";
+            else
+            {
+                //console.log("mygenndsarr[" + n + "] = " + mygenndsarr[n]);
+                //console.log("mygenndsarr[" + n + "].id = " + mygenndsarr[n].id);
+                //console.log("myid = " + myid);
+                if (mygenndsarr[n].id == myid)
+                {
+                    //console.log("found the node we were looking for!");
+                    mybinnd = mygenndsarr[n];
+                    break;
+                }
+                //else;//do nothing
+            }
+        }//end of n for loop
+    }
+    return mybinnd;
+}
+
 function buildUserBinaryTree()
 {
     //build the root node for the user here
@@ -275,6 +310,33 @@ function buildUserBinaryTree()
         //id, data, ptnd, leftkdnd, rightkdnd
         
         //validate the data here first
+        if (event.target.value == undefined || event.target.value == null || event.target.value.length < 1)
+        {
+            //fetch the old data from the old data object and refuse to push
+            console.error("data is empty! Data must not be empty so reverting!");
+
+            //console.log("mygenndsarr = " + mygenndsarr);
+            //debugger;
+            let mybinnd = getBintreendObjForIdFromArray(event.target.parentNode.id);
+            
+            if (mybinnd == null) throw "the node must have been on the list!";
+            else
+            {
+                console.log("mybinnd = " + mybinnd);
+                console.log("mybinnd.id = " + mybinnd.id);
+                console.log("mybinnd.data = " + mybinnd.data);
+                console.log("mybinnd.ptnd = " + mybinnd.ptnd);
+                console.log("event.target.parentNode.id = " + event.target.parentNode.id);
+                event.target.value = "" + mybinnd.data;
+                console.error("cannot have a node with empty data");
+                alert("error: cannot have a node with empty data, so reverted!");
+                return;
+            }
+        }
+        else
+        {
+            //do something here...
+        }
         console.error("NOT DONE YET 7-18-2023 1:50 AM!");
 
         let usepost = true;
@@ -293,27 +355,7 @@ function buildUserBinaryTree()
             //in this case it will match the parent node id
             //console.log("mygenndsarr = " + mygenndsarr);
             //debugger;
-            if (mygenndsarr == undefined || mygenndsarr == null || mygenndsarr.length < 1);
-            else
-            {
-                for (let n = 0; n < mygenndsarr.length; n++)
-                {
-                    if (mygenndsarr[n] == null) throw "not allowed to have null nodes on this list!";
-                    else
-                    {
-                        //console.log("mygenndsarr[" + n + "] = " + mygenndsarr[n]);
-                        //console.log("mygenndsarr[" + n + "].id = " + mygenndsarr[n].id);
-                        //console.log("event.target.parentNode.id = " + event.target.parentNode.id);
-                        if (mygenndsarr[n].id == event.target.parentNode.id)
-                        {
-                            //console.log("found the node we were looking for!");
-                            mybinnd = mygenndsarr[n];
-                            break;
-                        }
-                        //else;//do nothing
-                    }
-                }//end of n for loop
-            }
+            mybinnd = getBintreendObjForIdFromArray(event.target.parentNode.id);
             
             if (mybinnd == null) throw "the node must have been on the list!";
             else
