@@ -1,6 +1,7 @@
 let loadbintree = false;
 let loadbinsrchtree = false;
 let userbuildowntree = false;
+let mynumnodesontree = 0;
 const myswdth = screen.width;
 function loadBinaryOrSearchTree(usesrchtree)
 {
@@ -333,11 +334,8 @@ function buildUserBinaryTree()
                 return;
             }
         }
-        else
-        {
-            //do something here...
-        }
-        console.error("NOT DONE YET 7-18-2023 1:50 AM!");
+        //else;//do nothing duplicate data allowed
+        //console.error("NOT DONE YET 7-18-2023 1:50 AM!");
 
         let usepost = true;
         if (event.target.parentNode.id === mynwndidstr) usepost = true;
@@ -439,6 +437,9 @@ function buildUserBinaryTree()
                 bl.disabled = false;
                 br.disabled = false;
                 this.parentNode.id = response.id;
+                //update the number of nodes on the tree
+                mynumnodesontree++;
+                document.getElementById("numnodes").textContent = "" + mynumnodesontree;
                 console.log("successfully posted the new binary tree object to the server!");
             }
             else
@@ -459,6 +460,8 @@ function buildUserBinaryTree()
 }
 
 document.addEventListener("DOMContentLoaded", function(event){
+    //display the number of nodes on the tree in the statistics section
+    document.getElementById("numnodes").textContent = "" + mynumnodesontree;
     //show the form
     let myloadfrm = document.getElementById("myloadingform");
     myloadfrm.style.display="block";
