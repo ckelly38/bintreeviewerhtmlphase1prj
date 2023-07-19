@@ -23,6 +23,22 @@ function loadBinaryOrSearchTree(usesrchtree)
     });
 }
 
+function getMyDataOnlyList(transversalarr)
+{
+    if (transversalarr == undefined || transversalarr == null) return null;
+    else
+    {
+        if (transversalarr.length < 1) return transversalarr;
+        else
+        {
+            return transversalarr.map(function(item){
+                if (item == undefined || item == null) return null;
+                else return item.data;
+            });
+        }
+    }
+}
+
 class Bintreend {
     constructor(myid, mydatstr, myptnd=null, myleftkdnd=null, myrightkdnd=null)
     {
@@ -80,7 +96,7 @@ class Bintreend {
     }
     get root()
     {
-        return getRootNode(null);
+        return this.getRootNode(null);
     }
     getNumberOfNodesBelowNode(nd, vlist=null)
     {
@@ -139,7 +155,235 @@ class Bintreend {
     {
         return this.getNumberOfNodesBelowNode(this.root);
     }
+    transversal(useinorder, usepost, snd=this.root, vlist=null)
+    {
+        console.log("INSIDE TRANSVERSAL():");
+        console.log("useinorder = " + useinorder);
+        console.log("usepost = " + usepost);
+        //console.log("snd = " + snd);
+        console.log("vlist = " + vlist);
+        if (useinorder == undefined || usepost == undefined || useinorder == null || usepost == null)
+        {
+            throw "useinorder and usepost must be defined boolean variables!";
+        }
+        else
+        {
+            if ((usepost === true || usepost === false) && (useinorder === true || useinorder === false));
+            else throw "useinorder and usepost must be defined boolean variables!";
+        }
+
+        if (useinorder === true && usepost === true)
+        {
+            throw "illegal transversal selected; you there is no transversal for in and post orders!";
+        }
+        //else;//do nothing
+        console.log("snd.data = " + snd.data);
+        console.log("snd.leftkd = " + snd.leftkd);
+        console.log("snd.rightkd = " + snd.rightkd);
+
+        //in order: left root right
+        //pre order: root left right
+        //post order: left right root
+        //
+        //       f
+        //  d       k
+        // b e    h   m
+        //a c    g i l n
+        //  IN ORDER: a b c d e f g h i k l m n
+        // PRE ORDER: f d b a c e k h g i m l n
+        //POST ORDER: a c b e d g i h l n m k f
+        let rlist = null;
+        if (vlist == null || vlist.length < 1);
+        else
+        {
+            rlist = new Array();
+            for (let n = 0; n < vlist.length; n++) rlist.push(vlist[n]);
+        }
+
+        
+        if (useinorder)
+        {
+            //left root right
+            if (snd.leftkd == null)
+            {
+                //add the root now
+                if (rlist == null) rlist = new Array();
+                //else;//do nothing
+
+                rlist.push(snd);//push current root now
+
+                if (snd.rightkd == null) return rlist;
+                else return this.transversal(useinorder, usepost, snd.rightkd, rlist);
+            }
+            else
+            {
+                let myleftrlist = this.transversal(useinorder, usepost, snd.leftkd, rlist);
+                //let myrightrlist = this.transversal(useinorder, usepost, snd.rightkd, rlist);
+                if (myleftrlist == null || myleftrlist.length < 1);
+                else
+                {
+                    if (rlist == null) rlist = new Array();
+                    //else;//do nothing
+
+                    for (let n = 0; n < myleftrlist.length; n++)
+                    {
+                        rlist.push(myleftrlist[n]);
+                    }
+                }
+
+                //if (rlist == null) rlist = new Array();
+                //else;//do nothing
+
+                //rlist.push(snd);//push current root now
+
+                //if (myrightrlist == null || myrightrlist.length < 1);
+                //else
+                //{
+                    //if (rlist == null) rlist = new Array();
+                    //else;//do nothing
+
+                    //for (let n = 0; n < myrightrlist.length; n++)
+                    //{
+                    //    rlist.push(myrightrlist[n]);
+                    //}
+                //}
+                return rlist;
+            }
+        }
+        else
+        {
+            if (usepost)
+            {
+                //left right root
+                //
+                console.error("NOT DONE YET 7-19-2023 5 AM!");
+                return null;
+            }
+            else
+            {
+                //use pre order
+                //root left right
+                console.error("NOT DONE YET 7-19-2023 5 AM!");
+                return null;
+            }
+        }
+        
+        
+        
+        //if (snd.leftkd == null)
+        //{
+            //console.log("left kid is null!");
+            //console.log("useinorder = " + useinorder);
+            //if (useinorder)
+            //{
+                //left root right
+                //if (rlist == null) rlist = new Array();
+                //else;//do nothing
+
+                //rlist.push(snd);//push current root now
+            //}
+            //else;//do nothing
+
+            //debugger;
+            //if (snd.rightkd == null)
+            //{
+                //console.log("right kid is null!");
+                //console.log("usepost = " + usepost);
+                //debugger;
+                //if (usepost)
+                //{
+                    //left right root
+                    //if (rlist == null) rlist = new Array();
+                    //else;//do nothing
+
+                    //rlist.push(snd);//add the root
+                    //return rlist;//return the list
+                //}
+                //else return rlist;//return the list
+            //}
+            //else return this.transversal(useinorder, usepost, snd.rightkd, rlist);
+        //}
+        //else return this.transversal(useinorder, usepost, snd.leftkd, rlist);
+    }
+    get inOrderTransversal()
+    {
+        return this.transversal(true, false, this.root, null);//inorder, post, snd, vlist
+    }
+    get preOrderTransversal()
+    {
+        return this.transversal(false, false, this.root, null);//inorder, post, snd, vlist
+    }
+    get postOrderTransversal()
+    {
+        return this.transversal(false, true, this.root, null);//inorder, post, snd, vlist
+    }
 }
+
+function makeBinarySearchTreeNodesToSave()
+{
+    //in order: left root right
+    //pre order: root left right
+    //post order: left right root
+    //
+    //       f
+    //  d       k
+    // b e    h   m
+    //a c    g i l n
+    //  IN ORDER: a b c d e f g h i k l m n
+    // PRE ORDER: f d b a c e k h g i m l n
+    //POST ORDER: a c b e d g i h l n m k f
+    let myrt = new Bintreend("0", "f", null, null, null);//parent, left, right
+    let myndd = new Bintreend("1", "d", myrt, null, null);//parent, left, right
+    let myndk = new Bintreend("2", "k", myrt, null, null);//parent, left, right
+    myrt.leftkd = myndd;
+    myrt.rightkd = myndk;
+    let myndb = new Bintreend("3", "b", myndd, null, null);//parent, left, right
+    let mynde = new Bintreend("4", "e", myndd, null, null);//parent, left, right
+    myndd.leftkd = myndb;
+    myndd.rightkd = mynde;
+    let myndh = new Bintreend("5", "b", myndk, null, null);//parent, left, right
+    let myndm = new Bintreend("6", "e", myndk, null, null);//parent, left, right
+    myndk.leftkd = myndh;
+    myndk.rightkd = myndm;
+    let mynda = new Bintreend("7", "a", myndb, null, null);//parent, left, right
+    let myndc = new Bintreend("8", "c", myndb, null, null);//parent, left, right
+    myndb.leftkd = mynda;
+    myndb.rightkd = myndc;
+    let myndg = new Bintreend("9", "g", myndh, null, null);//parent, left, right
+    let myndi = new Bintreend("10", "i", myndh, null, null);//parent, left, right
+    myndh.leftkd = myndg;
+    myndh.rightkd = myndi;
+    let myndl = new Bintreend("11", "l", myndm, null, null);//parent, left, right
+    let myndn = new Bintreend("12", "n", myndm, null, null);//parent, left, right
+    myndm.leftkd = myndl;
+    myndm.rightkd = myndn;
+    let myinordertree = myrt.inOrderTransversal;
+    console.log("inorder:");
+    for (let p = 0; p < myinordertree.length; p++)
+    {
+        console.log("myinordertree[" + p + "].data = " + myinordertree[p].data);
+    }
+    if (myinordertree.length == 13);
+    else throw "inorder did not have the right number of elements on it!";
+    let mypreordertree = myrt.preOrderTransversal;
+    console.log("preorder:");
+    for (let p = 0; p < mypreordertree.length; p++)
+    {
+        console.log("mypreordertree[" + p + "].data = " + mypreordertree[p].data);
+    }
+    if (mypreordertree.length == 13);
+    else throw "preorder did not have the right number of elements on it!";
+    let mypostordertree = myrt.postOrderTransversal;
+    console.log("postorder:");
+    for (let p = 0; p < mypostordertree.length; p++)
+    {
+        console.log("mypostordertree[" + p + "].data = " + mypostordertree[p].data);
+    }
+    if (mypostordertree.length == 13);
+    else throw "preorder did not have the right number of elements on it!";
+    console.log("TEST PAST!");
+}
+makeBinarySearchTreeNodesToSave();
 
 function getDOMElements(ndobj)
 {
