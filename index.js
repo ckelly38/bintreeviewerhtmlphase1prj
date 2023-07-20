@@ -200,6 +200,8 @@ class Bintreend {
         console.log("usepost = " + usepost);
         //console.log("snd = " + snd);
         //console.log("vlist = " + vlist);
+        if (snd == undefined || snd == null) throw "the starting node must be defined and not null!";
+        //else;//do nothing
         if (vlist == null || vlist.length < 1) console.log("vlist is empty!");
         else for (let p = 0; p < vlist.length; p++) console.log("vlist[" + n + "].data = " + vlist[n].data);
         if (useinorder == undefined || usepost == undefined || useinorder == null || usepost == null)
@@ -232,59 +234,42 @@ class Bintreend {
         //  IN ORDER: a b c d e f g h i k l m n
         // PRE ORDER: f d b a c e k h g i m l n
         //POST ORDER: a c b e d g i h l n m k f
-        let rlist = null;
+        let rlist = new Array();
         if (vlist == null || vlist.length < 1);
+        else for (let n = 0; n < vlist.length; n++) rlist.push(vlist[n]);
+
+        if (useinorder || usepost);
         else
         {
-            rlist = new Array();
-            for (let n = 0; n < vlist.length; n++) rlist.push(vlist[n]);
+            console.log("using preorder!");
+            //preorder
+            //root left right
+            
+            rlist.push(snd);//push current root now
+            console.log("added snd.data = " + snd.data + " to the list!");
         }
 
-        
-        if (useinorder)
+        if (snd.leftkd == null)
         {
-            //left root right
-            if (snd.leftkd == null)
+            console.log("left kid is null!");
+            
+            if (useinorder)
             {
-                console.log("left kid is null!");
+                //left root right
+                console.log("using inorder!");
                 
-                //add the root now
-                if (rlist == null) rlist = new Array();
-                //else;//do nothing
-
-                console.log("added snd.data = " + snd.data + " to the list!");
                 rlist.push(snd);//push current root now
+                
+                console.log("added snd.data = " + snd.data + " to the list!");
+            }
+            //else;//do nothing
 
-                if (snd.rightkd == null)
-                {
-                    console.log("right kid is null!");
-                    return rlist;
-                }
-                else return this.transversal(useinorder, usepost, snd.rightkd, rlist);
+            if (snd.rightkd == null)
+            {
+                console.log("right kid is null!");
             }
             else
             {
-                let myleftrlist = this.transversal(useinorder, usepost, snd.leftkd, null);
-                if (myleftrlist == null || myleftrlist.length < 1);
-                else
-                {
-                    if (rlist == null) rlist = new Array();
-                    //else;//do nothing
-
-                    for (let n = 0; n < myleftrlist.length; n++)
-                    {
-                        console.log("added myleftrlist[" + n + "].data = " + myleftrlist[n].data +
-                            " to the list!");
-                        rlist.push(myleftrlist[n]);
-                    }
-                }
-
-                if (rlist == null) rlist = new Array();
-                //else;//do nothing
-
-                rlist.push(snd);//push current root now
-                console.log("added snd.data = " + snd.data + " to the list!");
-
                 let myrightrlist = this.transversal(useinorder, usepost, snd.rightkd, null);
                 if (myrightrlist == null || myrightrlist.length < 1);
                 else
@@ -296,212 +281,65 @@ class Bintreend {
                         rlist.push(myrightrlist[n]);
                     }
                 }
-                return rlist;
             }
         }
         else
         {
-            if (usepost)
-            {
-                //left right root
-                if (snd.leftkd == null)
-                {
-                    console.log("left kid is null!");
-                    
-                    if (snd.rightkd == null)
-                    {
-                        console.log("right kid is null!");
-                        
-                        //add the root now
-                        if (rlist == null) rlist = new Array();
-                        //else;//do nothing
-
-                        console.log("added snd.data = " + snd.data + " to the list!");
-                        rlist.push(snd);//push current root now
-
-                        return rlist;
-                    }
-                    else
-                    {
-                        let myrightrlist = this.transversal(useinorder, usepost, snd.rightkd, null);
-                        if (myrightrlist == null || myrightrlist.length < 1);
-                        else
-                        {
-                            if (rlist == null) rlist = new Array();
-                            //else;//do nothing
-
-                            for (let n = 0; n < myrightrlist.length; n++)
-                            {
-                                console.log("added myrightrlist[" + n + "].data = " + myrightrlist[n].data +
-                                    " to the list!");
-                                rlist.push(myrightrlist[n]);
-                            }
-                        }
-
-                        //add the root now
-                        if (rlist == null) rlist = new Array();
-                        //else;//do nothing
-
-                        console.log("added snd.data = " + snd.data + " to the list!");
-                        rlist.push(snd);//push current root now
-
-                        return rlist;
-                    }
-                }
-                else
-                {
-                    let myleftrlist = this.transversal(useinorder, usepost, snd.leftkd, null);
-                    if (myleftrlist == null || myleftrlist.length < 1);
-                    else
-                    {
-                        if (rlist == null) rlist = new Array();
-                        //else;//do nothing
-
-                        for (let n = 0; n < myleftrlist.length; n++)
-                        {
-                            console.log("added myleftrlist[" + n + "].data = " + myleftrlist[n].data +
-                                " to the list!");
-                            rlist.push(myleftrlist[n]);
-                        }
-                    }
-
-                    let myrightrlist = this.transversal(useinorder, usepost, snd.rightkd, null);
-                    if (myrightrlist == null || myrightrlist.length < 1);
-                    else
-                    {
-                        if (rlist == null) rlist = new Array();
-                        //else;//do nothing
-
-                        for (let n = 0; n < myrightrlist.length; n++)
-                        {
-                            console.log("added myrightrlist[" + n + "].data = " + myrightrlist[n].data +
-                                " to the list!");
-                            rlist.push(myrightrlist[n]);
-                        }
-                    }
-
-                    if (rlist == null) rlist = new Array();
-                    //else;//do nothing
-
-                    rlist.push(snd);//push current root now
-                    console.log("added snd.data = " + snd.data + " to the list!");
-
-                    return rlist;
-                }
-            }
+            let myleftrlist = this.transversal(useinorder, usepost, snd.leftkd, null);
+            if (myleftrlist == null || myleftrlist.length < 1);
             else
             {
-                //use pre order
-                //root left right
-
-                if (rlist == null) rlist = new Array();
-                //else;//do nothing
-
-                rlist.push(snd);//push current root now
-                console.log("added snd.data = " + snd.data + " to the list!");
-
-                if (snd.leftkd == null)
+                for (let n = 0; n < myleftrlist.length; n++)
                 {
-                    console.log("left kid is null!");
-                    
-                    if (snd.rightkd == null)
-                    {
-                        console.log("right kid is null!");
-                        return rlist;
-                    }
-                    else
-                    {
-                        let myrightrlist = this.transversal(useinorder, usepost, snd.rightkd, null);
-                        if (myrightrlist == null || myrightrlist.length < 1);
-                        else
-                        {
-                            if (rlist == null) rlist = new Array();
-                            //else;//do nothing
-
-                            for (let n = 0; n < myrightrlist.length; n++)
-                            {
-                                console.log("added myrightrlist[" + n + "].data = " + myrightrlist[n].data +
-                                    " to the list!");
-                                rlist.push(myrightrlist[n]);
-                            }
-                        }
-
-                        return rlist;
-                    }
+                    console.log("added myleftrlist[" + n + "].data = " + myleftrlist[n].data +
+                        " to the list!");
+                    rlist.push(myleftrlist[n]);
                 }
-                else
+            }
+
+            if (useinorder)
+            {
+                //left root right
+                console.log("using inorder!");
+                
+                rlist.push(snd);//push current root now
+                
+                console.log("added snd.data = " + snd.data + " to the list!");
+            }
+            //else;//do nothing
+
+            let myrightrlist = this.transversal(useinorder, usepost, snd.rightkd, null);
+            if (myrightrlist == null || myrightrlist.length < 1);
+            else
+            {
+                for (let n = 0; n < myrightrlist.length; n++)
                 {
-                    let myleftrlist = this.transversal(useinorder, usepost, snd.leftkd, null);
-                    if (myleftrlist == null || myleftrlist.length < 1);
-                    else
-                    {
-                        if (rlist == null) rlist = new Array();
-                        //else;//do nothing
-
-                        for (let n = 0; n < myleftrlist.length; n++)
-                        {
-                            console.log("added myleftrlist[" + n + "].data = " + myleftrlist[n].data +
-                                " to the list!");
-                            rlist.push(myleftrlist[n]);
-                        }
-                    }
-
-                    let myrightrlist = this.transversal(useinorder, usepost, snd.rightkd, null);
-                    if (myrightrlist == null || myrightrlist.length < 1);
-                    else
-                    {
-                        if (rlist == null) rlist = new Array();
-                        //else;//do nothing
-
-                        for (let n = 0; n < myrightrlist.length; n++)
-                        {
-                            console.log("added myrightrlist[" + n + "].data = " + myrightrlist[n].data +
-                                " to the list!");
-                            rlist.push(myrightrlist[n]);
-                        }
-                    }
-
-                    return rlist;
+                    console.log("added myrightrlist[" + n + "].data = " + myrightrlist[n].data +
+                        " to the list!");
+                    rlist.push(myrightrlist[n]);
                 }
             }
         }
-        
-        
-        
-        //if (snd.leftkd == null)
-        //{
-            //console.log("left kid is null!");
-            //console.log("useinorder = " + useinorder);
-            //if (useinorder)
-            //{
-                //left root right
-                //if (rlist == null) rlist = new Array();
-                //else;//do nothing
 
-                //rlist.push(snd);//push current root now
-            //}
-            //else;//do nothing
 
-            //debugger;
-            //if (snd.rightkd == null)
-            //{
-                //console.log("right kid is null!");
-                //console.log("usepost = " + usepost);
-                //debugger;
-                //if (usepost)
-                //{
-                    //left right root
-                    //if (rlist == null) rlist = new Array();
-                    //else;//do nothing
+        if (usepost)
+        {
+            //right left root
+            console.log("using postorder!");
+            
+            rlist.push(snd);//push current root now
+            
+            console.log("added snd.data = " + snd.data + " to the list!");
+        }
+        //else;//do nothing
 
-                    //rlist.push(snd);//add the root
-                    //return rlist;//return the list
-                //}
-                //else return rlist;//return the list
-            //}
-            //else return this.transversal(useinorder, usepost, snd.rightkd, rlist);
-        //}
-        //else return this.transversal(useinorder, usepost, snd.leftkd, rlist);
+        if (rlist == undefined || null || rlist.length < 1)
+        {
+            throw "the return list must have at minimum the starting node on it!";
+        }
+        //else;//do nothing
+
+        return rlist;
     }
     get inOrderTransversal()
     {
