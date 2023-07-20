@@ -597,6 +597,12 @@ function printDataAndIDAndErrorCheckTransversal(mytransarr, typestr, arrname, ex
 
 function displayTransversals(mybinnd)
 {
+    let myrtnds = document.getElementsByClassName("rtnd");
+    for (let n = 0; n < myrtnds.length; n++)
+    {
+        myrtnds[n].style.display = "inline";
+    }
+
     let mypreordertrans = mybinnd.preOrderTransversal;
     document.getElementById("prorder").getElementsByClassName("rtnd")[0].textContent = "" +
         mypreordertrans[0].data;
@@ -608,12 +614,14 @@ function displayTransversals(mybinnd)
     let myrtindxintransarr = getRootIndexInTransversal(myinordertrans);
     console.log("myrtindxintransarr = " + myrtindxintransarr);
     let myinordertransafterrt = getAllAfterRoot(myinordertrans);
+    let myinordertransbeforert = getAllBeforeRoot(myinordertrans);
     document.getElementById("innrmalndsparta").textContent = "" +
-        getTransversalDataStringFromArray(getMyDataOnlyList(getAllBeforeRoot(myinordertrans))) + ", ";
+        getTransversalDataStringFromArray(getMyDataOnlyList(myinordertransbeforert)) +
+        ((myinordertransbeforert != null && myinordertransbeforert.length > 0) ? ", " : "");
     document.getElementById("pinorder").getElementsByClassName("rtnd")[0].textContent = "" +
         myinordertrans[myrtindxintransarr].data;
     document.getElementById("innrmalndspartb").textContent = "" +
-        ((myinordertransafterrt.length > 0) ? ", " : "") +
+        ((myinordertransafterrt != null && myinordertransafterrt.length > 0) ? ", " : "") +
         getTransversalDataStringFromArray(getMyDataOnlyList(myinordertransafterrt));
     
     
@@ -1017,7 +1025,12 @@ function buildUserBinaryTree()
 }
 
 document.addEventListener("DOMContentLoaded", function(event){
-    makeBinarySearchTreeNodesToSave();
+    //makeBinarySearchTreeNodesToSave();
+    let myrtnds = document.getElementsByClassName("rtnd");
+    for (let n = 0; n < myrtnds.length; n++)
+    {
+        myrtnds[n].style.display = "none";
+    }
     
     //display the number of nodes on the tree in the statistics section
     document.getElementById("numnodes").textContent = "" + mynumnodesontree;
