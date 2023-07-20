@@ -23,8 +23,18 @@ function loadBinaryOrSearchTree(usesrchtree)
     });
 }
 
-function getMyDataOnlyList(transversalarr)
+function getMyDataOrIDOnlyList(transversalarr, usedata)
 {
+    if (usedata == undefined || usedata == null)
+    {
+        throw "usedata must be a defined boolean variable!";
+    }
+    else
+    {
+        if (usedata === true || usedata === false);
+        else throw "usedata must be a defined boolean variable!";
+    }
+
     if (transversalarr == undefined || transversalarr == null) return null;
     else
     {
@@ -33,26 +43,17 @@ function getMyDataOnlyList(transversalarr)
         {
             return transversalarr.map(function(item){
                 if (item == undefined || item == null) return null;
-                else return item.data;
+                else
+                {
+                    if (usedata) return item.data;
+                    else return item.id;
+                }
             });
         }
     }
 }
-function getMyIDOnlyList(transversalarr)
-{
-    if (transversalarr == undefined || transversalarr == null) return null;
-    else
-    {
-        if (transversalarr.length < 1) return transversalarr;
-        else
-        {
-            return transversalarr.map(function(item){
-                if (item == undefined || item == null) return null;
-                else return item.id;
-            });
-        }
-    }
-}
+function getMyDataOnlyList(transversalarr) { return getMyDataOrIDOnlyList(transversalarr, true); }
+function getMyIDOnlyList(transversalarr) { return getMyDataOrIDOnlyList(transversalarr, false); }
 
 class Bintreend {
     constructor(myid, mydatstr, myptnd=null, myleftkdnd=null, myrightkdnd=null)
@@ -193,17 +194,49 @@ class Bintreend {
     {
         return this.getNumberOfNodesBelowNode(this.root);
     }
+    get isBinarySearchTree()
+    {
+        //then the data must be in order
+        //it will either be all numbers or all strings
+        let myinordertransarr = this.inOrderTransversal;
+        let mydataarr = getMyDataOnlyList(myinordertransarr);
+        if (mydataarr == undefined || mydataarr == null || mydataarr.length < 1)
+        {
+            throw "there must be at least one item on the data array for the transversal because " +
+                "it includes this node!";
+        }
+        else if (mydataarr.length == 1) return true;
+        //else;//do nothing
+
+        let mydatacparr = new Array();
+        for (let n = 0; n < mydataarr.length; n++) mydatacparr.push(...mydataarr[n]);
+        mydatacparr = mydatacparr.sort();
+        for (let n = 0; n < mydataarr.length; n++)
+        {
+            //console.log("mydataarr[" + n + "] = " + mydataarr[n]);
+            //console.log("mydatacparr[" + n + "] = " + mydatacparr[n]);
+            if (mydataarr[n] === mydatacparr[n]);
+            else return false;
+        }
+        return true;
+    }
     transversal(useinorder, usepost, snd=this.root, vlist=null)
     {
-        console.log("INSIDE TRANSVERSAL():");
-        console.log("useinorder = " + useinorder);
-        console.log("usepost = " + usepost);
+        //console.log("INSIDE TRANSVERSAL():");
+        //console.log("useinorder = " + useinorder);
+        //console.log("usepost = " + usepost);
         //console.log("snd = " + snd);
         //console.log("vlist = " + vlist);
         if (snd == undefined || snd == null) throw "the starting node must be defined and not null!";
         //else;//do nothing
-        if (vlist == null || vlist.length < 1) console.log("vlist is empty!");
-        else for (let p = 0; p < vlist.length; p++) console.log("vlist[" + n + "].data = " + vlist[n].data);
+        //if (vlist == null || vlist.length < 1) console.log("vlist is empty!");
+        //else
+        //{
+            //for (let p = 0; p < vlist.length; p++)
+            //{
+            //    console.log("vlist[" + n + "].data = " + vlist[n].data);
+            //}
+        //}
         if (useinorder == undefined || usepost == undefined || useinorder == null || usepost == null)
         {
             throw "useinorder and usepost must be defined boolean variables!";
@@ -219,9 +252,9 @@ class Bintreend {
             throw "illegal transversal selected; you there is no transversal for in and post orders!";
         }
         //else;//do nothing
-        console.log("snd.data = " + snd.data);
-        console.log("snd.leftkd = " + snd.leftkd);
-        console.log("snd.rightkd = " + snd.rightkd);
+        //console.log("snd.data = " + snd.data);
+        //console.log("snd.leftkd = " + snd.leftkd);
+        //console.log("snd.rightkd = " + snd.rightkd);
 
         //in order: left root right
         //pre order: root left right
@@ -241,32 +274,32 @@ class Bintreend {
         if (useinorder || usepost);
         else
         {
-            console.log("using preorder!");
+            //console.log("using preorder!");
             //preorder
             //root left right
             
             rlist.push(snd);//push current root now
-            console.log("added snd.data = " + snd.data + " to the list!");
+            //console.log("added snd.data = " + snd.data + " to the list!");
         }
 
         if (snd.leftkd == null)
         {
-            console.log("left kid is null!");
+            //console.log("left kid is null!");
             
             if (useinorder)
             {
                 //left root right
-                console.log("using inorder!");
+                //console.log("using inorder!");
                 
                 rlist.push(snd);//push current root now
                 
-                console.log("added snd.data = " + snd.data + " to the list!");
+                //console.log("added snd.data = " + snd.data + " to the list!");
             }
             //else;//do nothing
 
             if (snd.rightkd == null)
             {
-                console.log("right kid is null!");
+                //console.log("right kid is null!");
             }
             else
             {
@@ -276,8 +309,8 @@ class Bintreend {
                 {
                     for (let n = 0; n < myrightrlist.length; n++)
                     {
-                        console.log("added myrightrlist[" + n + "].data = " + myrightrlist[n].data +
-                            " to the list!");
+                        //console.log("added myrightrlist[" + n + "].data = " + myrightrlist[n].data +
+                        //    " to the list!");
                         rlist.push(myrightrlist[n]);
                     }
                 }
@@ -291,8 +324,8 @@ class Bintreend {
             {
                 for (let n = 0; n < myleftrlist.length; n++)
                 {
-                    console.log("added myleftrlist[" + n + "].data = " + myleftrlist[n].data +
-                        " to the list!");
+                    //console.log("added myleftrlist[" + n + "].data = " + myleftrlist[n].data +
+                    //    " to the list!");
                     rlist.push(myleftrlist[n]);
                 }
             }
@@ -300,11 +333,11 @@ class Bintreend {
             if (useinorder)
             {
                 //left root right
-                console.log("using inorder!");
+                //console.log("using inorder!");
                 
                 rlist.push(snd);//push current root now
                 
-                console.log("added snd.data = " + snd.data + " to the list!");
+                //console.log("added snd.data = " + snd.data + " to the list!");
             }
             //else;//do nothing
 
@@ -314,8 +347,8 @@ class Bintreend {
             {
                 for (let n = 0; n < myrightrlist.length; n++)
                 {
-                    console.log("added myrightrlist[" + n + "].data = " + myrightrlist[n].data +
-                        " to the list!");
+                    //console.log("added myrightrlist[" + n + "].data = " + myrightrlist[n].data +
+                    //    " to the list!");
                     rlist.push(myrightrlist[n]);
                 }
             }
@@ -325,11 +358,11 @@ class Bintreend {
         if (usepost)
         {
             //right left root
-            console.log("using postorder!");
+            //console.log("using postorder!");
             
             rlist.push(snd);//push current root now
             
-            console.log("added snd.data = " + snd.data + " to the list!");
+            //console.log("added snd.data = " + snd.data + " to the list!");
         }
         //else;//do nothing
 
@@ -361,7 +394,23 @@ function printDataAndIDAndErrorCheckTransversal(mytransarr, typestr, arrname, ex
     {
         throw "illegal type string found and used here!";
     }
-    //else;//do nothing
+    else
+    {
+        let mylegaltypes = ["inorder", "in-order", "preorder", "pre-order", "postorder", "post-order"];
+        let mylwrtypestr = ("" + typestr).toLowerCase();
+        let typeisvalid = false;
+        for (let n = 0; n < mylegaltypes.length; n++)
+        {
+            if (mylegaltypes[n] === mylwrtypestr)
+            {
+                typeisvalid = true;
+                break;
+            }
+            //else;//do nothing
+        }
+        if (typeisvalid);
+        else throw "the type string for the type of the transversal is not valid!";
+    }
 
     if (arrname == undefined || arrname == null || arrname.length < 5)
     {
@@ -486,6 +535,8 @@ function makeBinarySearchTreeNodesToSave()
     printDataAndIDAndErrorCheckTransversal(mypreordertree, "preorder", "mypreordertree", 13);
     let mypostordertree = myrt.postOrderTransversal;
     printDataAndIDAndErrorCheckTransversal(mypostordertree, "postorder", "mypostordertree", 13);
+    if (myrt.isBinarySearchTree);
+    else throw "this must be a binary search tree!";
     console.log("TEST PAST!");
 }
 makeBinarySearchTreeNodesToSave();
