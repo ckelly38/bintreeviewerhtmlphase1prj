@@ -55,6 +55,126 @@ function getMyDataOrIDOnlyList(transversalarr, usedata)
 function getMyDataOnlyList(transversalarr) { return getMyDataOrIDOnlyList(transversalarr, true); }
 function getMyIDOnlyList(transversalarr) { return getMyDataOrIDOnlyList(transversalarr, false); }
 
+function getTransversalDataStringFromArray(transversaldataarr)
+{
+    if (transversaldataarr == undefined || transversaldataarr == null || transversaldataarr.length < 1)
+    {
+        return "";
+    }
+    else
+    {
+        let myretstr = "";
+        for (let n = 0; n < transversaldataarr.length; n++)
+        {
+            myretstr += "" + transversaldataarr[n];
+            if (n + 1 < transversaldataarr.length) myretstr += ", ";
+            //else;//do nothing
+        }
+        return myretstr;
+    }
+}
+
+function includeAllExceptRoot(transversalarr)
+{
+    if (transversalarr == undefined || transversalarr == null || transversalarr.length < 1)
+    {
+        return null;
+    }
+    else
+    {
+        return transversalarr.filter(function(item){
+            //console.log("item = " + item);
+            //console.log("item.id = " + item.id);
+            //console.log("item.data = " + item.data);
+            //console.log("item.isRootNode.call(item) = " + item.isRootNode.call(item));
+            if (item.isRootNode.call(item)) return false;
+            else return true;
+        });
+    }
+}
+
+function getRootIndexInTransversal(transversalarr)
+{
+    if (transversalarr == undefined || transversalarr == null || transversalarr.length < 1)
+    {
+        //console.log("transversal array is empty!");
+        return null;
+    }
+    else
+    {
+        //console.log("transversalarr.length = " + transversalarr.length);
+        if (transversalarr.length == 1) return 0;
+        else
+        {
+            for (let n = 0; n < transversalarr.length; n++)
+            {
+                //console.log("transversalarr[" + n + "] = " + transversalarr[n]);
+                //console.log("transversalarr[" + n + "].id = " + transversalarr[n].id);
+                //console.log("transversalarr[" + n + "].data = " + transversalarr[n].data);
+                //console.log("transversalarr[" + n + "].isRootNode.call(transversalarr[" + n + "]) = " +
+                //    transversalarr[n].isRootNode.call(transversalarr[n]));
+                if (transversalarr[n].isRootNode.call(transversalarr[n])) return n;
+                //else;//do nothing
+            }
+
+            throw "at least one of them must be the root node to be on a transversal, but none were!";
+        }
+    }
+}
+
+function getAllBeforeOrAfterRoot(transversalarr, usebefore)
+{
+    //console.log("usebefore = " + usebefore);
+    if (usebefore == undefined || usebefore == null)
+    {
+        throw "usebefore must be a defined boolean variable!";
+    }
+    else
+    {
+        if (usebefore === true || usebefore === false);
+        else throw "usebefore must be a defined boolean variable!";
+    }
+
+    if (transversalarr == undefined || transversalarr == null || transversalarr.length < 1)
+    {
+        //console.log("transversal array is empty!");
+        return null;
+    }
+    else
+    {
+        //console.log("transversalarr.length = " + transversalarr.length);
+        if (transversalarr.length == 1) return null;
+        else
+        {
+            let myrtindx = getRootIndexInTransversal(transversalarr);
+            let nsi = -1;
+            let nmax = -1;
+            if (usebefore)
+            {
+                nsi = 0;
+                nmax = myrtindx;
+            }
+            else
+            {
+                nsi = myrtindx + 1;
+                nmax = transversalarr.length;
+            }
+            //console.log("nsi = " + nsi);
+            //console.log("nmax = " + nmax);
+            //console.log("myrtindx = " + myrtindx);
+
+            let myparttransarr = new Array();
+            for (let n = nsi; n < nmax && n < transversalarr.length; n++)
+            {
+                myparttransarr.push(transversalarr[n]);
+            }
+            return myparttransarr;
+        }
+    }
+}
+function getAllBeforeRoot(transversalarr) { return getAllBeforeOrAfterRoot(transversalarr, true); }
+function getAllAfterRoot(transversalarr) { return getAllBeforeOrAfterRoot(transversalarr, false); }
+
 class Bintreend {
     constructor(myid, mydatstr, myptnd=null, myleftkdnd=null, myrightkdnd=null)
     {
@@ -475,6 +595,36 @@ function printDataAndIDAndErrorCheckTransversal(mytransarr, typestr, arrname, ex
     //else;//do nothing
 }
 
+function displayTransversals(mybinnd)
+{
+    let mypreordertrans = mybinnd.preOrderTransversal;
+    document.getElementById("prorder").getElementsByClassName("rtnd")[0].textContent = "" +
+        mypreordertrans[0].data;
+    document.getElementById("prorder").getElementsByClassName("normalnds")[0].textContent = "" +
+        ((mypreordertrans.length > 1) ? ", " : "") + 
+        getTransversalDataStringFromArray(getMyDataOnlyList(includeAllExceptRoot(mypreordertrans)));
+    
+    let myinordertrans = mybinnd.inOrderTransversal;
+    let myrtindxintransarr = getRootIndexInTransversal(myinordertrans);
+    console.log("myrtindxintransarr = " + myrtindxintransarr);
+    let myinordertransafterrt = getAllAfterRoot(myinordertrans);
+    document.getElementById("innrmalndsparta").textContent = "" +
+        getTransversalDataStringFromArray(getMyDataOnlyList(getAllBeforeRoot(myinordertrans))) + ", ";
+    document.getElementById("pinorder").getElementsByClassName("rtnd")[0].textContent = "" +
+        myinordertrans[myrtindxintransarr].data;
+    document.getElementById("innrmalndspartb").textContent = "" +
+        ((myinordertransafterrt.length > 0) ? ", " : "") +
+        getTransversalDataStringFromArray(getMyDataOnlyList(myinordertransafterrt));
+    
+    
+    let mypostordertrans = mybinnd.postOrderTransversal;
+    document.getElementById("psorder").getElementsByClassName("rtnd")[0].textContent = "" +
+        mypostordertrans[mypostordertrans.length - 1].data;
+    document.getElementById("psorder").getElementsByClassName("normalnds")[0].textContent = 
+        getTransversalDataStringFromArray(getMyDataOnlyList(includeAllExceptRoot(mypostordertrans))) +
+            ((mypostordertrans.length > 1) ? ", " : "");
+}
+
 function makeBinarySearchTreeNodesToSave()
 {
     //in order: left root right
@@ -538,8 +688,10 @@ function makeBinarySearchTreeNodesToSave()
     if (myrt.isBinarySearchTree);
     else throw "this must be a binary search tree!";
     console.log("TEST PAST!");
+
+    displayTransversals(myrt);
 }
-makeBinarySearchTreeNodesToSave();
+//makeBinarySearchTreeNodesToSave();
 
 function getDOMElements(ndobj)
 {
@@ -840,6 +992,11 @@ function buildUserBinaryTree()
                 //update the number of nodes on the tree
                 mynumnodesontree++;
                 document.getElementById("numnodes").textContent = "" + mynumnodesontree;
+                //update the type of tree here
+                document.getElementById("typeoftree").textContent = "" +
+                    (mybinnd.isBinarySearchTree ? "Binary Search" : "Binary");
+                //display the transversals here
+                displayTransversals(mybinnd);
                 console.log("successfully posted the new binary tree object to the server!");
             }
             else
@@ -860,6 +1017,8 @@ function buildUserBinaryTree()
 }
 
 document.addEventListener("DOMContentLoaded", function(event){
+    makeBinarySearchTreeNodesToSave();
+    
     //display the number of nodes on the tree in the statistics section
     document.getElementById("numnodes").textContent = "" + mynumnodesontree;
     //show the form

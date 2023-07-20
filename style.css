@@ -1,0 +1,12 @@
+.rtnd {
+    border: 1px solid black;
+    padding-left: 10px;
+    padding-right: 10px;
+    margin-left: 0px;
+    margin-right: -5px;
+}
+
+.normalnds {
+    margin-left: 0px;
+    margin-right: 0px;
+}

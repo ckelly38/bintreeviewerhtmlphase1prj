@@ -1,11 +1,12 @@
 <!DOCTYPE HTML>
 <html>
     <head>
-        <title>HTML TREE VIEWER PHASE 1 PROJECT</title>
+        <title>HTML BINARY TREE VIEWER PHASE 1 PROJECT</title>
         <script src="./index.js"></script>
+        <link rel="stylesheet" type="text/css" href="style.css" />
     </head>
     <body>
-        <h1>HTML TREE VIEWER PHASE 1 PROJECT:</h1>
+        <h1>HTML BINARY TREE VIEWER PHASE 1 PROJECT:</h1>
         <main>
             <form id="myloadingform" style="display: none">
                 <input type="radio" id="bintreeopt" name="bintreeopt">
@@ -17,7 +18,7 @@
                 <input type="submit" value="submit" />
             </form>
             <section id="tree">
-                <h2>THE TREE:</h2>
+                <h2>THE BINARY TREE:</h2>
             </section>
             <section id="stats">
                 <p id="notesec">NOTES:</p>
@@ -26,11 +27,19 @@
                         REASON: This will not be printed in the transversals!</li>
                     <!--<li>RULE: Cannot have nodes with duplicate data!</li>-->
                 </ul>
-                <p id="prorderpelem">Pre-order: <span id="prorder"></span></p>
-                <p id="pinorderpelem">In order: <span id="pinorder"></span></p>
-                <p id="psorderpelem">Post-order: <span id="psorder"></span></p>
+                <div id="prorderpelem">Pre-order: <span id="prorder">
+                    <div class="rtnd" style="display: inline"></div>
+                    <div class="normalnds" style="display: inline"></span></div>
+                <div id="pinorderpelem">In order: <span id="pinorder">
+                    <div id="innrmalndsparta" class="normalnds" style="display: inline"></div>
+                    <div class="rtnd" style="display: inline"></div>
+                    <div id="innrmalndspartb" class="normalnds" style="display: inline"></div>
+                </span></div>
+                <div id="psorderpelem">Post-order: <span id="psorder">
+                    <div class="normalnds" style="display: inline"></div>
+                    <div class="rtnd" style="display: inline"></div></span></div>
                 <p id="pnumnodes">Number of Nodes on 
-                    <span id="typeoftree"></span> tree: <span id="numnodes"></span></p>
+                    <b><span id="typeoftree"></span></b> Tree: <span id="numnodes"></span></p>
             </section>
         </main>
     </body>
