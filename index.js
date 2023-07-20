@@ -103,6 +103,9 @@ class Bintreend {
         if (nd == undefined || nd == null) return 0;
         else
         {
+            //console.log("nd = " + nd);
+            //console.log("nd.data = " + nd.data);
+
             //first find the root node
             //then decend tree using parent child relationships compile a vlist
             //if we have already visited the node, then throw an error
@@ -110,25 +113,34 @@ class Bintreend {
 
             //visit this node
             //then call method on child nodes
-            for (let n = 0; n < vlist.length; n++)
-            {
-                if (vlist[n] == null)
-                {
-                    throw "no null nodes allowed on the list!";
-                }
-                else if (vlist[n] === this)
-                {
-                    throw "CircularReferenceError: not a tree! Already visited this node; " +
-                        "root not found!";
-                }
-                //else;//do nothing
-            }
-
-            if (this.leftkd == null && this.rightkd == null) return 1;
+            if (vlist == undefined || vlist == null || vlist.length < 1);
             else
             {
+                for (let n = 0; n < vlist.length; n++)
+                {
+                    if (vlist[n] == null)
+                    {
+                        throw "no null nodes allowed on the list!";
+                    }
+                    else if (vlist[n] === nd)
+                    {
+                        throw "CircularReferenceError: not a tree! Already visited this node; " +
+                            "root not found!";
+                    }
+                    //else console.log("vlist[" + n + "].data = " + vlist[n].data);
+                }
+            }
+            //console.log("nd.leftkd = " + nd.leftkd);
+            //console.log("nd.rightkd = " + nd.rightkd);
+
+            if (nd.leftkd == null && nd.rightkd == null) return 1;
+            else
+            {
+                //console.log("nd.leftkd.data = " + nd.leftkd.data);
+                //console.log("nd.rightkd.data = " + nd.rightkd.data);
+
                 let myvlist = new Array();
-                if (vlist == null || vlist.length < 1);
+                if (vlist == undefined || vlist == null || vlist.length < 1);
                 else
                 {
                     for (let n = 0; n < vlist.length; n++)
@@ -137,17 +149,28 @@ class Bintreend {
                         {
                             throw "no null nodes allowed on the list!";
                         }
-                        else if (vlist[n] === this)
+                        else if (vlist[n] === nd)
                         {
                             throw "CircularReferenceError: not a tree! Already visited this node; " +
                                 "root not found!";
                         }
-                        else myvlist.push(vlist[n]);
+                        else
+                        {
+                            //console.log("added vlist[" + n + "].data = " + vlist[n].data);
+                            myvlist.push(vlist[n]);
+                        }
                     }
                 }
-                myvlist.push(this);
-                return getNumberOfNodesBelowNode(this.leftkd, myvlist) +
-                getNumberOfNodesBelowNode(this.rightkd, myvlist);
+                //console.log("added nd.data = " + nd.data);
+                myvlist.push(nd);
+                
+                let numinatree = this.getNumberOfNodesBelowNode(nd.leftkd, myvlist);
+                //console.log("numinatree = " + numinatree);
+                let numinbtree = this.getNumberOfNodesBelowNode(nd.rightkd, myvlist)
+                //console.log("NODE FOR CALL: nd.data = " + nd.data);
+                //console.log("FINAL numinatree = " + numinatree);
+                //console.log("FINAL numinbtree = " + numinbtree);
+                return 1 + numinatree + numinbtree;
             }
         }
     }
@@ -337,10 +360,17 @@ function makeBinarySearchTreeNodesToSave()
     let myndk = new Bintreend("2", "k", myrt, null, null);//parent, left, right
     myrt.leftkd = myndd;
     myrt.rightkd = myndk;
+    //console.log("myrt.data = " + myrt.data);
+    //console.log("myrt.leftkd.data = myndd.data = " + myrt.leftkd.data);
+    //console.log("myrt.rightkd.data = myndk.data = " + myrt.rightkd.data);
     let myndb = new Bintreend("3", "b", myndd, null, null);//parent, left, right
     let mynde = new Bintreend("4", "e", myndd, null, null);//parent, left, right
     myndd.leftkd = myndb;
     myndd.rightkd = mynde;
+    //console.log("myndd.leftkd.data = myndb.data = " + myndd.leftkd.data);
+    //console.log("myndd.rightkd.data = mynde.data = " + myndd.rightkd.data);
+    //console.log("myrt.leftkd.leftkd.data = myndb.data = " + myrt.leftkd.leftkd.data);
+    //console.log("myrt.leftkd.rightkd.data = mynde.data = " + myrt.leftkd.rightkd.data);
     let myndh = new Bintreend("5", "b", myndk, null, null);//parent, left, right
     let myndm = new Bintreend("6", "e", myndk, null, null);//parent, left, right
     myndk.leftkd = myndh;
@@ -357,6 +387,13 @@ function makeBinarySearchTreeNodesToSave()
     let myndn = new Bintreend("12", "n", myndm, null, null);//parent, left, right
     myndm.leftkd = myndl;
     myndm.rightkd = myndn;
+    console.log("myrt.isRootNode() = " + myrt.isRootNode());
+    if (myrt.isRootNode() == true);
+    else throw "my root node must be the root for this test tree!";
+    let numnodes = myrt.numNodesOnTree;
+    console.log("numnodes = " + numnodes);
+    if (numnodes == 13);
+    else throw "illegal number of nodes found on the tree!";
     let myinordertree = myrt.inOrderTransversal;
     console.log("inorder:");
     for (let p = 0; p < myinordertree.length; p++)
