@@ -86,8 +86,8 @@ function includeAllExceptRoot(transversalarr)
             //console.log("item = " + item);
             //console.log("item.id = " + item.id);
             //console.log("item.data = " + item.data);
-            //console.log("item.isRootNode.call(item) = " + item.isRootNode.call(item));
-            if (item.isRootNode.call(item)) return false;
+            //console.log("item.isRootNode() = " + item.isRootNode());
+            if (item.isRootNode()) return false;
             else return true;
         });
     }
@@ -111,9 +111,9 @@ function getRootIndexInTransversal(transversalarr)
                 //console.log("transversalarr[" + n + "] = " + transversalarr[n]);
                 //console.log("transversalarr[" + n + "].id = " + transversalarr[n].id);
                 //console.log("transversalarr[" + n + "].data = " + transversalarr[n].data);
-                //console.log("transversalarr[" + n + "].isRootNode.call(transversalarr[" + n + "]) = " +
-                //    transversalarr[n].isRootNode.call(transversalarr[n]));
-                if (transversalarr[n].isRootNode.call(transversalarr[n])) return n;
+                //console.log("transversalarr[" + n + "].isRootNode() = " +
+                //    transversalarr[n].isRootNode());
+                if (transversalarr[n].isRootNode()) return n;
                 //else;//do nothing
             }
 
@@ -187,17 +187,17 @@ class Bintreend {
     isRootNode() { return ((this.ptnd == null) ? true : false); }
     getRootNode(vlistnds=null)
     {
+        //console.log("this.data = " + this.data);
         if (this.isRootNode()) return this;
         else
         {
             //check to see if already on visited list of nodes circle reference error
             //add the current node to the visited list
+            //console.log("this.ptnd.data = " + this.ptnd.data);
             let myvlistnds = null;
             if (vlistnds == null || vlistnds.length < 1)
             {
                 myvlistnds = new Array();
-                myvlistnds.push(this);
-                return this.getRootNode(myvlistnds);
             }
             else
             {
@@ -207,12 +207,16 @@ class Bintreend {
                     {
                         throw "no null nodes allowed on the list!";
                     }
-                    else if (vlistnds[n] === this)
+                    else
                     {
-                        throw "CircularReferenceError: not a tree! Already visited this node; " +
-                            "root not found!";
+                        //console.log("vlistnds[" + n + "].data = " + vlistnds[n].data);
+                        if (vlistnds[n] === this)
+                        {
+                            throw "CircularReferenceError: not a tree! Already visited this node; " +
+                                "root not found!";
+                        }
+                        //else;//do nothing
                     }
-                    //else;//do nothing
                 }
 
                 myvlistnds = new Array();
@@ -224,10 +228,9 @@ class Bintreend {
                     }
                     else myvlistnds.push(vlistnds[n]);
                 }
-
-                myvlistnds.push(this);
-                return this.getRootNode(myvlistnds);
             }
+            myvlistnds.push(this);
+            return this.ptnd.getRootNode(myvlistnds);
         }
     }
     get root()
@@ -313,6 +316,248 @@ class Bintreend {
     get numNodesOnTree()
     {
         return this.getNumberOfNodesBelowNode(this.root);
+    }
+    isKidOfParent(kid=this, pt=null)
+    {
+        //console.log("kid.isRootNode() = " + kid.isRootNode());
+        if (kid.isRootNode())
+        {
+            if (pt == undefined || pt == null) return true;
+            else return false;
+        }
+        else
+        {
+            if (pt == undefined || pt == null) return false;
+            else return (kid.ptnd === pt);
+        }
+    }
+    isParentOf(kid=null, pt=this)
+    {
+        return this.isKidOfParent(kid, pt);
+    }
+    numberOfLevelsOnTree(snd=this.root, cnumlevels=1, vlist = null)
+    {
+        if (snd == undefined || snd == null) throw "starting node must be defined!";
+        //else;//do nothing
+        //console.log("snd.data = " + snd.data);
+        //console.log("snd.id = " + snd.id);
+        //console.log("cnumlevels = " + cnumlevels);
+        if (vlist == undefined || vlist == null || vlist.length < 1)
+        {
+            //console.log("vlist is null or empty!");
+        }
+        else
+        {
+            //console.log("vlist.length = " + vlist.length);
+            //console.log("vlist:");
+            //for (let p = 0; p < vlist.length; p++)
+            //{
+            //    console.log("vlist[" + p + "].data = " + vlist[p].data);
+            //}
+        }
+
+        let myvlist = null;
+        let sndonvlist = false;
+        if (vlist == undefined || vlist == null || vlist.length < 1);
+        else
+        {
+            myvlist = new Array();
+            for (let n = 0; n < vlist.length; n++)
+            {
+                if (vlist[n] == undefined || vlist[n] == null)
+                {
+                    throw "null and undefined are not allowed on the visited nodes list!";
+                }
+                else
+                {
+                    if (vlist[n] === snd)
+                    {
+                        if (sndonvlist);
+                        else sndonvlist = true;
+                    }
+                    //else;//do nothing
+
+                    myvlist.push(vlist[n]);
+                }
+            }
+        }
+        //console.log("sndonvlist = " + sndonvlist);
+        
+        //visit the current starting node or root node
+        //then visit its kids
+        //       f        | level 0 |
+        //  d       k     | level 1 |
+        // b e    h   m   | level 2 |
+        //a c    g i l n  | level 3 | number of levels = 4
+        //the root
+        //its kids
+        //their kids
+        //just the root, return 1
+
+        let visitleftkd = false;
+        if (snd.leftkd == null) visitleftkd = false;
+        else visitleftkd = true;
+        let visitrightkd = false;
+        if (snd.rightkd == null) visitrightkd = false;
+        else visitrightkd = true;
+        //console.log("visitleftkd = " + visitleftkd);
+        //console.log("visitrightkd = " + visitrightkd);
+
+        if (myvlist == null) myvlist = new Array();
+        //else;//do nothing
+        if (sndonvlist);
+        else myvlist.push(snd);
+
+        let numleft = 0;
+        if (visitleftkd)
+        {
+            myvlist.push(snd.leftkd);
+            numleft = this.numberOfLevelsOnTree(snd.leftkd, cnumlevels + 1, myvlist);
+        }
+        //else;//do nothing
+        let numright = 0;
+        if (visitrightkd)
+        {
+            myvlist.push(snd.rightkd);
+            numright = this.numberOfLevelsOnTree(snd.rightkd, cnumlevels + 1, myvlist);
+        }
+        //else;//do nothing
+        //console.log("FINAL visitleftkd = " + visitleftkd);
+        //console.log("FINAL visitrightkd = " + visitrightkd);
+        //console.log("FINAL numleft = " + numleft);
+        //console.log("FINAL numright = " + numright);
+        //console.log("FINAL snd.data = " + snd.data);
+        //console.log("FINAL snd.id = " + snd.id);
+        //console.log("FINAL sndonvlist = " + sndonvlist);
+        //console.log("FINAL cnumlevels = " + cnumlevels);
+        
+        if (visitleftkd && visitrightkd)
+        {
+            if (numleft > numright) return numleft;
+            else return numright;
+        }
+        else
+        {
+            if (visitleftkd || visitrightkd)
+            {
+                if (visitleftkd) return numleft;
+                else return numright;
+            }
+            else return cnumlevels;
+        }
+    }
+    get numLevelsOnTree()
+    {
+        return this.numberOfLevelsOnTree(this.root, 1, null);
+    }
+    levelForNode(snd=this.root, fnd=this, clevel=0, vlist=null)
+    {
+        if (snd == undefined || snd == null) throw "starting node must be defined!";
+        //else;//do nothing
+        if (fnd == undefined || fnd == null) throw "the node we are looking for must not be null!";
+        //else;//do nothing
+        //console.log("snd.data = " + snd.data);
+        //console.log("snd.id = " + snd.id);
+        //console.log("fnd.data = " + fnd.data);
+        //console.log("fnd.id = " + fnd.id);
+        //console.log("clevel = " + clevel);
+        
+        let myvlist = new Array();
+        if (vlist == undefined || vlist == null || vlist.length < 1)
+        {
+            //console.log("vlist is null or empty!");
+        }
+        else
+        {
+            //console.log("vlist.length = " + vlist.length);
+            //console.log("vlist:");
+            for (let p = 0; p < vlist.length; p++)
+            {
+                //console.log("vlist[" + p + "].data = " + vlist[p].data);
+                myvlist.push(vlist[p]);
+            }
+        }
+
+        if (fnd === snd)
+        {
+            //console.log("found our node!");
+            //console.log("RETURNED clevel = " + clevel);
+            return clevel;
+        }
+        //else;//do nothing
+
+        //visit the current node
+        myvlist.push(snd);
+
+        let visitleftkd = ((snd.leftkd == null) ? false : true);
+        let visitrightkd = ((snd.rightkd == null) ? false : true);
+        //console.log("visitleftkd = " + visitleftkd);
+        //console.log("visitrightkd = " + visitrightkd);
+
+        if (visitleftkd || visitrightkd)
+        {
+            let leftkdlv = -1;
+            if (visitleftkd)
+            {
+                leftkdlv = this.levelForNode(snd.leftkd, this, clevel + 1, myvlist);
+                //if (leftkdlv > 0 || leftkdlv == 0) return leftkdlv;
+                //else;//do nothing
+            }
+            //else;//do nothing
+            let rightkdlv = -1;
+            if (visitrightkd)
+            {
+                rightkdlv = this.levelForNode(snd.rightkd, this, clevel + 1, myvlist);
+                //if (rightkdlv > 0 || rightkdlv == 0) return rightkdlv;
+                //else;//do nothing
+            }
+            //else;//do nothing
+            //console.log("FINAL snd.data = " + snd.data);
+            //console.log("FINAL snd.id = " + snd.id);
+            //console.log("FINAL fnd.data = " + fnd.data);
+            //console.log("FINAL fnd.id = " + fnd.id);
+            //console.log("FINAL visitleftkd = " + visitleftkd);
+            //console.log("FINAL visitrightkd = " + visitrightkd);
+            //console.log("FINAL leftkdlv = " + leftkdlv);
+            //console.log("FINAL rightkdlv = " + rightkdlv);
+            //console.log("FINAL clevel = " + clevel);
+            
+            if (visitleftkd && visitrightkd)
+            {
+                if (leftkdlv > 0 || leftkdlv == 0) return leftkdlv;
+                else if (rightkdlv > 0 || rightkdlv == 0) return rightkdlv;
+                //else;//do nothing
+            }
+            else
+            {
+                if (visitleftkd)
+                {
+                    if (leftkdlv > 0 || leftkdlv == 0) return leftkdlv;
+                    //else;//do nothing
+                }
+                else
+                {
+                    if (visitrightkd)
+                    {
+                        if (rightkdlv > 0 || rightkdlv == 0) return rightkdlv;
+                        //else;//do nothing
+                    }
+                    else
+                    {
+                        throw "this said we must have been visiting one or the other, but visited " +
+                            "neither, but already checked for this case!";
+                    }
+                }
+            }
+        }
+        //else;//do nothing
+        
+        //console.error("the node we were looking for was not found!");
+        return -1;
+    }
+    get level()
+    {
+        return this.levelForNode(this.root, this, 0, null);
     }
     get isBinarySearchTree()
     {
@@ -695,9 +940,58 @@ function makeBinarySearchTreeNodesToSave()
     printDataAndIDAndErrorCheckTransversal(mypostordertree, "postorder", "mypostordertree", 13);
     if (myrt.isBinarySearchTree);
     else throw "this must be a binary search tree!";
+    for (let n = 0; n < mypreordertree.length; n++)
+    {
+        let cndlv = mypreordertree[n].level;
+        console.log("mypreordertree[" + n + "].level = cndlv = " + cndlv);
+        console.log("mypreordertree[" + n + "].data = " + mypreordertree[n].data);
+        console.log("mypreordertree[" + n + "].isRootNode() = " + mypreordertree[n].isRootNode());
+        if (mypreordertree[n].isRootNode())
+        {
+            if (cndlv == 0);
+            else throw "the root's level must be 0!";
+        }
+        else
+        {
+            console.log("mypreordertree[" + n + "].root.data = " + mypreordertree[n].root.data);
+            console.log("mypreordertree[" + n + "].root.id = " + mypreordertree[n].root.id);
+            console.log("mypreordertree[" + n + "].root.isParentOf(mypreordertree[" + n + "]) = " +
+                mypreordertree[n].root.isParentOf(mypreordertree[n]));
+            console.log("mypreordertree[" + n + "].root.isParentOf(mypreordertree[" + n + "], " +
+                "mypreordertree[" + n + "].root) = " +
+                mypreordertree[n].root.isParentOf(mypreordertree[n], mypreordertree[n].root));
+            console.log("mypreordertree[" + n + "].isKidOfParent(mypreordertree[" + n +
+                "], mypreordertree[" + n + "].root) = " +
+                mypreordertree[n].isKidOfParent(mypreordertree[n], mypreordertree[n].root));
+            if (mypreordertree[n].root.isParentOf(mypreordertree[n]))
+            {
+                if (cndlv == 1);
+                else throw "the root's kids' level must be 1!";
+            }
+            else
+            {
+                if (cndlv > 1);
+                else throw "the root's kids' kids level must be at least 2!";
+            }
+        }
+    }
+    if (myrt.level == 0);
+    else throw "the root's level must be 0!";
+    if (myndd.level == 1 && myndk.level == 1);
+    else throw "the root's kids' level must be 1!";
+    if (myndb.level == 2 && mynde.level == 2 && myndh.level == 2 && myndm.level == 2);
+    else throw "all of these nodes are on level 2!";
+    if (mynda.level == 3 && myndc.level == 3 && myndg.level == 3 && myndi.level == 3 &&
+        myndl.level == 3 && myndn.level == 3)
+    {
+        //do nothing valid
+    }
+    else throw "all of these nodes are on level 3!";
     console.log("TEST PAST!");
 
     displayTransversals(myrt);
+    document.getElementById("numnodes").textContent = "" + myrt.numNodesOnTree;
+    document.getElementById("numlevels").textContent = "" + myrt.numLevelsOnTree;
 }
 //makeBinarySearchTreeNodesToSave();
 
@@ -1030,6 +1324,7 @@ document.addEventListener("DOMContentLoaded", function(event){
     for (let n = 0; n < myrtnds.length; n++)
     {
         myrtnds[n].style.display = "none";
+        //myrtnds[n].style.display = "inline";
     }
     
     //display the number of nodes on the tree in the statistics section
