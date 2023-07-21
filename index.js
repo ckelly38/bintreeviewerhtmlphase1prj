@@ -1,7 +1,6 @@
 let loadbintree = false;
 let loadbinsrchtree = false;
 let userbuildowntree = false;
-let mynumnodesontree = 0;
 const myswdth = screen.width;
 function loadBinaryOrSearchTree(usesrchtree)
 {
@@ -840,8 +839,32 @@ function printDataAndIDAndErrorCheckTransversal(mytransarr, typestr, arrname, ex
     //else;//do nothing
 }
 
+function clearAndHideAllTransversals()
+{
+    document.getElementById("prorder").getElementsByClassName("rtnd")[0].textContent = "";
+    document.getElementById("prorder").getElementsByClassName("normalnds")[0].textContent = "";
+    document.getElementById("innrmalndsparta").textContent = "";
+    document.getElementById("pinorder").getElementsByClassName("rtnd")[0].textContent = "";
+    document.getElementById("innrmalndspartb").textContent = "";
+    document.getElementById("psorder").getElementsByClassName("rtnd")[0].textContent = "";
+    document.getElementById("psorder").getElementsByClassName("normalnds")[0].textContent = "";
+
+    let myrtnds = document.getElementsByClassName("rtnd");
+    for (let n = 0; n < myrtnds.length; n++)
+    {
+        myrtnds[n].style.display = "none";
+    }
+}
+
 function displayTransversals(mybinnd)
 {
+    if (mybinnd == undefined || mybinnd == null)
+    {
+        clearAndHideAllTransversals();
+        return;
+    }
+    //else;//do nothing
+
     let myrtnds = document.getElementsByClassName("rtnd");
     for (let n = 0; n < myrtnds.length; n++)
     {
@@ -876,6 +899,25 @@ function displayTransversals(mybinnd)
     document.getElementById("psorder").getElementsByClassName("normalnds")[0].textContent = 
         getTransversalDataStringFromArray(getMyDataOnlyList(includeAllExceptRoot(mypostordertrans))) +
             ((mypostordertrans.length > 1) ? ", " : "");
+}
+
+function displayTreeStatsAndUpdateThem(mybinnd)
+{
+    displayTransversals(mybinnd);
+
+    if (mybinnd == undefined || mybinnd == null)
+    {
+        document.getElementById("numnodes").textContent = "0";
+        document.getElementById("numlevels").textContent = "0";
+        document.getElementById("typeoftree").textContent = "";
+    }
+    else
+    {
+        document.getElementById("numnodes").textContent = "" + mybinnd.numNodesOnTree;
+        document.getElementById("numlevels").textContent = "" + mybinnd.numLevelsOnTree;
+        document.getElementById("typeoftree").textContent = "" +
+            (mybinnd.isBinarySearchTree ? "Binary Search" : "Binary");
+    }
 }
 
 function makeBinarySearchTreeNodesToSave()
@@ -989,9 +1031,7 @@ function makeBinarySearchTreeNodesToSave()
     else throw "all of these nodes are on level 3!";
     console.log("TEST PAST!");
 
-    displayTransversals(myrt);
-    document.getElementById("numnodes").textContent = "" + myrt.numNodesOnTree;
-    document.getElementById("numlevels").textContent = "" + myrt.numLevelsOnTree;
+    displayTreeStatsAndUpdateThem(myrt);
 }
 //makeBinarySearchTreeNodesToSave();
 
@@ -1291,14 +1331,11 @@ function buildUserBinaryTree()
                 bl.disabled = false;
                 br.disabled = false;
                 this.parentNode.id = response.id;
-                //update the number of nodes on the tree
-                mynumnodesontree++;
-                document.getElementById("numnodes").textContent = "" + mynumnodesontree;
-                //update the type of tree here
-                document.getElementById("typeoftree").textContent = "" +
-                    (mybinnd.isBinarySearchTree ? "Binary Search" : "Binary");
+                
                 //display the transversals here
-                displayTransversals(mybinnd);
+                //update the type of tree here
+                //update the number of nodes on the tree
+                displayTreeStatsAndUpdateThem(mybinnd);
                 console.log("successfully posted the new binary tree object to the server!");
             }
             else
@@ -1320,15 +1357,10 @@ function buildUserBinaryTree()
 
 document.addEventListener("DOMContentLoaded", function(event){
     //makeBinarySearchTreeNodesToSave();
-    let myrtnds = document.getElementsByClassName("rtnd");
-    for (let n = 0; n < myrtnds.length; n++)
-    {
-        myrtnds[n].style.display = "none";
-        //myrtnds[n].style.display = "inline";
-    }
-    
-    //display the number of nodes on the tree in the statistics section
-    document.getElementById("numnodes").textContent = "" + mynumnodesontree;
+    //display the number of nodes and levels on the tree in the statistics section
+    //hide the root nodes on the transversals
+    displayTreeStatsAndUpdateThem(null);
+
     //show the form
     let myloadfrm = document.getElementById("myloadingform");
     myloadfrm.style.display="block";
