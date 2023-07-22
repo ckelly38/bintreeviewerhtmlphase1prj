@@ -29,7 +29,8 @@
                     <li>The nodes with the <b>black</b> border are the root nodes!</li>
                     <li>There is only one of each node!</li>
                     <li>The root node has a level of zero because we index that way!</li>
-                    <li>The numbers and the transversals will update after the server is updated!</li>
+                    <li>The numbers and the transversals will update <b><i>after </i></b>
+                        the server is updated!</li>
                     <li>RULE: Cannot have a node with empty data!<br>
                         REASON: This will not be printed in the transversals!</li>
                     <!--<li>RULE: Cannot have nodes with duplicate data!</li>-->
@@ -50,6 +51,36 @@
                     <b><span id="typeoftree"></span></b> Tree: <span id="numnodes"></span></p>
                 <p id="pnumlevels">Number of Levels on the Tree: <span id="numlevels"></span></p>
             </section>
+            <details>
+                <summary><b>What is a Binary Tree, a Binary Search Tree, a Strict Binary Search Tree?</b>
+                </summary>
+                <br>
+                All tree nodes have references to their parents and to their kids and contain data!<br>
+                <br>
+                A <b><i>Strict</i> Binary Search Tree</b> maintains the following properties:
+                <ul>
+                    <li>It sorts the data when new nodes are added or when nodes are removed!</li>
+                    <br>
+                    <li>A <b>Binary Search Tree</b> maintains the following properties:
+                        <ul>
+                            <br>
+                            <li>The in-order transversal is in ascending order in an order like
+                                alphabetic or numeric or alphanumeric, etc.</li>
+                            <br>
+                            <li>A <b>Binary Tree</b> maintains the following properties:
+                                <ul>
+                                    <li>It has at most 1 parent node.</li>
+                                    <li>It has at most 2 child nodes.</li>
+                                    <li>It can have as few as 0 parent nodes. When this is the case, the
+                                        parent node is null.</li>
+                                    <li>It can have as few as 0 child nodes. When this is the case, both 
+                                        of the kids are null.</li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </details>
         </main>
     </body>
 </html>
