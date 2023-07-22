@@ -842,12 +842,15 @@ function printDataAndIDAndErrorCheckTransversal(mytransarr, typestr, arrname, ex
 function clearAndHideAllTransversals()
 {
     document.getElementById("prorder").getElementsByClassName("rtnd")[0].textContent = "";
-    document.getElementById("prorder").getElementsByClassName("normalnds")[0].textContent = "";
+    //document.getElementById("prorder").getElementsByClassName("normalnds")[0].textContent = "";
     document.getElementById("innrmalndsparta").textContent = "";
+    document.getElementById("innrmalndsparta").style.display = "none";
     document.getElementById("pinorder").getElementsByClassName("rtnd")[0].textContent = "";
     document.getElementById("innrmalndspartb").textContent = "";
+    document.getElementById("innrmalndspartb").style.display = "none";
     document.getElementById("psorder").getElementsByClassName("rtnd")[0].textContent = "";
     document.getElementById("psorder").getElementsByClassName("normalnds")[0].textContent = "";
+    document.getElementById("psorder").getElementsByClassName("normalnds")[0].style.display = "none";
 
     let myrtnds = document.getElementsByClassName("rtnd");
     for (let n = 0; n < myrtnds.length; n++)
@@ -1044,6 +1047,10 @@ function displayTransversals(mybinnd)
     {
         myrtnds[n].style.display = "inline";
     }
+
+    //document.getElementById("innrmalndsparta").style.display = "inline";
+    //document.getElementById("innrmalndspartb").style.display = "inline";
+    //document.getElementById("psorder").getElementsByClassName("normalnds")[0].style.display = "inline";
 
     let mypreordertrans = mybinnd.preOrderTransversal;
     //document.getElementById("prorder").getElementsByClassName("rtnd")[0].textContent = "" +
@@ -1567,10 +1574,10 @@ function buildUserBinaryTree()
 }
 
 document.addEventListener("DOMContentLoaded", function(event){
-    makeBinarySearchTreeNodesToSave();
+    //makeBinarySearchTreeNodesToSave();
     //display the number of nodes and levels on the tree in the statistics section
     //hide the root nodes on the transversals
-    //displayTreeStatsAndUpdateThem(null);
+    displayTreeStatsAndUpdateThem(null);
 
     //show the form
     let myloadfrm = document.getElementById("myloadingform");
