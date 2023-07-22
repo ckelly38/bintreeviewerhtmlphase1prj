@@ -23,20 +23,27 @@
             <section id="stats">
                 <p id="notesec">NOTES:</p>
                 <ul id="noteswarningslist">
+                    <li>Hover on the nodes in the transversals to see some properties of them!</li>
+                    <li>The nodes with the <span style="color: red">red </span>
+                        border are the root nodes!</li>
+                    <li>The nodes with the <b>black</b> border are the root nodes!</li>
+                    <li>There is only one of each node!</li>
+                    <li>The root node has a level of zero because we index that way!</li>
                     <li>RULE: Cannot have a node with empty data!<br>
                         REASON: This will not be printed in the transversals!</li>
                     <!--<li>RULE: Cannot have nodes with duplicate data!</li>-->
                 </ul>
                 <div id="prorderpelem">Pre-order: <span id="prorder">
                     <div class="rtnd" style="display: inline"></div>
-                    <div class="normalnds" style="display: inline"></span></div>
+                    <!--<div class="normalnds" style="display: inline"></div>-->
+                </span></div>
                 <div id="pinorderpelem">In order: <span id="pinorder">
                     <div id="innrmalndsparta" class="normalnds" style="display: inline"></div>
                     <div class="rtnd" style="display: inline"></div>
                     <div id="innrmalndspartb" class="normalnds" style="display: inline"></div>
                 </span></div>
                 <div id="psorderpelem">Post-order: <span id="psorder">
-                    <div class="normalnds" style="display: inline"></div>
+                    <div id="psnrmalnds" class="normalnds" style="display: inline"></div>
                     <div class="rtnd" style="display: inline"></div></span></div>
                 <p id="pnumnodes">Number of Nodes on 
                     <b><span id="typeoftree"></span></b> Tree: <span id="numnodes"></span></p>

@@ -573,7 +573,7 @@ class Bintreend {
         //else;//do nothing
 
         let mydatacparr = new Array();
-        for (let n = 0; n < mydataarr.length; n++) mydatacparr.push(...mydataarr[n]);
+        for (let n = 0; n < mydataarr.length; n++) mydatacparr.push("" + mydataarr[n]);
         mydatacparr = mydatacparr.sort();
         for (let n = 0; n < mydataarr.length; n++)
         {
@@ -856,6 +856,180 @@ function clearAndHideAllTransversals()
     }
 }
 
+function showOrHideToolTip(pdivelem, showelem, useclick)
+{
+    console.log("showelem = " + showelem);
+    console.log("useclick = " + useclick);
+    if (showelem == undefined || showelem == null)
+    {
+        throw "showelem must be a defined boolean variable!";
+    }
+    else
+    {
+        if (showelem === true || showelem === false);
+        else throw "showelem must be a defined boolean variable!";
+    }
+
+    if (useclick == undefined || useclick == null)
+    {
+        throw "useclick must be a defined boolean variable!";
+    }
+    else
+    {
+        if (useclick === true || useclick === false);
+        else throw "useclick must be a defined boolean variable!";
+    }
+
+    if (pdivelem == undefined || pdivelem == null)
+    {
+        throw "the div containing the span element is not allowed to be null!";
+    }
+    //else;//do nothing
+
+    if (useclick) console.log("clicked node in transversal!");
+    else console.log("hovered " + (showelem ? "on" : "off") + " node in transversal!");
+    //console.log("this = " + this);
+    console.log("this.id = " + this.id);
+    console.log("this.data = " + this.data);
+    //console.log("this.level = " + this.level);
+    let mydatinfospan = pdivelem.getElementsByTagName("span")[0];
+    if (useclick)
+    {
+        console.log("mydatinfospan.style.display = " + mydatinfospan.style.display);
+        if (mydatinfospan.style.display === "none") mydatinfospan.style.display = "inline-block";
+        else if (mydatinfospan.style.display === "inline-block") mydatinfospan.style.display = "none";
+        else throw "invalid display value found and used here!";
+        //debugger;
+    }
+    else
+    {
+        if (showelem) mydatinfospan.style.display = "inline-block";
+        else mydatinfospan.style.display = "none";
+        //debugger;
+    }
+}
+function showToolTip(pdivelem)
+{
+    showOrHideToolTip.call(this, pdivelem, true, false);//showelem, useclick
+}
+function hideToolTip(pdivelem)
+{
+    showOrHideToolTip.call(this, pdivelem, false, false);//showelem, useclick
+}
+
+function generateTransversalDOMNodesFor(binnd, lenpreordertrans, exdomnode, islastnd=false, isrtnd=false)
+{
+    if (binnd == undefined || binnd == null)
+    {
+        throw "the incoming binary tree node whose data is being displayed must not be null!";
+    }
+    //else;//do nothing
+
+    if (exdomnode == undefined || exdomnode == null)
+    {
+        throw "the incoming binary tree node whose data is being displayed must not be null!";
+    }
+    //else;//do nothing
+
+    if (islastnd == undefined || islastnd == null)
+    {
+        throw "islastnd must be a defined boolean variable!";
+    }
+    else
+    {
+        if (islastnd === true || islastnd === false);
+        else throw "islastnd must be a defined boolean variable!";
+    }
+
+    if (isrtnd == undefined || isrtnd == null)
+    {
+        throw "isrtnd must be a defined boolean variable!";
+    }
+    else
+    {
+        if (isrtnd === true || isrtnd === false);
+        else throw "isrtnd must be a defined boolean variable!";
+    }
+
+    if (lenpreordertrans == undefined || lenpreordertrans == null || isNaN(lenpreordertrans))
+    {
+        throw "illegal length found and used for the lenpreordertrans!";
+    }
+    else if (lenpreordertrans < 0) throw "illegal length found and used for the lenpreordertrans!";
+    //else;//do nothing
+
+    //buld a new div node that will be displayed inline and have the normalnds class
+    //for each data item
+    let mydatinfospan = document.createElement("span");
+    mydatinfospan.style.display = "none";
+    mydatinfospan.style.backgroundColor = "#555";//grey black ish
+    mydatinfospan.style.color = "#fff";//white
+    mydatinfospan.style.textAlign = "center";
+    mydatinfospan.style.position = "absolute";
+    mydatinfospan.style.bottom = "125%";
+    mydatinfospan.style.width = "120px";
+    mydatinfospan.style.marginLeft = "-70px";
+    mydatinfospan.className = "tooltiptext";
+    //cannot build the arrow in javascript because I cannot get the pseudo class after and add rules
+    let myndisrtp = document.createElement("p");
+    myndisrtp.textContent = "my node is " + (binnd.isRootNode() ? "" : "not") + " the root node!";
+    let myndp = document.createElement("p");
+    myndp.textContent = "my node id: " + binnd.id;
+    let mynddatp = document.createElement("p");
+    mynddatp.textContent = "my node data: " + binnd.data;
+    let myndlvp = document.createElement("p");
+    myndlvp.textContent = "my node level: " + binnd.level + "!";
+    let mydatdiv = null;
+    if (isrtnd)
+    {
+        exdomnode.textContent = "" + ((lenpreordertrans > 1) ? ", " : "") + binnd.data +
+            ((lenpreordertrans > 1 && islastnd) ? ", " : "");
+        //mydatonlypreorderarr[n];
+        exdomnode.style.position = "relative";
+    }
+    else
+    {
+        mydatdiv = document.createElement("div");
+        mydatdiv.style.position = "relative";
+        mydatdiv.style.display = "inline-block";
+        mydatdiv.className = "normalnds";
+        mydatdiv.textContent = "" + ((lenpreordertrans > 1) ? ", " : "") + binnd.data +
+            ((lenpreordertrans > 1 && islastnd) ? ", " : "");
+        //mydatonlypreorderarr[n];
+    }
+    mydatinfospan.appendChild(myndisrtp);
+    mydatinfospan.appendChild(myndp);
+    mydatinfospan.appendChild(mynddatp);
+    mydatinfospan.appendChild(myndlvp);
+    if (isrtnd)
+    {
+        exdomnode.appendChild(mydatinfospan);
+        exdomnode.addEventListener("mouseover", function(event) {
+            showToolTip.call(binnd, exdomnode);
+        });
+        exdomnode.addEventListener("mouseout", function(event) {
+            hideToolTip.call(binnd, exdomnode);
+        });
+        exdomnode.addEventListener("click", function(event) {
+            showOrHideToolTip.call(binnd, exdomnode, false, true);
+        });
+    }
+    else
+    {
+        mydatdiv.appendChild(mydatinfospan);
+        exdomnode.appendChild(mydatdiv);
+        mydatdiv.addEventListener("mouseover", function(event) {
+            showToolTip.call(binnd, mydatdiv);
+        });
+        mydatdiv.addEventListener("mouseout", function(event) {
+            hideToolTip.call(binnd, mydatdiv);
+        });
+        mydatdiv.addEventListener("click", function(event) {
+            showOrHideToolTip.call(binnd, mydatdiv, false, true);
+        });
+    }
+}
+
 function displayTransversals(mybinnd)
 {
     if (mybinnd == undefined || mybinnd == null)
@@ -872,33 +1046,70 @@ function displayTransversals(mybinnd)
     }
 
     let mypreordertrans = mybinnd.preOrderTransversal;
-    document.getElementById("prorder").getElementsByClassName("rtnd")[0].textContent = "" +
-        mypreordertrans[0].data;
-    document.getElementById("prorder").getElementsByClassName("normalnds")[0].textContent = "" +
-        ((mypreordertrans.length > 1) ? ", " : "") + 
-        getTransversalDataStringFromArray(getMyDataOnlyList(includeAllExceptRoot(mypreordertrans)));
+    //document.getElementById("prorder").getElementsByClassName("rtnd")[0].textContent = "" +
+    //    mypreordertrans[0].data;
+    generateTransversalDOMNodesFor(mypreordertrans[0], 1,
+        document.getElementById("prorder").getElementsByClassName("rtnd")[0],
+        (mypreordertrans.length > 1), true);//islastnd, isrtnd
+    let mypreordertransnortarr = includeAllExceptRoot(mypreordertrans);
+    let mydatonlypreorderarr = getMyDataOnlyList(mypreordertransnortarr);
+    for (let n = 0; n < mydatonlypreorderarr.length; n++)
+    {
+        generateTransversalDOMNodesFor(mypreordertransnortarr[n], mypreordertrans.length,
+            document.getElementById("prorder"));//islastnd, isrtnd
+    }
+    //document.getElementById("prorder").getElementsByClassName("normalnds")[0].textContent = "" +
+    //    ((mypreordertrans.length > 1) ? ", " : "") + 
+    //    getTransversalDataStringFromArray(mydatonlypreorderarr);
     
     let myinordertrans = mybinnd.inOrderTransversal;
     let myrtindxintransarr = getRootIndexInTransversal(myinordertrans);
     console.log("myrtindxintransarr = " + myrtindxintransarr);
     let myinordertransafterrt = getAllAfterRoot(myinordertrans);
     let myinordertransbeforert = getAllBeforeRoot(myinordertrans);
-    document.getElementById("innrmalndsparta").textContent = "" +
-        getTransversalDataStringFromArray(getMyDataOnlyList(myinordertransbeforert)) +
-        ((myinordertransbeforert != null && myinordertransbeforert.length > 0) ? ", " : "");
-    document.getElementById("pinorder").getElementsByClassName("rtnd")[0].textContent = "" +
-        myinordertrans[myrtindxintransarr].data;
-    document.getElementById("innrmalndspartb").textContent = "" +
-        ((myinordertransafterrt != null && myinordertransafterrt.length > 0) ? ", " : "") +
-        getTransversalDataStringFromArray(getMyDataOnlyList(myinordertransafterrt));
-    
+    //document.getElementById("innrmalndsparta").textContent = "" +
+    //    getTransversalDataStringFromArray(getMyDataOnlyList(myinordertransbeforert)) +
+    //    ((myinordertransbeforert != null && myinordertransbeforert.length > 0) ? ", " : "");
+    for (let n = 0; n < myinordertransbeforert.length; n++)
+    {
+        let myuselenvar;
+        if (n == 0) myuselenvar = 1;
+        else myuselenvar = myinordertransafterrt.length;
+        generateTransversalDOMNodesFor(myinordertransbeforert[n], myuselenvar,
+            document.getElementById("innrmalndsparta"), (n + 1 == myinordertransbeforert.length));
+        //islastnd, isrtnd
+    }
+    //document.getElementById("pinorder").getElementsByClassName("rtnd")[0].textContent = "" +
+    //    myinordertrans[myrtindxintransarr].data;
+    generateTransversalDOMNodesFor(myinordertrans[myrtindxintransarr], 1,
+        document.getElementById("pinorder").getElementsByClassName("rtnd")[0],
+        (myinordertrans.length > 1), true);//islastnd, isrtnd
+    //document.getElementById("innrmalndspartb").textContent = "" +
+    //    ((myinordertransafterrt != null && myinordertransafterrt.length > 0) ? ", " : "") +
+    //    getTransversalDataStringFromArray(getMyDataOnlyList(myinordertransafterrt));
+    for (let n = 0; n < myinordertransafterrt.length; n++)
+    {
+        generateTransversalDOMNodesFor(myinordertransafterrt[n], myinordertransbeforert.length,
+            document.getElementById("innrmalndspartb"));//islastnd, isrtnd
+    }
     
     let mypostordertrans = mybinnd.postOrderTransversal;
-    document.getElementById("psorder").getElementsByClassName("rtnd")[0].textContent = "" +
-        mypostordertrans[mypostordertrans.length - 1].data;
-    document.getElementById("psorder").getElementsByClassName("normalnds")[0].textContent = 
-        getTransversalDataStringFromArray(getMyDataOnlyList(includeAllExceptRoot(mypostordertrans))) +
-            ((mypostordertrans.length > 1) ? ", " : "");
+    //document.getElementById("psorder").getElementsByClassName("rtnd")[0].textContent = "" +
+    //    mypostordertrans[mypostordertrans.length - 1].data;
+    generateTransversalDOMNodesFor(mypostordertrans[mypostordertrans.length - 1], 1,
+        document.getElementById("psorder").getElementsByClassName("rtnd")[0],
+        (mypostordertrans.length > 1), true);//islastnd, isrtnd
+    //document.getElementById("psorder").getElementsByClassName("normalnds")[0].textContent = 
+    //    getTransversalDataStringFromArray(getMyDataOnlyList(includeAllExceptRoot(mypostordertrans))) +
+    //        ((mypostordertrans.length > 1) ? ", " : "");
+    for (let n = 0; n < mypostordertrans.length - 1; n++)
+    {
+        let myuselenvar;
+        if (n == 0) myuselenvar = 1;
+        else myuselenvar = mypostordertrans.length - 1;
+        generateTransversalDOMNodesFor(mypostordertrans[n], myuselenvar,
+            document.getElementById("psnrmalnds"));//islastnd, isrtnd
+    }
 }
 
 function displayTreeStatsAndUpdateThem(mybinnd)
@@ -949,7 +1160,7 @@ function makeBinarySearchTreeNodesToSave()
     //console.log("myndd.rightkd.data = mynde.data = " + myndd.rightkd.data);
     //console.log("myrt.leftkd.leftkd.data = myndb.data = " + myrt.leftkd.leftkd.data);
     //console.log("myrt.leftkd.rightkd.data = mynde.data = " + myrt.leftkd.rightkd.data);
-    let myndh = new Bintreend("6", "h", myndk, null, null);//parent, left, right
+    let myndh = new Bintreend("6", "hello, me", myndk, null, null);//parent, left, right
     let myndm = new Bintreend("7", "m", myndk, null, null);//parent, left, right
     myndk.leftkd = myndh;
     myndk.rightkd = myndm;
@@ -1356,10 +1567,10 @@ function buildUserBinaryTree()
 }
 
 document.addEventListener("DOMContentLoaded", function(event){
-    //makeBinarySearchTreeNodesToSave();
+    makeBinarySearchTreeNodesToSave();
     //display the number of nodes and levels on the tree in the statistics section
     //hide the root nodes on the transversals
-    displayTreeStatsAndUpdateThem(null);
+    //displayTreeStatsAndUpdateThem(null);
 
     //show the form
     let myloadfrm = document.getElementById("myloadingform");
