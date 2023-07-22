@@ -19,6 +19,7 @@ function loadBinaryOrSearchTree(usesrchtree)
     }).catch(function(err){
         console.error("there was an error getting the nodes!");
         console.error(err);
+        alert("Error: There was a problem getting the nodes from the server! See log for details!");
     });
 }
 
@@ -184,6 +185,7 @@ class Bintreend {
         this.rightkd = myrightkdnd;
     }
     isRootNode() { return ((this.ptnd == null) ? true : false); }
+    get isRoot() { return this.isRootNode(); }
     getRootNode(vlistnds=null)
     {
         //console.log("this.data = " + this.data);
@@ -1566,6 +1568,8 @@ function buildUserBinaryTree()
             console.error("there was a problem updating the data on the server or adding data on the " +
                 "server!");
             console.error(err);
+            alert("Error: There was a problem updating or putting the data on the server! " +
+                "See log for details!");
         });
         debugger;
     }.bind(mynwtextareaelem, myleftbtn, myrightbtn));
