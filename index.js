@@ -6,7 +6,7 @@ function loadBinaryOrSearchTree(usesrchtree)
 {
     //get the list of nodes from the api
     //then ?
-    fetch("http://localhost:3000/bintreenodes").then((response) => response.json()).
+    fetch("http://localhost:3000/nodes").then((response) => response.json()).
     then(function(response){
         console.log(response);
         let mynodesarr = response;
@@ -1153,11 +1153,15 @@ function makeBinarySearchTreeNodesToSave()
     //  IN ORDER: a b c d e f g h i k l m n
     // PRE ORDER: f d b a c e k h g i m l n
     //POST ORDER: a c b e d g i h l n m k f
+    let myndsbyid = new Array();
     let myrt = new Bintreend("1", "f", null, null, null);//parent, left, right
     let myndd = new Bintreend("2", "d", myrt, null, null);//parent, left, right
     let myndk = new Bintreend("3", "k", myrt, null, null);//parent, left, right
     myrt.leftkd = myndd;
     myrt.rightkd = myndk;
+    myndsbyid.push(myrt);
+    myndsbyid.push(myndd);
+    myndsbyid.push(myndk);
     //console.log("myrt.data = " + myrt.data);
     //console.log("myrt.leftkd.data = myndd.data = " + myrt.leftkd.data);
     //console.log("myrt.rightkd.data = myndk.data = " + myrt.rightkd.data);
@@ -1165,6 +1169,8 @@ function makeBinarySearchTreeNodesToSave()
     let mynde = new Bintreend("5", "e", myndd, null, null);//parent, left, right
     myndd.leftkd = myndb;
     myndd.rightkd = mynde;
+    myndsbyid.push(myndb);
+    myndsbyid.push(mynde);
     //console.log("myndd.leftkd.data = myndb.data = " + myndd.leftkd.data);
     //console.log("myndd.rightkd.data = mynde.data = " + myndd.rightkd.data);
     //console.log("myrt.leftkd.leftkd.data = myndb.data = " + myrt.leftkd.leftkd.data);
@@ -1173,18 +1179,26 @@ function makeBinarySearchTreeNodesToSave()
     let myndm = new Bintreend("7", "m", myndk, null, null);//parent, left, right
     myndk.leftkd = myndh;
     myndk.rightkd = myndm;
+    myndsbyid.push(myndh);
+    myndsbyid.push(myndm);
     let mynda = new Bintreend("8", "a", myndb, null, null);//parent, left, right
     let myndc = new Bintreend("9", "c", myndb, null, null);//parent, left, right
     myndb.leftkd = mynda;
     myndb.rightkd = myndc;
+    myndsbyid.push(mynda);
+    myndsbyid.push(myndc);
     let myndg = new Bintreend("10", "g", myndh, null, null);//parent, left, right
     let myndi = new Bintreend("11", "i", myndh, null, null);//parent, left, right
     myndh.leftkd = myndg;
     myndh.rightkd = myndi;
+    myndsbyid.push(myndg);
+    myndsbyid.push(myndi);
     let myndl = new Bintreend("12", "l", myndm, null, null);//parent, left, right
     let myndn = new Bintreend("13", "n", myndm, null, null);//parent, left, right
     myndm.leftkd = myndl;
     myndm.rightkd = myndn;
+    myndsbyid.push(myndl);
+    myndsbyid.push(myndn);
     
     console.log("myrt.isRootNode() = " + myrt.isRootNode());
     if (myrt.isRootNode() == true);
@@ -1252,6 +1266,61 @@ function makeBinarySearchTreeNodesToSave()
     console.log("TEST PAST!");
 
     displayTreeStatsAndUpdateThem(myrt);
+
+    //post them all to the server
+    let addthem = false;
+    for (let n = 0; n < myndsbyid.length; n++)
+    {
+        console.log("myndsbyid[" + n + "].id = " + myndsbyid[n].id);
+        console.log("myndsbyid[" + n + "].data = " + myndsbyid[n].data);
+        if (addthem)
+        {
+            console.log("posting it now:");
+            let initptndid = null;
+            if (myndsbyid[n].ptnd == null);
+            else initptndid = myndsbyid[n].ptnd.id;
+            let initrkdndid = null;
+            if (myndsbyid[n].rightkd == null);
+            else initrkdndid = myndsbyid[n].rightkd.id;
+            let initlkdndid = null;
+            if (myndsbyid[n].leftkd == null);
+            else initlkdndid = myndsbyid[n].leftkd.id;
+            console.log("initptndid = " + initptndid);
+            console.log("initlkdndid = " + initlkdndid);
+            console.log("initrkdndid = " + initrkdndid);
+
+            let configobj = {
+                method: "POST",
+                headers: {
+                    "Content-Type" : "application/json",
+                    "Accept" : "application/json"
+                },
+                body: JSON.stringify({
+                    "ptnd" : initptndid,
+                    "leftkd" : initlkdndid,
+                    "rightkd" : initrkdndid,
+                    "data" : myndsbyid[n].data
+                })
+            };
+            fetch("http://localhost:3000/nodes", configobj).then((response) => response.json()).
+            then(function(response){
+                console.log("response = " + response);
+                //debugger;
+                console.log("response.id = " + response.id);
+                console.log("response.data = " + response.data);
+                console.log("myndsbyid[" + n + "].id = " + myndsbyid[n].id);
+                console.log("myndsbyid[" + n + "].data = " + myndsbyid[n].data);
+                debugger;
+            })
+            .catch(function(err){
+                console.error("there was a problem posting the data on the server!");
+                console.error(err);
+                //alert("Error: failed to add the data on the server. See log for details!");
+            });
+            setTimeout(1000, function(){ console.log("moving on now!"); });
+        }
+        //else;//do nothing
+    }//end of n for loop
 }
 //makeBinarySearchTreeNodesToSave();
 
@@ -1578,10 +1647,10 @@ function buildUserBinaryTree()
 }
 
 document.addEventListener("DOMContentLoaded", function(event){
-    //makeBinarySearchTreeNodesToSave();
+    makeBinarySearchTreeNodesToSave();
     //display the number of nodes and levels on the tree in the statistics section
     //hide the root nodes on the transversals
-    displayTreeStatsAndUpdateThem(null);
+    //displayTreeStatsAndUpdateThem(null);
 
     //show the form
     let myloadfrm = document.getElementById("myloadingform");
