@@ -5,91 +5,104 @@
       "leftkd": "2",
       "rightkd": "3",
       "data": "f",
-      "id": 1
+      "id": 1,
+      "isbinsrchtree" : true
     },
     {
       "ptnd": "1",
       "leftkd": "4",
       "rightkd": "5",
       "data": "d",
-      "id": 2
+      "id": 2,
+      "isbinsrchtree" : true
     },
     {
       "ptnd": "1",
       "leftkd": "6",
       "rightkd": "7",
       "data": "k",
-      "id": 3
+      "id": 3,
+      "isbinsrchtree" : true
     },
     {
       "ptnd": "2",
       "leftkd": "8",
       "rightkd": "9",
       "data": "b",
-      "id": 4
+      "id": 4,
+      "isbinsrchtree" : true
     },
     {
       "ptnd": "2",
       "leftkd": null,
       "rightkd": null,
       "data": "e",
-      "id": 5
+      "id": 5,
+      "isbinsrchtree" : true
     },
     {
       "ptnd": "3",
       "leftkd": "10",
       "rightkd": "11",
       "data": "hello, me",
-      "id": 6
+      "id": 6,
+      "isbinsrchtree" : true
     },
     {
       "ptnd": "3",
       "leftkd": "12",
       "rightkd": "13",
       "data": "m",
-      "id": 7
+      "id": 7,
+      "isbinsrchtree" : true
     },
     {
       "ptnd": "4",
       "leftkd": null,
       "rightkd": null,
       "data": "a",
-      "id": 8
+      "id": 8,
+      "isbinsrchtree" : true
     },
     {
       "ptnd": "4",
       "leftkd": null,
       "rightkd": null,
       "data": "c",
-      "id": 9
+      "id": 9,
+      "isbinsrchtree" : true
     },
     {
       "ptnd": "6",
       "leftkd": null,
       "rightkd": null,
       "data": "g",
-      "id": 10
+      "id": 10,
+      "isbinsrchtree" : true
     },
     {
       "ptnd": "6",
       "leftkd": null,
       "rightkd": null,
       "data": "i",
-      "id": 11
+      "id": 11,
+      "isbinsrchtree" : true
     },
     {
       "ptnd": "7",
       "leftkd": null,
       "rightkd": null,
       "data": "n",
-      "id": 12
+      "id": 12,
+      "isbinsrchtree" : true
     },
     {
       "ptnd": "7",
       "leftkd": null,
       "rightkd": null,
       "data": "l",
-      "id": 13
+      "id": 13,
+      "isbinsrchtree" : true
     }
   ]
 }

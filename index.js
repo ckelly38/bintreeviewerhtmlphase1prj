@@ -1140,6 +1140,58 @@ function displayTreeStatsAndUpdateThem(mybinnd)
     }
 }
 
+function getAndGenerateServerObject(binnd=null, usepost=true)
+{
+    if (usepost == undefined || usepost == null)
+    {
+        throw "usepost must be a defined boolean variable!";
+    }
+    else
+    {
+        if (usepost == true || usepost == false);
+        else throw "usepost must be a defined boolean variable!";
+    }
+
+    if (binnd == undefined || binnd == null) return null;
+    else
+    {
+        let initptndid = null;
+        if (binnd.ptnd == null);
+        else initptndid = binnd.ptnd.id;
+        let initrkdndid = null;
+        if (binnd.rightkd == null);
+        else initrkdndid = binnd.rightkd.id;
+        let initlkdndid = null;
+        if (binnd.leftkd == null);
+        else initlkdndid = binnd.leftkd.id;
+        //console.log("initptndid = " + initptndid);
+        //console.log("initlkdndid = " + initlkdndid);
+        //console.log("initrkdndid = " + initrkdndid);
+
+        if (usepost)
+        {
+            return {
+                "ptnd" : initptndid,
+                "leftkd" : initlkdndid,
+                "rightkd" : initrkdndid,
+                "data" : binnd.data,
+                "isbinsrchtree" : binnd.isBinarySearchTree
+            };
+        }
+        else
+        {
+            return {
+                "ptnd" : initptndid,
+                "leftkd" : initlkdndid,
+                "rightkd" : initrkdndid,
+                "data" : binnd.data,
+                "id" : binnd.id,
+                "isbinsrchtree" : binnd.isBinarySearchTree
+            };
+        }
+    }
+}
+
 function makeBinarySearchTreeNodesToSave()
 {
     //in order: left root right
@@ -1276,31 +1328,13 @@ function makeBinarySearchTreeNodesToSave()
         if (addthem)
         {
             console.log("posting it now:");
-            let initptndid = null;
-            if (myndsbyid[n].ptnd == null);
-            else initptndid = myndsbyid[n].ptnd.id;
-            let initrkdndid = null;
-            if (myndsbyid[n].rightkd == null);
-            else initrkdndid = myndsbyid[n].rightkd.id;
-            let initlkdndid = null;
-            if (myndsbyid[n].leftkd == null);
-            else initlkdndid = myndsbyid[n].leftkd.id;
-            console.log("initptndid = " + initptndid);
-            console.log("initlkdndid = " + initlkdndid);
-            console.log("initrkdndid = " + initrkdndid);
-
             let configobj = {
                 method: "POST",
                 headers: {
                     "Content-Type" : "application/json",
                     "Accept" : "application/json"
                 },
-                body: JSON.stringify({
-                    "ptnd" : initptndid,
-                    "leftkd" : initlkdndid,
-                    "rightkd" : initrkdndid,
-                    "data" : myndsbyid[n].data
-                })
+                body: JSON.stringify(getAndGenerateServerObject(myndsbyid[n], true))
             };
             fetch("http://localhost:3000/nodes", configobj).then((response) => response.json()).
             then(function(response){
@@ -1546,7 +1580,7 @@ function buildUserBinaryTree()
             }
         }
 
-        let myptchbdystr = JSON.stringify(mybinnd);
+        let myptchbdystr = JSON.stringify(getAndGenerateServerObject(mybinnd, false));
         console.log("myptchbdystr = " + myptchbdystr);
         let myidindx = myptchbdystr.indexOf('"id":');
         let cmaafteridindx = -1;
