@@ -1054,6 +1054,9 @@ function displayTransversals(mybinnd)
     //document.getElementById("innrmalndspartb").style.display = "inline";
     //document.getElementById("psorder").getElementsByClassName("normalnds")[0].style.display = "inline";
 
+    //console.log("mybinnd.id = " + mybinnd.id);
+    //console.log("mybinnd.data = " + mybinnd.data);
+    
     let mypreordertrans = mybinnd.preOrderTransversal;
     //document.getElementById("prorder").getElementsByClassName("rtnd")[0].textContent = "" +
     //    mypreordertrans[0].data;
@@ -1133,6 +1136,8 @@ function displayTreeStatsAndUpdateThem(mybinnd)
     }
     else
     {
+        //console.log("mybinnd.id = " + mybinnd.id);
+        //console.log("mybinnd.data = " + mybinnd.data);
         document.getElementById("numnodes").textContent = "" + mybinnd.numNodesOnTree;
         document.getElementById("numlevels").textContent = "" + mybinnd.numLevelsOnTree;
         document.getElementById("typeoftree").textContent = "" +
@@ -1206,51 +1211,51 @@ function makeBinarySearchTreeNodesToSave()
     // PRE ORDER: f d b a c e k h g i m l n
     //POST ORDER: a c b e d g i h l n m k f
     let myndsbyid = new Array();
-    let myrt = new Bintreend("1", "f", null, null, null);//parent, left, right
-    let myndd = new Bintreend("2", "d", myrt, null, null);//parent, left, right
-    let myndk = new Bintreend("3", "k", myrt, null, null);//parent, left, right
+    let myrt = new Bintreend(1, "f", null, null, null);//parent, left, right
+    let myndd = new Bintreend(2, "d", myrt, null, null);//parent, left, right
+    let myndk = new Bintreend(3, "k", myrt, null, null);//parent, left, right
     myrt.leftkd = myndd;
     myrt.rightkd = myndk;
-    myndsbyid.push(myrt);
-    myndsbyid.push(myndd);
-    myndsbyid.push(myndk);
+    //myndsbyid.push(myrt);
+    //myndsbyid.push(myndd);
+    //myndsbyid.push(myndk);
     //console.log("myrt.data = " + myrt.data);
     //console.log("myrt.leftkd.data = myndd.data = " + myrt.leftkd.data);
     //console.log("myrt.rightkd.data = myndk.data = " + myrt.rightkd.data);
-    let myndb = new Bintreend("4", "b", myndd, null, null);//parent, left, right
-    let mynde = new Bintreend("5", "e", myndd, null, null);//parent, left, right
+    let myndb = new Bintreend(4, "b", myndd, null, null);//parent, left, right
+    let mynde = new Bintreend(5, "e", myndd, null, null);//parent, left, right
     myndd.leftkd = myndb;
     myndd.rightkd = mynde;
-    myndsbyid.push(myndb);
-    myndsbyid.push(mynde);
+    //myndsbyid.push(myndb);
+    //myndsbyid.push(mynde);
     //console.log("myndd.leftkd.data = myndb.data = " + myndd.leftkd.data);
     //console.log("myndd.rightkd.data = mynde.data = " + myndd.rightkd.data);
     //console.log("myrt.leftkd.leftkd.data = myndb.data = " + myrt.leftkd.leftkd.data);
     //console.log("myrt.leftkd.rightkd.data = mynde.data = " + myrt.leftkd.rightkd.data);
-    let myndh = new Bintreend("6", "hello, me", myndk, null, null);//parent, left, right
-    let myndm = new Bintreend("7", "m", myndk, null, null);//parent, left, right
+    let myndh = new Bintreend(6, "hello, me", myndk, null, null);//parent, left, right
+    let myndm = new Bintreend(7, "m", myndk, null, null);//parent, left, right
     myndk.leftkd = myndh;
     myndk.rightkd = myndm;
-    myndsbyid.push(myndh);
-    myndsbyid.push(myndm);
-    let mynda = new Bintreend("8", "a", myndb, null, null);//parent, left, right
-    let myndc = new Bintreend("9", "c", myndb, null, null);//parent, left, right
+    //myndsbyid.push(myndh);
+    //myndsbyid.push(myndm);
+    let mynda = new Bintreend(8, "a", myndb, null, null);//parent, left, right
+    let myndc = new Bintreend(9, "c", myndb, null, null);//parent, left, right
     myndb.leftkd = mynda;
     myndb.rightkd = myndc;
-    myndsbyid.push(mynda);
-    myndsbyid.push(myndc);
-    let myndg = new Bintreend("10", "g", myndh, null, null);//parent, left, right
-    let myndi = new Bintreend("11", "i", myndh, null, null);//parent, left, right
+    //myndsbyid.push(mynda);
+    //myndsbyid.push(myndc);
+    let myndg = new Bintreend(10, "g", myndh, null, null);//parent, left, right
+    let myndi = new Bintreend(11, "i", myndh, null, null);//parent, left, right
     myndh.leftkd = myndg;
     myndh.rightkd = myndi;
-    myndsbyid.push(myndg);
-    myndsbyid.push(myndi);
-    let myndl = new Bintreend("12", "l", myndm, null, null);//parent, left, right
-    let myndn = new Bintreend("13", "n", myndm, null, null);//parent, left, right
+    //myndsbyid.push(myndg);
+    //myndsbyid.push(myndi);
+    let myndl = new Bintreend(12, "l", myndm, null, null);//parent, left, right
+    let myndn = new Bintreend(13, "n", myndm, null, null);//parent, left, right
     myndm.leftkd = myndl;
     myndm.rightkd = myndn;
-    myndsbyid.push(myndl);
-    myndsbyid.push(myndn);
+    //myndsbyid.push(myndl);
+    //myndsbyid.push(myndn);
     
     console.log("myrt.isRootNode() = " + myrt.isRootNode());
     if (myrt.isRootNode() == true);
@@ -1317,10 +1322,61 @@ function makeBinarySearchTreeNodesToSave()
     else throw "all of these nodes are on level 3!";
     console.log("TEST PAST!");
 
-    displayTreeStatsAndUpdateThem(myrt);
+    //build the binary tree here
+    //
+    //     10
+    //    6     17
+    //  5  8  15  20
+    //3  7
+
+    let myrtten = new Bintreend(14, "10", null, null, null);//parent, left, right
+    let myndsx = new Bintreend(15, "6", myrtten, null, null);//parent, left, right
+    let myndsvteen = new Bintreend(16, "17", myrtten, null, null);//parent, left, right
+    myrtten.leftkd = myndsx;
+    myrtten.rightkd = myndsvteen;
+    myndsbyid.push(myrtten);
+    myndsbyid.push(myndsx);
+    myndsbyid.push(myndsvteen);
+    let myndtwenty = new Bintreend(17, "20", myndsvteen, null, null);//parent, left, right
+    let myndfvteen = new Bintreend(18, "15", myndsvteen, null, null);//parent, left, right
+    myndsvteen.leftkd = myndfvteen;
+    myndsvteen.rightkd = myndtwenty;
+    myndsbyid.push(myndtwenty);
+    myndsbyid.push(myndfvteen);
+    let myndet = new Bintreend(19, "8", myndsx, null, null);//parent, left, right
+    let myndfv = new Bintreend(20, "5", myndsx, null, null);//parent, left, right
+    myndsx.leftkd = myndfv;
+    myndsx.rightkd = myndet;
+    myndsbyid.push(myndet);
+    myndsbyid.push(myndfv);
+    let myndsvn = new Bintreend(21, "7", myndfv, null, null);//parent, left, right
+    let myndthree = new Bintreend(22, "3", myndfv, null, null);//parent, left, right
+    myndfv.leftkd = myndthree;
+    myndfv.rightkd = myndsvn;
+    myndsbyid.push(myndsvn);
+    myndsbyid.push(myndthree);
+    
+    console.log("myrtten.isRootNode() = " + myrtten.isRootNode());
+    if (myrtten.isRootNode() == true);
+    else throw "my root node ten must be the root for this test tree!";
+    let numnodesbintree = myrtten.numNodesOnTree;
+    console.log("numnodesbintree = " + numnodesbintree);
+    if (numnodesbintree == 9);
+    else throw "illegal number of nodes found on the tree!";
+    
+    let myinorderbintree = myrtten.inOrderTransversal;
+    printDataAndIDAndErrorCheckTransversal(myinorderbintree, "inorder", "myinorderbintree", 9);
+    let mypreorderbintree = myrtten.preOrderTransversal;
+    printDataAndIDAndErrorCheckTransversal(mypreorderbintree, "preorder", "mypreorderbintree", 9);
+    let mypostorderbintree = myrtten.postOrderTransversal;
+    printDataAndIDAndErrorCheckTransversal(mypostorderbintree, "postorder", "mypostorderbintree", 9);
+    if (myrtten.isBinarySearchTree) throw "this must be a binary tree not a binary search tree!";
+    //else;//do nothing
+    
+    displayTreeStatsAndUpdateThem(myrtten);
 
     //post them all to the server
-    let addthem = false;
+    let addthem = true;
     for (let n = 0; n < myndsbyid.length; n++)
     {
         console.log("myndsbyid[" + n + "].id = " + myndsbyid[n].id);
