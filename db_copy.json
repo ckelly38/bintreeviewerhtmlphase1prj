@@ -1,6 +1,6 @@
 {
   "nodes": [],
-  "exnodes": [
+  "exbinsearchtreenodes": [
     {
       "ptnd": null,
       "leftkd": "2",
@@ -104,7 +104,9 @@
       "data": "l",
       "id": 13,
       "isbinsrchtree": true
-    },
+    }
+  ],
+  "exbintreenodes": [
     {
       "ptnd": null,
       "leftkd": 15,

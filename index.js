@@ -2,11 +2,30 @@ let loadbintree = false;
 let loadbinsrchtree = false;
 let userbuildowntree = false;
 const myswdth = screen.width;
+let mygenndsarr = null;
 function loadBinaryOrSearchTree(usesrchtree)
 {
     //get the list of nodes from the api
     //then ?
-    fetch("http://localhost:3000/nodes").then((response) => response.json()).
+    //GOAL: we want to take this list of nodes from the server and
+    //-build a tree of the Binnodes and of the DOM nodes
+    if (usesrchtree == undefined || usesrchtree == null)
+    {
+        throw "usesrchtree must be a defined boolean variable!";
+    }
+    else
+    {
+        if (usesrchtree === true || usesrchtree === false);
+        else throw "usesrchtree must be a defined boolean variable!";
+    }
+    
+    let myurl = "http://localhost:3000/exbin";
+    if (usesrchtree) myurl += "search";
+    //else;//do nothing
+    myurl += "treenodes";
+    console.log("myurl = " + myurl);
+    
+    fetch(myurl).then((response) => response.json()).
     then(function(response){
         console.log(response);
         let mynodesarr = response;
@@ -1377,7 +1396,7 @@ function makeBinarySearchTreeNodesToSave()
     displayTreeStatsAndUpdateThem(myrtten);
 
     //post them all to the server
-    let addthem = true;
+    let addthem = false;
     for (let n = 0; n < myndsbyid.length; n++)
     {
         console.log("myndsbyid[" + n + "].id = " + myndsbyid[n].id);
@@ -1420,7 +1439,6 @@ function getDOMElements(ndobj)
     console.error("NOT DONE YET 7-15-2023 2:53 AM!");
 }
 
-let mygenndsarr = null;
 function getBintreendObjForIdFromArray(myid)
 {
     if (myid == undefined || myid == null) throw "myid must be defined!";
