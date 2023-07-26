@@ -1082,6 +1082,7 @@ function displayTransversals(mybinnd)
     //document.getElementById("innrmalndsparta").textContent = "" +
     //    getTransversalDataStringFromArray(getMyDataOnlyList(myinordertransbeforert)) +
     //    ((myinordertransbeforert != null && myinordertransbeforert.length > 0) ? ", " : "");
+    debugger;
     for (let n = 0; n < myinordertransbeforert.length; n++)
     {
         let myuselenvar;
@@ -1095,7 +1096,7 @@ function displayTransversals(mybinnd)
     //    myinordertrans[myrtindxintransarr].data;
     generateTransversalDOMNodesFor(myinordertrans[myrtindxintransarr], 1,
         document.getElementById("pinorder").getElementsByClassName("rtnd")[0],
-        (myinordertrans.length > 1), true);//islastnd, isrtnd
+            (myinordertrans.length > 1), true);//islastnd, isrtnd
     //document.getElementById("innrmalndspartb").textContent = "" +
     //    ((myinordertransafterrt != null && myinordertransafterrt.length > 0) ? ", " : "") +
     //    getTransversalDataStringFromArray(getMyDataOnlyList(myinordertransafterrt));
@@ -1737,10 +1738,10 @@ function buildUserBinaryTree()
 }
 
 document.addEventListener("DOMContentLoaded", function(event){
-    makeBinarySearchTreeNodesToSave();
+    //makeBinarySearchTreeNodesToSave();
     //display the number of nodes and levels on the tree in the statistics section
     //hide the root nodes on the transversals
-    //displayTreeStatsAndUpdateThem(null);
+    displayTreeStatsAndUpdateThem(null);
 
     //show the form
     let myloadfrm = document.getElementById("myloadingform");
