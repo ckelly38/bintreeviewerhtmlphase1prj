@@ -9,6 +9,13 @@ function loadBinaryOrSearchTree(usesrchtree)
     //then ?
     //GOAL: we want to take this list of nodes from the server and
     //-build a tree of the Binnodes and of the DOM nodes
+    //
+    //we do not want to modify the example nodes
+    //we want to modify new nodes, so we want a copy of them
+    //
+    //concern: I cannot push them and gurantee the id
+    //to build the tree, I need to have the ids guaranteed
+    //
     if (usesrchtree == undefined || usesrchtree == null)
     {
         throw "usesrchtree must be a defined boolean variable!";
@@ -1096,20 +1103,25 @@ function displayTransversals(mybinnd)
     let myinordertrans = mybinnd.inOrderTransversal;
     let myrtindxintransarr = getRootIndexInTransversal(myinordertrans);
     console.log("myrtindxintransarr = " + myrtindxintransarr);
+    //NOTE: when there is only the root, the arrays before root and after root will both be null!
     let myinordertransafterrt = getAllAfterRoot(myinordertrans);
     let myinordertransbeforert = getAllBeforeRoot(myinordertrans);
     //document.getElementById("innrmalndsparta").textContent = "" +
     //    getTransversalDataStringFromArray(getMyDataOnlyList(myinordertransbeforert)) +
     //    ((myinordertransbeforert != null && myinordertransbeforert.length > 0) ? ", " : "");
     debugger;
-    for (let n = 0; n < myinordertransbeforert.length; n++)
+    if (myinordertransbeforert == null || myinordertransbeforert.length < 1);
+    else
     {
-        let myuselenvar;
-        if (n == 0) myuselenvar = 1;
-        else myuselenvar = myinordertransafterrt.length;
-        generateTransversalDOMNodesFor(myinordertransbeforert[n], myuselenvar,
-            document.getElementById("innrmalndsparta"), (n + 1 == myinordertransbeforert.length));
-        //islastnd, isrtnd
+        for (let n = 0; n < myinordertransbeforert.length; n++)
+        {
+            let myuselenvar;
+            if (n == 0) myuselenvar = 1;
+            else myuselenvar = myinordertransafterrt.length;
+            generateTransversalDOMNodesFor(myinordertransbeforert[n], myuselenvar,
+                document.getElementById("innrmalndsparta"), (n + 1 == myinordertransbeforert.length));
+            //islastnd, isrtnd
+        }
     }
     //document.getElementById("pinorder").getElementsByClassName("rtnd")[0].textContent = "" +
     //    myinordertrans[myrtindxintransarr].data;
@@ -1119,10 +1131,14 @@ function displayTransversals(mybinnd)
     //document.getElementById("innrmalndspartb").textContent = "" +
     //    ((myinordertransafterrt != null && myinordertransafterrt.length > 0) ? ", " : "") +
     //    getTransversalDataStringFromArray(getMyDataOnlyList(myinordertransafterrt));
-    for (let n = 0; n < myinordertransafterrt.length; n++)
+    if (myinordertransbeforert == null || myinordertransbeforert.length < 1);
+    else
     {
-        generateTransversalDOMNodesFor(myinordertransafterrt[n], myinordertransbeforert.length,
-            document.getElementById("innrmalndspartb"));//islastnd, isrtnd
+        for (let n = 0; n < myinordertransafterrt.length; n++)
+        {
+            generateTransversalDOMNodesFor(myinordertransafterrt[n], myinordertransbeforert.length,
+                document.getElementById("innrmalndspartb"));//islastnd, isrtnd
+        }
     }
     
     let mypostordertrans = mybinnd.postOrderTransversal;
@@ -1474,7 +1490,7 @@ function getBintreendObjForIdFromArray(myid)
     return mybinnd;
 }
 
-function buildUserBinaryTree()
+function buildUserBinaryTree(binptnd=null)
 {
     //build the root node for the user here
     //have a textarea for data
@@ -1637,7 +1653,7 @@ function buildUserBinaryTree()
         let mybinnd = null;
         if (usepost)
         {
-            mybinnd = new Bintreend("", "" + event.target.value, null, null, null);
+            mybinnd = new Bintreend("", "" + event.target.value, binptnd, null, null);
         }
         else
         {
@@ -1752,6 +1768,13 @@ function buildUserBinaryTree()
         debugger;
     }.bind(mynwtextareaelem, myleftbtn, myrightbtn));
     console.log("successfully added my on edit listener for the textarea for my node here!");
+    
+    myleftbtn.addEventListener("click", function(event){
+        console.log("clicked the left button!");
+        console.log("event = " + event);
+        console.log("event.target = " + event.target);
+        debugger;
+    });
     debugger;
 }
 
