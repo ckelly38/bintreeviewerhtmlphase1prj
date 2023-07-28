@@ -1109,7 +1109,6 @@ function displayTransversals(mybinnd)
     //document.getElementById("innrmalndsparta").textContent = "" +
     //    getTransversalDataStringFromArray(getMyDataOnlyList(myinordertransbeforert)) +
     //    ((myinordertransbeforert != null && myinordertransbeforert.length > 0) ? ", " : "");
-    debugger;
     if (myinordertransbeforert == null || myinordertransbeforert.length < 1);
     else
     {
@@ -1490,25 +1489,123 @@ function getBintreendObjForIdFromArray(myid)
     return mybinnd;
 }
 
-function buildUserBinaryTree(binptnd=null)
+function addLeftOrRightKidBtnListener(mybtn, mybinnd, useleft)
 {
+    if (mybtn == undefined || mybtn == null)
+    {
+        throw "the button must not be null or undefined!";
+    }
+    //else;//do nothing
+
+    if (mybinnd == undefined ||mybinnd == null)
+    {
+        throw "the binary tree node must not be null or undefined!";
+    }
+    //else;//do nothing
+
+    if (useleft == undefined || useleft == null)
+    {
+        throw "useleft must be a defined boolean variable!";
+    }
+    else
+    {
+        if (useleft == true || useleft == false);
+        else throw "useleft must be a defined boolean variable!";
+    }
+
+    mybtn.addEventListener("click", function(event){
+        console.log("clicked the " + (useleft ? "left" : "right") + " button!");
+        console.log("event = " + event);
+        console.log("event.target = " + event.target);
+        console.log("mybinnd = " + mybinnd);
+        debugger;
+        buildUserBinaryTree(mybtn.parentNode, mybinnd, useleft, !useleft);
+        mybtn.remove();
+        debugger;
+    });
+    console.log("successfully added the add " + (useleft ? "left" : "right") + " kid listener!");
+    debugger;
+}
+function addRightKidBtnListener(mybtn, mybinnd)
+{
+    addLeftOrRightKidBtnListener(mybtn, mybinnd, false);
+}
+function addLeftKidBtnListener(mybtn, mybinnd)
+{
+    addLeftOrRightKidBtnListener(mybtn, mybinnd, true);
+}
+
+function buildUserBinaryTree(domnode=null, binptnd=null, addonleft=false, addonright=false)
+{
+    if (addonleft == undefined || addonleft == null)
+    {
+        throw "addonleft must be a defined boolean variable!";
+    }
+    else
+    {
+        if (addonleft == true || addonleft == false);
+        else throw "addonleft must be a defined boolean variable!";
+    }
+
+    if (addonright == undefined || addonright == null)
+    {
+        throw "addonright must be a defined boolean variable!";
+    }
+    else
+    {
+        if (addonright == true || addonright == false);
+        else throw "addonright must be a defined boolean variable!";
+    }
+
+    if (addonleft == addonright)
+    {
+        if (addonleft)
+        {
+            throw "both cannot be true! One must be true and the other must be false OR " +
+                "both must be false!"
+        }
+        //else;//do nothing safe
+    }
+    //else;//do nothing safe
+
     //build the root node for the user here
     //have a textarea for data
     //have a spot for the left kid and a spot for the right kid
     //need to have an add left, add right, edit data or remove option
+
+    //need a table with 3 columns and 2 rows
+    //0 1 2 3
+    //1 . ? .
+    //2 a x b
+    //
+    //inside ? we will have:
+    //the node contents
+    //then two lines going down one to the left and one to the right
+    //
+    //inside x we will have:
+    //a 1 row 3 column table to center the delete button
+    //
+
     let mytable = document.createElement("table");
-    let myotable = document.createElement("table");
-    let mytrw = document.createElement("tr");
-    let mytcol = document.createElement("td");
-    let myotrwa = document.createElement("tr");
-    let myotrwb = document.createElement("tr");
-    let myotcolb = document.createElement("td");
-    let myotcolc = document.createElement("td");
-    let myotcold = document.createElement("td");
+    let mytxtandsvgrw = document.createElement("tr");
+    let myleftcolrwa = document.createElement("td");
+    let mytxtandsvgcol = document.createElement("td");
+    let myrightcolrwa = document.createElement("td");
+    let mydelbtnrw = document.createElement("tr");
+    let myleftcol = document.createElement("td");
+    let mydelbtntablecol = document.createElement("td");
+    let myrightcol = document.createElement("td");
+    let mydelbtntable = document.createElement("table");
+    let mydelbtntablerw = document.createElement("tr");
+    let myemptyleftdelbtncol = document.createElement("td");
+    let mydelbtncol = document.createElement("td");
+    let myemptyrightdelbtncol = document.createElement("td");
+
+
     let mydiv = document.createElement("div");
     let mycntelem = document.createElement("textarea");
-    myotcolc.style.width = "80px";
-    myotcold.style.width = "80px";
+    myemptyleftdelbtncol.style.width = "80px";
+    myemptyrightdelbtncol.style.width = "80px";
     mycntelem.style.width = "248px";
     mycntelem.style.height = "38px";
     mycntelem.style.resize = "none";
@@ -1516,7 +1613,6 @@ function buildUserBinaryTree(binptnd=null)
     mycntelem.style.marginRight = "auto";
     const mynwndidstr = "nwnd";
     mydiv.id = "" + mynwndidstr;
-    mytable.style.display = "inline";
     let myleftbtn = document.createElement("button");
     let myrightbtn = document.createElement("button");
     let mydelbtn = document.createElement("button");
@@ -1532,24 +1628,53 @@ function buildUserBinaryTree(binptnd=null)
     let myrightline = document.createElementNS("http://www.w3.org/2000/svg", "line");
     mydiv.appendChild(mycntelem);
     mydiv.appendChild(mynl);
-    myotcolb.appendChild(mydelbtn);
-    myotrwb.appendChild(myotcolc);
-    myotrwb.appendChild(myotcolb);
-    myotrwb.appendChild(myotcold);
-    myotable.appendChild(myotrwb);
-    myotrwa.appendChild(myotable);
-    
     let mylkddiv = document.createElement("span");
     let myrkddiv = document.createElement("span");
     mylkddiv.appendChild(myleftbtn);
     myrkddiv.appendChild(myrightbtn);
-    mytcol.appendChild(mydiv);
-    mytrw.appendChild(mytcol);
-    mytable.appendChild(mytrw);
-    mytable.appendChild(myotrwa);
-    document.getElementById("tree").appendChild(mylkddiv);
-    document.getElementById("tree").appendChild(mytable);
-    document.getElementById("tree").appendChild(myrkddiv);
+
+    mytable.style.display = "inline";
+
+    mydelbtncol.appendChild(mydelbtn);
+    mydelbtntablerw.appendChild(myemptyleftdelbtncol);
+    mydelbtntablerw.appendChild(mydelbtncol);
+    mydelbtntablerw.appendChild(myemptyrightdelbtncol);
+    
+    mydelbtntablecol.style.position="absolue";
+    mydelbtntablecol.style.verticalAlign="top";
+    mydelbtntable.style.position="relative";
+
+    mydelbtntable.appendChild(mydelbtntablerw);
+    mydelbtntablecol.appendChild(mydelbtntable);
+    
+    myleftcol.style.position="absolue";
+    myleftcol.style.verticalAlign="top";
+    mylkddiv.style.position="relative";
+
+    myrightcol.style.position="absolue";
+    myrightcol.style.verticalAlign="top";
+    myrkddiv.style.position="relative";
+
+    myleftcol.appendChild(mylkddiv);
+    mydelbtnrw.appendChild(myleftcol);
+    mydelbtnrw.appendChild(mydelbtntablecol);
+    myrightcol.appendChild(myrkddiv);
+    mydelbtnrw.appendChild(myrightcol);
+    
+    mytxtandsvgcol.appendChild(mydiv);
+    mytxtandsvgrw.appendChild(myleftcolrwa);
+    mytxtandsvgrw.appendChild(mytxtandsvgcol);
+    mytxtandsvgrw.appendChild(myrightcolrwa);
+    
+    mytable.appendChild(mytxtandsvgrw);
+    mytable.appendChild(mydelbtnrw);
+    let mydomnode = null;
+    if (domnode == null) mydomnode = document.getElementById("tree");
+    else mydomnode = domnode;
+    mydomnode.appendChild(mytable);
+    
+    //build the svg and add it to the DOM now
+
     let mydivondoc = document.getElementById(mynwndidstr);
     //let myelemcoords = mydivondoc.getBoundingClientRect();
     //console.log("myelemcoords.x = " + myelemcoords.x);
@@ -1654,6 +1779,9 @@ function buildUserBinaryTree(binptnd=null)
         if (usepost)
         {
             mybinnd = new Bintreend("", "" + event.target.value, binptnd, null, null);
+            if (addonleft) binptnd.leftkd = mybinnd;
+            else if (addonright) binptnd.rightkd = mybinnd;
+            //else;//do nothing
         }
         else
         {
@@ -1751,6 +1879,9 @@ function buildUserBinaryTree(binptnd=null)
                 //update the number of nodes on the tree
                 displayTreeStatsAndUpdateThem(mybinnd);
                 console.log("successfully posted the new binary tree object to the server!");
+
+                addLeftKidBtnListener(myleftbtn, mybinnd);
+                addRightKidBtnListener(myrightbtn, mybinnd);
             }
             else
             {
@@ -1768,13 +1899,6 @@ function buildUserBinaryTree(binptnd=null)
         debugger;
     }.bind(mynwtextareaelem, myleftbtn, myrightbtn));
     console.log("successfully added my on edit listener for the textarea for my node here!");
-    
-    myleftbtn.addEventListener("click", function(event){
-        console.log("clicked the left button!");
-        console.log("event = " + event);
-        console.log("event.target = " + event.target);
-        debugger;
-    });
     debugger;
 }
 
