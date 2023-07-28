@@ -1535,6 +1535,7 @@ function addLeftKidBtnListener(mybtn, mybinnd)
     addLeftOrRightKidBtnListener(mybtn, mybinnd, true);
 }
 
+let numids = 0;
 function buildUserBinaryTree(domnode=null, binptnd=null, addonleft=false, addonright=false)
 {
     if (addonleft == undefined || addonleft == null)
@@ -1611,8 +1612,14 @@ function buildUserBinaryTree(domnode=null, binptnd=null, addonleft=false, addonr
     mycntelem.style.resize = "none";
     mycntelem.style.marginLeft = "auto";
     mycntelem.style.marginRight = "auto";
-    const mynwndidstr = "nwnd";
+    
+    const mynwndidstr = "nwnd" + ((numids <= 0) ? "" : ("" + numids));
     mydiv.id = "" + mynwndidstr;
+    console.log("mynwndidstr = " + mynwndidstr);
+    
+    numids++;
+    console.log("NEW numids = " + numids);
+    
     let myleftbtn = document.createElement("button");
     let myrightbtn = document.createElement("button");
     let mydelbtn = document.createElement("button");
