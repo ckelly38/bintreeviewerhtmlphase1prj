@@ -1848,7 +1848,7 @@ function buildUserBinaryTree(domnode=null, binptnd=null, addonleft=false, addonr
                 "Accept" : "application/json"
             },
             body: mybdystr
-        }
+        };
         fetch(myresurl, myconfigobj).then((response) => response.json()).
         then(function(response){
             console.log("response = " + response);
@@ -1897,6 +1897,42 @@ function buildUserBinaryTree(domnode=null, binptnd=null, addonleft=false, addonr
                 "See log for details!");
         });
         debugger;
+
+        //update the parent node here
+        if (usepost && (addonleft || addonright))
+        {
+            console.log("begin updating the parent node on the server here!");
+            let myoconfigobj = {
+                method: "PATCH",
+                headers: {
+                    "Content-Type" : "application/json",
+                    "Accept" : "application/json"
+                },
+                body: JSON.stringify(getAndGenerateServerObject(binptnd, false))
+            };
+            fetch("http://localhost:3000/nodes/" + binptnd.id, myoconfigobj).
+            then((response) => response.json()).
+            then(function(response){
+                console.log("response = " + response);
+                console.log("response.id = " + response.id);
+                console.log("response.data = " + response.data);
+                
+                if (response.id == undefined || response.id == null || myresidstr.length < 1)
+                {
+                    throw "illegal response id found and used here!";
+                }
+                //else;//do nothing
+    
+                console.log("successfully updated the parent binary tree node object on the server!");
+            }).catch(function(err){
+                console.error("there was a problem updating the data on the server!");
+                console.error(err);
+                alert("Error: There was a problem updating the data on the server! " +
+                    "See log for details!");
+            });
+            debugger;
+        }
+        //else;//do nothing
     }.bind(mynwtextareaelem, myleftbtn, myrightbtn));
     console.log("successfully added my on edit listener for the textarea for my node here!");
     debugger;
