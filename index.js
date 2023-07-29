@@ -619,15 +619,19 @@ class Bintreend {
         //console.log("usepost = " + usepost);
         //console.log("snd = " + snd);
         //console.log("vlist = " + vlist);
-        if (snd == undefined || snd == null) throw "the starting node must be defined and not null!";
+        if (snd == undefined || snd == null)
+        {
+            throw "the starting node must be defined and not null!";
+            //return null;
+        }
         //else;//do nothing
         //if (vlist == null || vlist.length < 1) console.log("vlist is empty!");
         //else
         //{
-            //for (let p = 0; p < vlist.length; p++)
-            //{
-            //    console.log("vlist[" + n + "].data = " + vlist[n].data);
-            //}
+        //    for (let p = 0; p < vlist.length; p++)
+        //    {
+        //        console.log("vlist[" + n + "].data = " + vlist[n].data);
+        //    }
         //}
         if (useinorder == undefined || usepost == undefined || useinorder == null || usepost == null)
         {
@@ -733,15 +737,22 @@ class Bintreend {
             }
             //else;//do nothing
 
-            let myrightrlist = this.transversal(useinorder, usepost, snd.rightkd, null);
-            if (myrightrlist == null || myrightrlist.length < 1);
+            if (snd.rightkd == null)
+            {
+                //console.log("right kid is null!");
+            }
             else
             {
-                for (let n = 0; n < myrightrlist.length; n++)
+                let myrightrlist = this.transversal(useinorder, usepost, snd.rightkd, null);
+                if (myrightrlist == null || myrightrlist.length < 1);
+                else
                 {
-                    //console.log("added myrightrlist[" + n + "].data = " + myrightrlist[n].data +
-                    //    " to the list!");
-                    rlist.push(myrightrlist[n]);
+                    for (let n = 0; n < myrightrlist.length; n++)
+                    {
+                        //console.log("added myrightrlist[" + n + "].data = " + myrightrlist[n].data +
+                        //    " to the list!");
+                        rlist.push(myrightrlist[n]);
+                    }
                 }
             }
         }
@@ -867,15 +878,59 @@ function printDataAndIDAndErrorCheckTransversal(mytransarr, typestr, arrname, ex
     //else;//do nothing
 }
 
+function removeAllDOMKidsOfDOMNode(domnd=null, remself=false)
+{
+    if (domnd == undefined || domnd == null)
+    {
+        console.log("no nodes found!");
+        return;
+    }
+    else
+    {
+        if (domnd.children == null || domnd.children.length < 1);
+        else
+        {
+            for (let n = 0; n < domnd.children.length; n++)
+            {
+                removeAllDOMKidsOfDOMNode(domnd.children[n], true);
+            }
+        }
+        
+        if (remself) domnd.remove();
+        //else;//do nothing
+    }
+}
+
 function clearAndHideAllTransversals()
 {
+    //clear and remove all of the normal nodes in the pre order here now
+    let myprordernormalnds = document.getElementById("prorder").getElementsByClassName("normalnds");
+    if (myprordernormalnds == null || myprordernormalnds.length < 1)
+    {
+        console.log("number of normal nodes on the preorder initially = 0");
+    }
+    else
+    {
+        let mylenpreordernrmlnodes = myprordernormalnds.length;
+        console.log("number of normal nodes on the preorder initially = " + mylenpreordernrmlnodes);
+        for (let n = 0; n < mylenpreordernrmlnodes; n++)
+        {
+            removeAllDOMKidsOfDOMNode(myprordernormalnds[n], true);
+        }
+    }
+
     document.getElementById("prorder").getElementsByClassName("rtnd")[0].textContent = "";
     //document.getElementById("prorder").getElementsByClassName("normalnds")[0].textContent = "";
+    
+    removeAllDOMKidsOfDOMNode(document.getElementById("innrmalndsparta"), false);
+    removeAllDOMKidsOfDOMNode(document.getElementById("innrmalndspartb"), false);
     document.getElementById("innrmalndsparta").textContent = "";
     document.getElementById("innrmalndsparta").style.display = "none";
     document.getElementById("pinorder").getElementsByClassName("rtnd")[0].textContent = "";
     document.getElementById("innrmalndspartb").textContent = "";
     document.getElementById("innrmalndspartb").style.display = "none";
+    
+    removeAllDOMKidsOfDOMNode(document.getElementById("psnrmalnds"), false);
     document.getElementById("psorder").getElementsByClassName("rtnd")[0].textContent = "";
     document.getElementById("psorder").getElementsByClassName("normalnds")[0].textContent = "";
     document.getElementById("psorder").getElementsByClassName("normalnds")[0].style.display = "none";
@@ -1065,8 +1120,24 @@ function displayTransversals(mybinnd)
 {
     if (mybinnd == undefined || mybinnd == null)
     {
+        //console.log("calling clear transversals binary tree node was null!");
         clearAndHideAllTransversals();
         return;
+    }
+    //else;//do nothing
+
+    //console.log("mybinnd.id = " + mybinnd.id);
+    //console.log("mybinnd.data = " + mybinnd.data);
+    
+    let mypreordertrans = mybinnd.preOrderTransversal;
+    console.log("number of items in pre-order transversal = " + mypreordertrans.length);
+    
+    if (mypreordertrans.length > 1)
+    {
+        //clear and hide all transversals so it displays correctly
+        //doing so prevents duplicate dom nodes on the transversals from being displayed
+        //the call to clear it must be done before everything is shown otherwise it will not be visible
+        clearAndHideAllTransversals();
     }
     //else;//do nothing
 
@@ -1075,15 +1146,7 @@ function displayTransversals(mybinnd)
     {
         myrtnds[n].style.display = "inline";
     }
-
-    //document.getElementById("innrmalndsparta").style.display = "inline";
-    //document.getElementById("innrmalndspartb").style.display = "inline";
-    //document.getElementById("psorder").getElementsByClassName("normalnds")[0].style.display = "inline";
-
-    //console.log("mybinnd.id = " + mybinnd.id);
-    //console.log("mybinnd.data = " + mybinnd.data);
     
-    let mypreordertrans = mybinnd.preOrderTransversal;
     //document.getElementById("prorder").getElementsByClassName("rtnd")[0].textContent = "" +
     //    mypreordertrans[0].data;
     generateTransversalDOMNodesFor(mypreordertrans[0], 1,
@@ -1102,10 +1165,35 @@ function displayTransversals(mybinnd)
     
     let myinordertrans = mybinnd.inOrderTransversal;
     let myrtindxintransarr = getRootIndexInTransversal(myinordertrans);
+    console.log("number of items in in-order transversal = " + myinordertrans.length);
     console.log("myrtindxintransarr = " + myrtindxintransarr);
     //NOTE: when there is only the root, the arrays before root and after root will both be null!
     let myinordertransafterrt = getAllAfterRoot(myinordertrans);
     let myinordertransbeforert = getAllBeforeRoot(myinordertrans);
+    if (myinordertransbeforert == null)
+    {
+        console.log("number of items in in-order transversal before root = null"); 
+    }
+    else
+    {
+        console.log("number of items in in-order transversal before root = " +
+            myinordertransbeforert.length);
+    }
+    if (myinordertransafterrt == null)
+    {
+        console.log("number of items in in-order transversal after root = null");
+    }
+    else
+    {
+        console.log("number of items in in-order transversal after root = " +
+            myinordertransafterrt.length);
+    }
+    
+    if (myinordertransbeforert == null || myinordertransbeforert.length < 1);
+    else document.getElementById("innrmalndsparta").style.display = "inline";
+    if (myinordertransafterrt == null || myinordertransafterrt.length < 1);
+    else document.getElementById("innrmalndspartb").style.display = "inline";
+    
     //document.getElementById("innrmalndsparta").textContent = "" +
     //    getTransversalDataStringFromArray(getMyDataOnlyList(myinordertransbeforert)) +
     //    ((myinordertransbeforert != null && myinordertransbeforert.length > 0) ? ", " : "");
@@ -1116,7 +1204,9 @@ function displayTransversals(mybinnd)
         {
             let myuselenvar;
             if (n == 0) myuselenvar = 1;
-            else myuselenvar = myinordertransafterrt.length;
+            else myuselenvar = myinordertransbeforert.length;
+            console.log("n = " + n);
+            console.log("myuselenvar = " + myuselenvar);
             generateTransversalDOMNodesFor(myinordertransbeforert[n], myuselenvar,
                 document.getElementById("innrmalndsparta"), (n + 1 == myinordertransbeforert.length));
             //islastnd, isrtnd
@@ -1130,17 +1220,25 @@ function displayTransversals(mybinnd)
     //document.getElementById("innrmalndspartb").textContent = "" +
     //    ((myinordertransafterrt != null && myinordertransafterrt.length > 0) ? ", " : "") +
     //    getTransversalDataStringFromArray(getMyDataOnlyList(myinordertransafterrt));
-    if (myinordertransbeforert == null || myinordertransbeforert.length < 1);
+    if (myinordertransafterrt == null || myinordertransafterrt.length < 1);
     else
     {
         for (let n = 0; n < myinordertransafterrt.length; n++)
         {
-            generateTransversalDOMNodesFor(myinordertransafterrt[n], myinordertransbeforert.length,
+            generateTransversalDOMNodesFor(myinordertransafterrt[n], myinordertransafterrt.length,
                 document.getElementById("innrmalndspartb"));//islastnd, isrtnd
         }
     }
     
     let mypostordertrans = mybinnd.postOrderTransversal;
+    console.log("number of items in post-order transversal = " + mypostordertrans.length);
+    
+    if (mypostordertrans.length > 1)
+    {
+        document.getElementById("psorder").getElementsByClassName("normalnds")[0].style.display = "inline";
+    }
+    //else;//do nothing
+
     //document.getElementById("psorder").getElementsByClassName("rtnd")[0].textContent = "" +
     //    mypostordertrans[mypostordertrans.length - 1].data;
     generateTransversalDOMNodesFor(mypostordertrans[mypostordertrans.length - 1], 1,
@@ -1922,6 +2020,7 @@ function buildUserBinaryTree(domnode=null, binptnd=null, addonleft=false, addonr
             then(function(response){
                 console.log("response = " + response);
                 console.log("response.id = " + response.id);
+                let myresidstr = "" + response.id;
                 console.log("response.data = " + response.data);
                 
                 if (response.id == undefined || response.id == null || myresidstr.length < 1)
@@ -1941,7 +2040,7 @@ function buildUserBinaryTree(domnode=null, binptnd=null, addonleft=false, addonr
         }
         //else;//do nothing
     }.bind(mynwtextareaelem, myleftbtn, myrightbtn));
-    console.log("successfully added my on edit listener for the textarea for my node here!");
+    console.log("successfully added my on change listener for the textarea for my node here!");
     debugger;
 }
 
