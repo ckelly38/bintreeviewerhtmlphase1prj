@@ -880,9 +880,19 @@ function printDataAndIDAndErrorCheckTransversal(mytransarr, typestr, arrname, ex
 
 function removeAllDOMKidsOfDOMNode(domnd=null, remself=false)
 {
+    if (remself == undefined || remself == null)
+    {
+        throw "remself must be a defined boolean variable!";
+    }
+    else
+    {
+        if (remself === true || remself === false);
+        else throw "remself must be a defined boolean variable!";
+    }
+    
     if (domnd == undefined || domnd == null)
     {
-        console.log("no nodes found!");
+        //console.log("no nodes found!");
         return;
     }
     else
@@ -907,16 +917,27 @@ function clearAndHideAllTransversals()
     let myprordernormalnds = document.getElementById("prorder").getElementsByClassName("normalnds");
     if (myprordernormalnds == null || myprordernormalnds.length < 1)
     {
-        console.log("number of normal nodes on the preorder initially = 0");
+        //console.log("number of normal nodes on the preorder initially = 0");
     }
     else
     {
         let mylenpreordernrmlnodes = myprordernormalnds.length;
-        console.log("number of normal nodes on the preorder initially = " + mylenpreordernrmlnodes);
+        //console.log("number of normal nodes on the preorder initially = " + mylenpreordernrmlnodes);
+        //for (let n = 0; n < mylenpreordernrmlnodes; n++)
+        //{
+        //    console.log("myprordernormalnds[" + n + "] = " + myprordernormalnds[n]);
+        //}
+        //console.log("now attempting to remove them here:");
         for (let n = 0; n < mylenpreordernrmlnodes; n++)
         {
+            //console.log("myprordernormalnds[" + n + "] = " + myprordernormalnds[n]);
             removeAllDOMKidsOfDOMNode(myprordernormalnds[n], true);
+            n--;
+            mylenpreordernrmlnodes--;
+            //console.log("NEW n = " + n);
+            //console.log("NEW mylenpreordernrmlnodes = " + mylenpreordernrmlnodes);
         }
+        debugger;
     }
 
     document.getElementById("prorder").getElementsByClassName("rtnd")[0].textContent = "";
