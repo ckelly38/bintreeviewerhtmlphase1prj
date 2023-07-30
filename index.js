@@ -612,6 +612,139 @@ class Bintreend {
         }
         return true;
     }
+    farthestLeftKidOfNode(nd)
+    {
+        if (nd == undefined || nd == null)
+        {
+            console.error("this node is null! So returned null!");
+            return null;
+        }
+        //else;//do nothing
+
+        if (nd.leftkd == null) return nd;
+        else return this.farthestLeftKidOfNode(nd.leftkd);
+    }
+    get farthestLeftKidOfThis() { return this.farthestLeftKidOfNode(this); }
+    remove()
+    {
+        //if the node has no kids, then it can be removed immediately
+        //the dom no kids will have both the add left kid and add right kid buttons
+        //
+        //then of course if the node has kids, then we need to be careful about it
+        //   4
+        // 2   6
+        //0 3 5 8
+        //suppose we want to remove 4 which has kids and is also the root node:
+        //we need a new root node
+        //we need to make sure both the left and right trees are hooked up to it correctly
+        //this new root node needs to have no kids,
+        //ideally it will also put the in-order transversal in order
+        //so on the right tree find the farthest left node that has no kids
+        //this will then be the new root
+        //then we just hook up the kids
+        //we also set the left and right kids new parent node
+        //then we are free to set that parent node to null after we nullify all of the properties
+        //
+        //if we wanted to remove 4, 5 becomes the new root
+        //if we wanted to remove 2, 3 becomes the new midroot
+        //
+        //the dom nodes will be the same, but more complicated because it is more complicated
+        //
+
+        let noleftkd = (this.leftkd == null);
+        let norightkd = (this.rightkd == null);
+        console.log("noleftkd = " + noleftkd);
+        console.log("norightkd = " + norightkd);
+
+        if (noleftkd && norightkd)
+        {
+            //the node has no kids, no problem
+            //but it does have a parent unless only node
+            console.log("this has no kids!");
+            console.log("OLD this.data = " + this.data);
+            console.log("OLD this.id = " + this.id);
+            console.log("OLD this.ptnd = " + this.ptnd);
+            
+            let islkdofptnd = false;
+            let isrkdofptnd = false;
+            if (this.ptnd == null);
+            else
+            {
+                if (this.ptnd.leftkd === this)
+                {
+                    islkdofptnd = true;
+                    console.log("this is the left kid of its parent node!");
+                }
+                else
+                {
+                    if (this.ptnd.rightkd === this)
+                    {
+                        isrkdofptnd = true;
+                        console.log("this is the left kid of its parent node!");
+                    }
+                    else throw "this must be a kid of the parent node, but it was not!";
+                }
+            }
+            console.log("islkdofptnd = " + islkdofptnd);
+            console.log("isrkdofptnd = " + isrkdofptnd);
+
+            //set the data to null
+            //remove the node on the parent node...
+            //set the id to null
+            //set the object to null
+
+            this.data = null;
+            this.id = null;
+            if (islkdofptnd)
+            {
+                console.log("OLD this.ptnd.leftkd = " + this.ptnd.leftkd);
+
+                this.ptnd.leftkd = null;
+
+                console.log("NEW this.ptnd.leftkd = " + this.ptnd.leftkd);
+
+                this.ptnd = null;
+            }
+            //else;//do nothing
+            if (isrkdofptnd)
+            {
+                console.log("OLD this.ptnd.rightkd = " + this.ptnd.rightkd);
+                
+                this.ptnd.rightkd = null;
+                
+                console.log("NEW this.ptnd.rightkd = " + this.ptnd.rightkd);
+                
+                this.ptnd = null;
+            }
+            //else;//do nothing
+
+            console.log("NEW this.data = " + this.data);
+            console.log("NEW this.id = " + this.id);
+            console.log("NEW this.ptnd = " + this.ptnd);
+        }
+        else
+        {
+            //this has 1 or 2 kids
+            console.log("this has one kid!");
+
+            let flkdrkthis = null;
+            if (noleftkd || norightkd)
+            {
+                //has one kid
+                if (norightkd) flkdrkthis = this.leftkd;
+                else flkdrkthis = this.rightkd;
+            }
+            else
+            {
+                //has both kids
+                flkdrkthis = this.farthestLeftKidOfNode(this.rightkd);
+            }
+            console.log("flkdrkthis = " + flkdrkthis);
+
+            //do something here...
+            throw "ERROR NOT DONE YET 7-30-2023 12:30 AM!";
+        }
+    }
     transversal(useinorder, usepost, snd=this.root, vlist=null)
     {
         //console.log("INSIDE TRANSVERSAL():");
@@ -1529,6 +1662,36 @@ function makeBinarySearchTreeNodesToSave()
     
     displayTreeStatsAndUpdateThem(myrtten);
 
+    //now test deleting nodes here
+    for (let n = 0; n < myinorderbintree.length; n++)
+    {
+        let oldnumnodesontree = myrtten.numNodesOnTree;
+        myinorderbintree[n].remove();
+        myinorderbintree[n] = null;
+        let nwnumnodesbintree = myrtten.numNodesOnTree;
+        if (nwnumnodesbintree + 1 == oldnumnodesontree);
+        else throw "TEST FAILED TO REMOVE THE NODES!";
+
+        for (let p = 0; p < myinorderbintree.length; p++)
+        {
+            if (myinorderbintree[p] == null)
+            {
+                console.log("NEW myinorderbintree[" + p + "] = null");
+            }
+            else
+            {
+                console.log("NEW myinorderbintree[" + p + "].id = " + myinorderbintree[p].id);
+                console.log("NEW myinorderbintree[" + p + "].data = " + myinorderbintree[p].data);
+                console.log("NEW myinorderbintree[" + p + "].leftkd = " + myinorderbintree[p].leftkd);
+                console.log("NEW myinorderbintree[" + p + "].rightkd = " + myinorderbintree[p].rightkd);
+                console.log("NEW myinorderbintree[" + p + "].ptnd = " + myinorderbintree[p].ptnd);
+            }
+        }
+    }
+    console.log("TEST PAST!");
+
+    displayTreeStatsAndUpdateThem(myrtten);
+
     //post them all to the server
     let addthem = false;
     for (let n = 0; n < myndsbyid.length; n++)
@@ -1894,7 +2057,6 @@ function buildUserBinaryTree(domnode=null, binptnd=null, addonleft=false, addonr
             }
         }
         //else;//do nothing duplicate data allowed
-        //console.error("NOT DONE YET 7-18-2023 1:50 AM!");
 
         let usepost = true;
         if (event.target.parentNode.id === mynwndidstr) usepost = true;
@@ -2063,13 +2225,71 @@ function buildUserBinaryTree(domnode=null, binptnd=null, addonleft=false, addonr
     }.bind(mynwtextareaelem, myleftbtn, myrightbtn));
     console.log("successfully added my on change listener for the textarea for my node here!");
     debugger;
+
+    mydelbtn.addEventListener("click", function(event){
+        console.log("delete button clicked for the node!");
+        console.log("event.target = " + event.target);
+        
+        //get the DOM node we are trying to remove...
+        //we also need to get the BintreeNode we are trying to remove...
+        //there is a case where we may not be getting the BintreeNode because it was not created yet
+        
+        let mypttable = event.target.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode;
+        console.log("mypttable = " + mypttable);
+        let mypttrws = mypttable.getElementsByTagName("tr");
+        console.log("mypttrws[0] = " + mypttrws[0]);
+        let mydivtargetcol = mypttrws[0].getElementsByTagName("td")[1];
+        console.log("mydivtargetcol = " + mydivtargetcol);
+        let mydivtarget = mydivtargetcol.getElementsByTagName("div")[0];
+        console.log("mydivtarget = " + mydivtarget);
+        console.log("mydivtarget.id = " + mydivtarget.id);
+        let mydividstr = "" + mydivtarget.id;
+        let remdomonly = (mydividstr.indexOf("nwnd") == 0);
+        console.log("remdomonly = " + remdomonly);
+        
+        //if the node has no kids, then it can be removed immediately
+        //the dom no kids will have both the add left kid and add right kid buttons
+        //
+        //then of course if the node has kids, then we need to be careful about it
+        //   4
+        // 2   6
+        //0 3 5 8
+        //suppose we want to remove 4 which has kids and is also the root node:
+        //we need a new root node
+        //we need to make sure both the left and right trees are hooked up to it correctly
+        //this new root node needs to have no kids,
+        //ideally it will also put the in-order transversal in order
+        //so on the right tree find the farthest left node that has no kids
+        //this will then be the new root
+        //then we just hook up the kids
+        //we also set the left and right kids new parent node
+        //then we are free to set that parent node to null after we nullify all of the properties
+        //
+        //if we wanted to remove 4, 5 becomes the new root
+        //if we wanted to remove 2, 3 becomes the new midroot
+        //
+        //the dom nodes will be the same, but more complicated because it is more complicated
+        //
+        
+        if (remdomonly)
+        {
+            //
+        }
+        else
+        {
+            //
+        }
+        console.error("NOT DONE YET 7-18-2023 1:50 AM!");
+        debugger;
+    }.bind(mydelbtn));
+    console.log("successfully added delete button listener!");
 }
 
 document.addEventListener("DOMContentLoaded", function(event){
-    //makeBinarySearchTreeNodesToSave();
+    makeBinarySearchTreeNodesToSave();
     //display the number of nodes and levels on the tree in the statistics section
     //hide the root nodes on the transversals
-    displayTreeStatsAndUpdateThem(null);
+    //displayTreeStatsAndUpdateThem(null);
 
     //show the form
     let myloadfrm = document.getElementById("myloadingform");
