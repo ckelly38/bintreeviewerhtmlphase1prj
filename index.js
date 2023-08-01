@@ -270,7 +270,7 @@ class Bintreend {
         else
         {
             //console.log("nd = " + nd);
-            //console.log("nd.data = " + nd.data);
+            console.log("nd.data = " + nd.data);
 
             //first find the root node
             //then decend tree using parent child relationships compile a vlist
@@ -296,8 +296,8 @@ class Bintreend {
                     //else console.log("vlist[" + n + "].data = " + vlist[n].data);
                 }
             }
-            //console.log("nd.leftkd = " + nd.leftkd);
-            //console.log("nd.rightkd = " + nd.rightkd);
+            console.log("nd.leftkd = " + nd.leftkd);
+            console.log("nd.rightkd = " + nd.rightkd);
 
             if (nd.leftkd == null && nd.rightkd == null) return 1;
             else
@@ -333,9 +333,9 @@ class Bintreend {
                 let numinatree = this.getNumberOfNodesBelowNode(nd.leftkd, myvlist);
                 //console.log("numinatree = " + numinatree);
                 let numinbtree = this.getNumberOfNodesBelowNode(nd.rightkd, myvlist)
-                //console.log("NODE FOR CALL: nd.data = " + nd.data);
-                //console.log("FINAL numinatree = " + numinatree);
-                //console.log("FINAL numinbtree = " + numinbtree);
+                console.log("NODE FOR CALL: nd.data = " + nd.data);
+                console.log("FINAL numinatree = " + numinatree);
+                console.log("FINAL numinbtree = " + numinbtree);
                 return 1 + numinatree + numinbtree;
             }
         }
@@ -625,6 +625,33 @@ class Bintreend {
         else return this.farthestLeftKidOfNode(nd.leftkd);
     }
     get farthestLeftKidOfThis() { return this.farthestLeftKidOfNode(this); }
+    clearDataProperties()
+    {
+        //the node has no kids, no problem
+        //but it does have a parent unless only node
+        console.log("OLD this.data = " + this.data);
+        console.log("OLD this.id = " + this.id);
+        console.log("OLD this.ptnd = " + this.ptnd);
+        console.log("OLD this.leftkd = " + this.leftkd);
+        console.log("OLD this.rightkd = " + this.rightkd);
+
+        //set the data to null
+        //remove the node on the parent node...
+        //set the id to null
+        //set the object to null
+
+        this.data = null;
+        this.id = null;
+        this.leftkd = null;
+        this.rightkd = null;
+        this.ptnd = null;
+
+        console.log("NEW this.data = " + this.data);
+        console.log("NEW this.id = " + this.id);
+        console.log("NEW this.ptnd = " + this.ptnd);
+        console.log("NEW this.leftkd = " + this.leftkd);
+        console.log("NEW this.rightkd = " + this.rightkd);
+    }
     remove()
     {
         //if the node has no kids, then it can be removed immediately
@@ -651,98 +678,293 @@ class Bintreend {
         //the dom nodes will be the same, but more complicated because it is more complicated
         //
 
+        console.log("the node we are removing:");
+        console.log("this.data = " + this.data);
+        console.log("this.id = " + this.id);
+        if (this.ptnd == null) console.log("this is the root! It has no parents!");
+        else
+        {
+            console.log("this.ptnd.data = " + this.ptnd.data);
+            console.log("this.ptnd.id = " + this.ptnd.id);
+        }
+
         let noleftkd = (this.leftkd == null);
         let norightkd = (this.rightkd == null);
         console.log("noleftkd = " + noleftkd);
         console.log("norightkd = " + norightkd);
+        if (noleftkd)
+        {
+            console.log("this.leftkd = null");
+        }
+        else
+        {
+            console.log("this.leftkd.data = " + this.leftkd.data);
+            console.log("this.leftkd.id = " + this.leftkd.id);
+        }
+        if (norightkd)
+        {
+            console.log("this.rightkd = null");
+        }
+        else
+        {
+            console.log("this.rightkd.data = " + this.rightkd.data);
+            console.log("this.rightkd.id = " + this.rightkd.id);
+        }
+        console.log("");
+        console.log("begin removing the node now!");
+
+        let islkdofptnd = false;
+        let isrkdofptnd = false;
+        debugger;
+        if (this.ptnd == null);
+        else
+        {
+            if (this.ptnd.leftkd == this)
+            {
+                islkdofptnd = true;
+                console.log("this is the left kid of its parent node!");
+            }
+            else
+            {
+                if (this.ptnd.rightkd == this)
+                {
+                    isrkdofptnd = true;
+                    console.log("this is the left kid of its parent node!");
+                }
+                else throw "this must be a kid of the parent node, but it was not!";
+            }
+        }
+        console.log("islkdofptnd = " + islkdofptnd);
+        console.log("isrkdofptnd = " + isrkdofptnd);
 
         if (noleftkd && norightkd)
         {
-            //the node has no kids, no problem
-            //but it does have a parent unless only node
-            console.log("this has no kids!");
-            console.log("OLD this.data = " + this.data);
-            console.log("OLD this.id = " + this.id);
-            console.log("OLD this.ptnd = " + this.ptnd);
+            console.log("THIS IS A LEAF! This has no kids!");
             
-            let islkdofptnd = false;
-            let isrkdofptnd = false;
-            if (this.ptnd == null);
-            else
-            {
-                if (this.ptnd.leftkd === this)
-                {
-                    islkdofptnd = true;
-                    console.log("this is the left kid of its parent node!");
-                }
-                else
-                {
-                    if (this.ptnd.rightkd === this)
-                    {
-                        isrkdofptnd = true;
-                        console.log("this is the left kid of its parent node!");
-                    }
-                    else throw "this must be a kid of the parent node, but it was not!";
-                }
-            }
-            console.log("islkdofptnd = " + islkdofptnd);
-            console.log("isrkdofptnd = " + isrkdofptnd);
-
-            //set the data to null
-            //remove the node on the parent node...
-            //set the id to null
-            //set the object to null
-
-            this.data = null;
-            this.id = null;
-            if (islkdofptnd)
-            {
-                console.log("OLD this.ptnd.leftkd = " + this.ptnd.leftkd);
-
-                this.ptnd.leftkd = null;
-
-                console.log("NEW this.ptnd.leftkd = " + this.ptnd.leftkd);
-
-                this.ptnd = null;
-            }
-            //else;//do nothing
-            if (isrkdofptnd)
-            {
-                console.log("OLD this.ptnd.rightkd = " + this.ptnd.rightkd);
-                
-                this.ptnd.rightkd = null;
-                
-                console.log("NEW this.ptnd.rightkd = " + this.ptnd.rightkd);
-                
-                this.ptnd = null;
-            }
+            if (islkdofptnd) this.ptnd.leftkd = null;
+            else if (isrkdofptnd) this.ptnd.rightkd = null;
             //else;//do nothing
 
-            console.log("NEW this.data = " + this.data);
-            console.log("NEW this.id = " + this.id);
-            console.log("NEW this.ptnd = " + this.ptnd);
+            this.clearDataProperties();
         }
         else
         {
             //this has 1 or 2 kids
-            console.log("this has one kid!");
+            console.log("this has at one or two kids!");
 
             let flkdrkthis = null;
+            let hasbothkids = false;
             if (noleftkd || norightkd)
             {
                 //has one kid
+                console.log("this has one kid!");
                 if (norightkd) flkdrkthis = this.leftkd;
                 else flkdrkthis = this.rightkd;
             }
             else
             {
                 //has both kids
+                console.log("this has both kids!");
+                hasbothkids = true;
                 flkdrkthis = this.farthestLeftKidOfNode(this.rightkd);
             }
+            console.log("hasbothkids = " + hasbothkids);
             console.log("flkdrkthis = " + flkdrkthis);
+            console.log("flkdrkthis.id = " + flkdrkthis.id);
+            console.log("flkdrkthis.data = " + flkdrkthis.data);
+            console.log("OLD flkdrkthis.ptnd = " + flkdrkthis.ptnd);
+            if (flkdrkthis.ptnd == null);
+            else
+            {
+                console.log("OLD flkdrkthis.ptnd.id = " + flkdrkthis.ptnd.id);
+                console.log("OLD flkdrkthis.ptnd.data = " + flkdrkthis.ptnd.data);
+            }
 
-            //do something here...
-            throw "ERROR NOT DONE YET 7-30-2023 12:30 AM!";
+            //the new root is: flkdrkthis
+
+            //   4 <- remove this, replace with 5
+            // 2   6
+            //0 3 5 8
+            //
+            //   4
+            // 2   6 <- remove this, replace with 8
+            //0 3   8
+            //
+            //so on the right tree find the farthest left node that has no kids
+            //this will then be the new root
+            //then we just hook up the kids
+            //we also set the left and right kids new parent node
+            //then we are free to set that parent node to null after we nullify all of the properties
+            //
+            //this.ptnd we need a reference to it
+            //we need to know which kid left or right
+            //
+            //
+
+            if (hasbothkids)
+            {
+                console.log("THIS HAS BOTH KIDS!");
+                //first create new references to the nodes we want to keep
+                let myleftkd = this.leftkd;
+                let myrightkd = this.rightkd;
+                let myptnd = this.ptnd;
+                //my new root is flkdrkthis
+
+                //set the parents of the left and right kid and add the kids to the parent node
+                console.log("OLD flkdrkthis.leftkd = " + flkdrkthis.leftkd);
+                console.log("OLD flkdrkthis.rightkd = " + flkdrkthis.rightkd);
+                console.log("OLD myleftkd.ptnd = " + myleftkd.ptnd);
+                console.log("OLD myleftkd.ptnd.data = " + myleftkd.ptnd.data);
+                console.log("OLD myleftkd.ptnd.id = " + myleftkd.ptnd.id);
+                console.log("OLD myrightkd.ptnd = " + myrightkd.ptnd);
+                console.log("OLD myrightkd.ptnd.data = " + myrightkd.ptnd.data);
+                console.log("OLD myrightkd.ptnd.id = " + myrightkd.ptnd.id);
+
+                myleftkd.ptnd = flkdrkthis;
+                myrightkd.ptnd = flkdrkthis;
+                flkdrkthis.leftkd = myleftkd;
+                flkdrkthis.rightkd = myrightkd;
+
+                console.log("NEW myleftkd.ptnd = " + myleftkd.ptnd);
+                console.log("NEW myleftkd.ptnd.data = " + myleftkd.ptnd.data);
+                console.log("NEW myleftkd.ptnd.id = " + myleftkd.ptnd.id);
+                console.log("NEW myrightkd.ptnd = " + myrightkd.ptnd);
+                console.log("NEW myrightkd.ptnd.data = " + myrightkd.ptnd.data);
+                console.log("NEW myrightkd.ptnd.id = " + myrightkd.ptnd.id);
+                console.log("NEW flkdrkthis.leftkd = " + flkdrkthis.leftkd);
+                console.log("NEW flkdrkthis.leftkd.data = " + flkdrkthis.leftkd.data);
+                console.log("NEW flkdrkthis.leftkd.id = " + flkdrkthis.leftkd.id);
+                console.log("NEW flkdrkthis.rightkd = " + flkdrkthis.rightkd);
+                console.log("NEW flkdrkthis.rightkd.data = " + flkdrkthis.rightkd.data);
+                console.log("NEW flkdrkthis.rightkd.id = " + flkdrkthis.rightkd.id);
+
+                //what we have so far:
+                //   4 <- remove this, replace with 5
+                //      6  <-
+                //     5 8  | same node not a circle
+                // 2    6  <-
+                //0 3
+                //
+                //we need to change the kids node that goes to 5
+                //then we need to change 5's parent node
+                //
+                //5's parent node needs to be this's parent node
+                //flkdrkthis.ptnd = this.ptnd;
+
+                if (flkdrkthis.ptnd.leftkd === flkdrkthis)
+                {
+                    console.log("OLD flkdrkthis.ptnd.leftkd = " + flkdrkthis.ptnd.leftkd);
+                    console.log("OLD flkdrkthis.ptnd.leftkd.data = " + flkdrkthis.ptnd.leftkd.data);
+                    console.log("OLD flkdrkthis.ptnd.leftkd.id = " + flkdrkthis.ptnd.leftkd.id);
+
+                    flkdrkthis.ptnd.leftkd = null;
+
+                    console.log("NEW flkdrkthis.ptnd.leftkd = " + flkdrkthis.ptnd.leftkd);
+                }
+                else if (flkdrkthis.ptnd.rightkd === flkdrkthis)
+                {
+                    console.log("OLD flkdrkthis.ptnd.rightkd = " + flkdrkthis.ptnd.rightkd);
+                    console.log("OLD flkdrkthis.ptnd.rightkd.data = " + flkdrkthis.ptnd.rightkd.data);
+                    console.log("OLD flkdrkthis.ptnd.rightkd.id = " + flkdrkthis.ptnd.rightkd.id);
+
+                    flkdrkthis.ptnd.rightkd = null;
+
+                    console.log("NEW flkdrkthis.ptnd.rightkd = " + flkdrkthis.ptnd.rightkd);
+                }
+                else throw "the parent of the node must have the node as one of its kids, but it did not!";
+
+                console.log("OLD flkdrkthis.ptnd = " + flkdrkthis.ptnd);
+                if (flkdrkthis.ptnd == null);
+                else
+                {
+                    console.log("OLD flkdrkthis.ptnd.data = " + flkdrkthis.ptnd.data);
+                    console.log("OLD flkdrkthis.ptnd.id = " + flkdrkthis.ptnd.id);
+                }
+
+                flkdrkthis.ptnd = myptnd;
+
+                console.log("NEW flkdrkthis.ptnd = " + flkdrkthis.ptnd);
+                if (myptnd == null);
+                else
+                {
+                    console.log("NEW flkdrkthis.ptnd.data = " + flkdrkthis.ptnd.data);
+                    console.log("NEW flkdrkthis.ptnd.id = " + flkdrkthis.ptnd.id);
+                }
+
+                if (myptnd == null);
+                else
+                {
+                    if (islkdofptnd)
+                    {
+                        console.log("OLD myptnd.leftkd = " + myptnd.leftkd);
+                        console.log("OLD myptnd.leftkd.data = " + myptnd.leftkd.data);
+                        console.log("OLD myptnd.leftkd.id = " + myptnd.leftkd.id);
+
+                        myptnd.leftkd = flkdrkthis;
+
+                        console.log("NEW myptnd.leftkd = " + myptnd.leftkd);
+                        console.log("NEW myptnd.leftkd.data = " + myptnd.leftkd.data);
+                        console.log("NEW myptnd.leftkd.id = " + myptnd.leftkd.id);
+                    }
+                    else if (isrkdofptnd)
+                    {
+                        console.log("OLD myptnd.rightkd = " + myptnd.rightkd);
+                        console.log("OLD myptnd.rightkd.data = " + myptnd.rightkd.data);
+                        console.log("OLD myptnd.rightkd.id = " + myptnd.rightkd.id);
+
+                        myptnd.rightkd = flkdrkthis;
+
+                        console.log("NEW myptnd.rightkd = " + myptnd.rightkd);
+                        console.log("NEW myptnd.rightkd.data = " + myptnd.rightkd.data);
+                        console.log("NEW myptnd.rightkd.id = " + myptnd.rightkd.id);
+                    }
+                    //else;//do nothing
+                }
+
+                this.clearDataProperties();
+            }
+            else
+            {
+                console.log("THIS HAS ONE KID! IT IS EITHER THE LEFT OR THE RIGHT KID!");
+                
+                let mynwptndref = this.ptnd;
+                //the node we want is: flkdrkthis
+                flkdrkthis.ptnd = mynwptndref;
+
+                if (islkdofptnd || isrkdofptnd)
+                {
+                    if (islkdofptnd)
+                    {
+                        mynwptndref.leftkd = flkdrkthis;
+                        console.log("NEW this.ptnd.leftkd = " + this.ptnd.leftkd);
+                        console.log("NEW this.ptnd.leftkd.id = " + this.ptnd.leftkd.id);
+                        console.log("NEW this.ptnd.leftkd.data = " + this.ptnd.leftkd.data);
+                    }
+                    else //if (isrkdofptnd)
+                    {
+                        mynwptndref.rightkd = flkdrkthis;
+                        console.log("NEW this.ptnd.rightkd = " + this.ptnd.rightkd);
+                        console.log("NEW this.ptnd.rightkd.id = " + this.ptnd.rightkd.id);
+                        console.log("NEW this.ptnd.rightkd.data = " + this.ptnd.rightkd.data);
+                    }
+                    //else throw "this must be a kid of the parent node, but it was not!";
+                }
+                //else;//do nothing parent node will be null
+                
+                this.clearDataProperties();
+                
+                console.log("NEW flkdrkthis = " + flkdrkthis);
+                console.log("NEW flkdrkthis.id = " + flkdrkthis.id);
+                console.log("NEW flkdrkthis.data = " + flkdrkthis.data);
+                console.log("NEW flkdrkthis.ptnd = " + flkdrkthis.ptnd);
+                if (flkdrkthis.ptnd == null);
+                else
+                {
+                    console.log("NEW flkdrkthis.ptnd.id = " + flkdrkthis.ptnd.id);
+                    console.log("NEW flkdrkthis.ptnd.data = " + flkdrkthis.ptnd.data);
+                }
+                //debugger;
+            }
         }
     }
     transversal(useinorder, usepost, snd=this.root, vlist=null)
@@ -1272,10 +1494,11 @@ function generateTransversalDOMNodesFor(binnd, lenpreordertrans, exdomnode, isla
 
 function displayTransversals(mybinnd)
 {
+    clearAndHideAllTransversals();
+
     if (mybinnd == undefined || mybinnd == null)
     {
         //console.log("calling clear transversals binary tree node was null!");
-        clearAndHideAllTransversals();
         return;
     }
     //else;//do nothing
@@ -1286,15 +1509,6 @@ function displayTransversals(mybinnd)
     let mypreordertrans = mybinnd.preOrderTransversal;
     console.log("number of items in pre-order transversal = " + mypreordertrans.length);
     
-    if (mypreordertrans.length > 1)
-    {
-        //clear and hide all transversals so it displays correctly
-        //doing so prevents duplicate dom nodes on the transversals from being displayed
-        //the call to clear it must be done before everything is shown otherwise it will not be visible
-        clearAndHideAllTransversals();
-    }
-    //else;//do nothing
-
     let myrtnds = document.getElementsByClassName("rtnd");
     for (let n = 0; n < myrtnds.length; n++)
     {
@@ -1484,6 +1698,105 @@ function getAndGenerateServerObject(binnd=null, usepost=true)
     }
 }
 
+function testDeletingNodes(mytransarr, arrnm="mytransarr")
+{
+    if (mytransarr == undefined || mytransarr == null || mytransarr.length < 1);
+    else
+    {
+        if (arrnm == undefined || arrnm == null || arrnm.length < 1)
+        {
+            throw "arrname must be defined!";
+        }
+        //else;//do nothing
+
+        for (let n = 0; n < mytransarr.length; n++)
+        {
+            let mybgtstnd = null;
+            if (mytransarr[n] == null)
+            {
+                for (let k = 0; k < mytransarr.length; k++)
+                {
+                    if (mytransarr[k] == null);
+                    else
+                    {
+                        mybgtstnd = mytransarr[k];
+                        break;
+                    }
+                }
+            }
+            else mybgtstnd = mytransarr[n];
+            let oldnumnodesontree = 0;
+            if (mybgtstnd == null);
+            else oldnumnodesontree = mybgtstnd.numNodesOnTree;
+            console.log("");
+            console.log("oldnumnodesontree = " + oldnumnodesontree);
+            mytransarr[n].remove();
+            mytransarr[n] = null;
+
+            for (let p = 0; p < mytransarr.length; p++)
+            {
+                if (mytransarr[p] == null)
+                {
+                    console.log("NEW mytransarr[" + p + "] = null");
+                }
+                else
+                {
+                    console.log("NEW " + arrnm + "[" + p + "].id = " + mytransarr[p].id);
+                    console.log("NEW " + arrnm + "[" + p + "].data = " + mytransarr[p].data);
+                    console.log("NEW " + arrnm + "[" + p + "].leftkd = " + mytransarr[p].leftkd);
+                    if (mytransarr[p].leftkd == null);
+                    else
+                    {
+                        console.log("NEW " + arrnm + "[" + p + "].leftkd.id = " +
+                            mytransarr[p].leftkd.id);
+                        console.log("NEW " + arrnm + "[" + p + "].leftkd.data = " +
+                            mytransarr[p].leftkd.data);
+                    }
+                    console.log("NEW " + arrnm + "[" + p + "].rightkd = " + mytransarr[p].rightkd);
+                    if (mytransarr[p].rightkd == null);
+                    else
+                    {
+                        console.log("NEW " + arrnm + "[" + p + "].rightkd.id = " +
+                            mytransarr[p].rightkd.id);
+                        console.log("NEW " + arrnm + "[" + p + "].rightkd.data = " +
+                            mytransarr[p].rightkd.data);
+                    }
+                    console.log("NEW " + arrnm + "[" + p + "].ptnd = " + mytransarr[p].ptnd);
+                    if (mytransarr[p].ptnd == null);
+                    else
+                    {
+                        console.log("NEW " + arrnm + "[" + p + "].ptnd.id = " + mytransarr[p].ptnd.id);
+                        console.log("NEW " + arrnm + "[" + p + "].ptnd.data = " +
+                            mytransarr[p].ptnd.data);
+                    }
+                }
+            }//end of p for loop
+            
+            let myotstnd = null;
+            for (let k = 0; k < mytransarr.length; k++)
+            {
+                if (mytransarr[k] == null);
+                else
+                {
+                    myotstnd = mytransarr[k];
+                    break;
+                }
+            }
+            let nwnumnodesbintree = 0;
+            if (myotstnd == null);
+            else nwnumnodesbintree = myotstnd.numNodesOnTree;
+            console.log("oldnumnodesontree = " + oldnumnodesontree);
+            console.log("nwnumnodesbintree = " + nwnumnodesbintree);
+            debugger;
+            if (nwnumnodesbintree + 1 == oldnumnodesontree);
+            else throw "TEST FAILED TO REMOVE THE NODES!";
+            console.log("removing the next node now!");
+            console.log("");
+        }//end of n for loop
+    }
+    console.log("TEST PAST!");
+}
+
 function makeBinarySearchTreeNodesToSave()
 {
     //in order: left root right
@@ -1663,33 +1976,13 @@ function makeBinarySearchTreeNodesToSave()
     displayTreeStatsAndUpdateThem(myrtten);
 
     //now test deleting nodes here
-    for (let n = 0; n < myinorderbintree.length; n++)
-    {
-        let oldnumnodesontree = myrtten.numNodesOnTree;
-        myinorderbintree[n].remove();
-        myinorderbintree[n] = null;
-        let nwnumnodesbintree = myrtten.numNodesOnTree;
-        if (nwnumnodesbintree + 1 == oldnumnodesontree);
-        else throw "TEST FAILED TO REMOVE THE NODES!";
+    //testDeletingNodes(myinorderbintree, "myinorderbintree");
+    testDeletingNodes(mypreorderbintree, "mypreorderbintree");
+    //testDeletingNodes(mypostorderbintree, "mypostorderbintree");
 
-        for (let p = 0; p < myinorderbintree.length; p++)
-        {
-            if (myinorderbintree[p] == null)
-            {
-                console.log("NEW myinorderbintree[" + p + "] = null");
-            }
-            else
-            {
-                console.log("NEW myinorderbintree[" + p + "].id = " + myinorderbintree[p].id);
-                console.log("NEW myinorderbintree[" + p + "].data = " + myinorderbintree[p].data);
-                console.log("NEW myinorderbintree[" + p + "].leftkd = " + myinorderbintree[p].leftkd);
-                console.log("NEW myinorderbintree[" + p + "].rightkd = " + myinorderbintree[p].rightkd);
-                console.log("NEW myinorderbintree[" + p + "].ptnd = " + myinorderbintree[p].ptnd);
-            }
-        }
-    }
-    console.log("TEST PAST!");
-
+    //myrtten = null;
+    //console.log("NEW myrtten = " + myrtten);
+    //debugger;
     displayTreeStatsAndUpdateThem(myrtten);
 
     //post them all to the server
@@ -2277,6 +2570,8 @@ function buildUserBinaryTree(domnode=null, binptnd=null, addonleft=false, addonr
         }
         else
         {
+            //remove software node and
+            //remove dom nodes
             //
         }
         console.error("NOT DONE YET 7-18-2023 1:50 AM!");
