@@ -270,7 +270,7 @@ class Bintreend {
         else
         {
             //console.log("nd = " + nd);
-            console.log("nd.data = " + nd.data);
+            //console.log("nd.data = " + nd.data);
 
             //first find the root node
             //then decend tree using parent child relationships compile a vlist
@@ -296,8 +296,8 @@ class Bintreend {
                     //else console.log("vlist[" + n + "].data = " + vlist[n].data);
                 }
             }
-            console.log("nd.leftkd = " + nd.leftkd);
-            console.log("nd.rightkd = " + nd.rightkd);
+            //console.log("nd.leftkd = " + nd.leftkd);
+            //console.log("nd.rightkd = " + nd.rightkd);
 
             if (nd.leftkd == null && nd.rightkd == null) return 1;
             else
@@ -333,9 +333,9 @@ class Bintreend {
                 let numinatree = this.getNumberOfNodesBelowNode(nd.leftkd, myvlist);
                 //console.log("numinatree = " + numinatree);
                 let numinbtree = this.getNumberOfNodesBelowNode(nd.rightkd, myvlist)
-                console.log("NODE FOR CALL: nd.data = " + nd.data);
-                console.log("FINAL numinatree = " + numinatree);
-                console.log("FINAL numinbtree = " + numinbtree);
+                //console.log("NODE FOR CALL: nd.data = " + nd.data);
+                //console.log("FINAL numinatree = " + numinatree);
+                //console.log("FINAL numinbtree = " + numinbtree);
                 return 1 + numinatree + numinbtree;
             }
         }
@@ -629,11 +629,11 @@ class Bintreend {
     {
         //the node has no kids, no problem
         //but it does have a parent unless only node
-        console.log("OLD this.data = " + this.data);
-        console.log("OLD this.id = " + this.id);
-        console.log("OLD this.ptnd = " + this.ptnd);
-        console.log("OLD this.leftkd = " + this.leftkd);
-        console.log("OLD this.rightkd = " + this.rightkd);
+        //console.log("OLD this.data = " + this.data);
+        //console.log("OLD this.id = " + this.id);
+        //console.log("OLD this.ptnd = " + this.ptnd);
+        //console.log("OLD this.leftkd = " + this.leftkd);
+        //console.log("OLD this.rightkd = " + this.rightkd);
 
         //set the data to null
         //remove the node on the parent node...
@@ -646,11 +646,11 @@ class Bintreend {
         this.rightkd = null;
         this.ptnd = null;
 
-        console.log("NEW this.data = " + this.data);
-        console.log("NEW this.id = " + this.id);
-        console.log("NEW this.ptnd = " + this.ptnd);
-        console.log("NEW this.leftkd = " + this.leftkd);
-        console.log("NEW this.rightkd = " + this.rightkd);
+        //console.log("NEW this.data = " + this.data);
+        //console.log("NEW this.id = " + this.id);
+        //console.log("NEW this.ptnd = " + this.ptnd);
+        //console.log("NEW this.leftkd = " + this.leftkd);
+        //console.log("NEW this.rightkd = " + this.rightkd);
     }
     remove()
     {
@@ -678,68 +678,68 @@ class Bintreend {
         //the dom nodes will be the same, but more complicated because it is more complicated
         //
 
-        console.log("the node we are removing:");
-        console.log("this.data = " + this.data);
-        console.log("this.id = " + this.id);
-        if (this.ptnd == null) console.log("this is the root! It has no parents!");
-        else
-        {
-            console.log("this.ptnd.data = " + this.ptnd.data);
-            console.log("this.ptnd.id = " + this.ptnd.id);
-        }
+        //console.log("the node we are removing:");
+        //console.log("this.data = " + this.data);
+        //console.log("this.id = " + this.id);
+        //if (this.ptnd == null) console.log("this is the root! It has no parents!");
+        //else
+        //{
+        //    console.log("this.ptnd.data = " + this.ptnd.data);
+        //    console.log("this.ptnd.id = " + this.ptnd.id);
+        //}
 
         let noleftkd = (this.leftkd == null);
         let norightkd = (this.rightkd == null);
-        console.log("noleftkd = " + noleftkd);
-        console.log("norightkd = " + norightkd);
+        //console.log("noleftkd = " + noleftkd);
+        //console.log("norightkd = " + norightkd);
         if (noleftkd)
         {
-            console.log("this.leftkd = null");
+            //console.log("this.leftkd = null");
         }
         else
         {
-            console.log("this.leftkd.data = " + this.leftkd.data);
-            console.log("this.leftkd.id = " + this.leftkd.id);
+            //console.log("this.leftkd.data = " + this.leftkd.data);
+            //console.log("this.leftkd.id = " + this.leftkd.id);
         }
         if (norightkd)
         {
-            console.log("this.rightkd = null");
+            //console.log("this.rightkd = null");
         }
         else
         {
-            console.log("this.rightkd.data = " + this.rightkd.data);
-            console.log("this.rightkd.id = " + this.rightkd.id);
+            //console.log("this.rightkd.data = " + this.rightkd.data);
+            //console.log("this.rightkd.id = " + this.rightkd.id);
         }
-        console.log("");
-        console.log("begin removing the node now!");
+        //console.log("");
+        //console.log("begin removing the node now!");
 
         let islkdofptnd = false;
         let isrkdofptnd = false;
-        debugger;
+        //debugger;
         if (this.ptnd == null);
         else
         {
             if (this.ptnd.leftkd == this)
             {
                 islkdofptnd = true;
-                console.log("this is the left kid of its parent node!");
+                //console.log("this is the left kid of its parent node!");
             }
             else
             {
                 if (this.ptnd.rightkd == this)
                 {
                     isrkdofptnd = true;
-                    console.log("this is the left kid of its parent node!");
+                    //console.log("this is the left kid of its parent node!");
                 }
                 else throw "this must be a kid of the parent node, but it was not!";
             }
         }
-        console.log("islkdofptnd = " + islkdofptnd);
-        console.log("isrkdofptnd = " + isrkdofptnd);
+        //console.log("islkdofptnd = " + islkdofptnd);
+        //console.log("isrkdofptnd = " + isrkdofptnd);
 
         if (noleftkd && norightkd)
         {
-            console.log("THIS IS A LEAF! This has no kids!");
+            //console.log("THIS IS A LEAF! This has no kids!");
             
             if (islkdofptnd) this.ptnd.leftkd = null;
             else if (isrkdofptnd) this.ptnd.rightkd = null;
@@ -750,34 +750,34 @@ class Bintreend {
         else
         {
             //this has 1 or 2 kids
-            console.log("this has at one or two kids!");
+            //console.log("this has at one or two kids!");
 
             let flkdrkthis = null;
             let hasbothkids = false;
             if (noleftkd || norightkd)
             {
                 //has one kid
-                console.log("this has one kid!");
+                //console.log("this has one kid!");
                 if (norightkd) flkdrkthis = this.leftkd;
                 else flkdrkthis = this.rightkd;
             }
             else
             {
                 //has both kids
-                console.log("this has both kids!");
+                //console.log("this has both kids!");
                 hasbothkids = true;
                 flkdrkthis = this.farthestLeftKidOfNode(this.rightkd);
             }
-            console.log("hasbothkids = " + hasbothkids);
-            console.log("flkdrkthis = " + flkdrkthis);
-            console.log("flkdrkthis.id = " + flkdrkthis.id);
-            console.log("flkdrkthis.data = " + flkdrkthis.data);
-            console.log("OLD flkdrkthis.ptnd = " + flkdrkthis.ptnd);
+            //console.log("hasbothkids = " + hasbothkids);
+            //console.log("flkdrkthis = " + flkdrkthis);
+            //console.log("flkdrkthis.id = " + flkdrkthis.id);
+            //console.log("flkdrkthis.data = " + flkdrkthis.data);
+            //console.log("OLD flkdrkthis.ptnd = " + flkdrkthis.ptnd);
             if (flkdrkthis.ptnd == null);
             else
             {
-                console.log("OLD flkdrkthis.ptnd.id = " + flkdrkthis.ptnd.id);
-                console.log("OLD flkdrkthis.ptnd.data = " + flkdrkthis.ptnd.data);
+                //console.log("OLD flkdrkthis.ptnd.id = " + flkdrkthis.ptnd.id);
+                //console.log("OLD flkdrkthis.ptnd.data = " + flkdrkthis.ptnd.data);
             }
 
             //the new root is: flkdrkthis
@@ -803,7 +803,7 @@ class Bintreend {
 
             if (hasbothkids)
             {
-                console.log("THIS HAS BOTH KIDS!");
+                //console.log("THIS HAS BOTH KIDS!");
                 //first create new references to the nodes we want to keep
                 let myleftkd = this.leftkd;
                 let myrightkd = this.rightkd;
@@ -811,32 +811,32 @@ class Bintreend {
                 //my new root is flkdrkthis
 
                 //set the parents of the left and right kid and add the kids to the parent node
-                console.log("OLD flkdrkthis.leftkd = " + flkdrkthis.leftkd);
-                console.log("OLD flkdrkthis.rightkd = " + flkdrkthis.rightkd);
-                console.log("OLD myleftkd.ptnd = " + myleftkd.ptnd);
-                console.log("OLD myleftkd.ptnd.data = " + myleftkd.ptnd.data);
-                console.log("OLD myleftkd.ptnd.id = " + myleftkd.ptnd.id);
-                console.log("OLD myrightkd.ptnd = " + myrightkd.ptnd);
-                console.log("OLD myrightkd.ptnd.data = " + myrightkd.ptnd.data);
-                console.log("OLD myrightkd.ptnd.id = " + myrightkd.ptnd.id);
+                //console.log("OLD flkdrkthis.leftkd = " + flkdrkthis.leftkd);
+                //console.log("OLD flkdrkthis.rightkd = " + flkdrkthis.rightkd);
+                //console.log("OLD myleftkd.ptnd = " + myleftkd.ptnd);
+                //console.log("OLD myleftkd.ptnd.data = " + myleftkd.ptnd.data);
+                //console.log("OLD myleftkd.ptnd.id = " + myleftkd.ptnd.id);
+                //console.log("OLD myrightkd.ptnd = " + myrightkd.ptnd);
+                //console.log("OLD myrightkd.ptnd.data = " + myrightkd.ptnd.data);
+                //console.log("OLD myrightkd.ptnd.id = " + myrightkd.ptnd.id);
 
                 myleftkd.ptnd = flkdrkthis;
                 myrightkd.ptnd = flkdrkthis;
                 flkdrkthis.leftkd = myleftkd;
                 flkdrkthis.rightkd = myrightkd;
 
-                console.log("NEW myleftkd.ptnd = " + myleftkd.ptnd);
-                console.log("NEW myleftkd.ptnd.data = " + myleftkd.ptnd.data);
-                console.log("NEW myleftkd.ptnd.id = " + myleftkd.ptnd.id);
-                console.log("NEW myrightkd.ptnd = " + myrightkd.ptnd);
-                console.log("NEW myrightkd.ptnd.data = " + myrightkd.ptnd.data);
-                console.log("NEW myrightkd.ptnd.id = " + myrightkd.ptnd.id);
-                console.log("NEW flkdrkthis.leftkd = " + flkdrkthis.leftkd);
-                console.log("NEW flkdrkthis.leftkd.data = " + flkdrkthis.leftkd.data);
-                console.log("NEW flkdrkthis.leftkd.id = " + flkdrkthis.leftkd.id);
-                console.log("NEW flkdrkthis.rightkd = " + flkdrkthis.rightkd);
-                console.log("NEW flkdrkthis.rightkd.data = " + flkdrkthis.rightkd.data);
-                console.log("NEW flkdrkthis.rightkd.id = " + flkdrkthis.rightkd.id);
+                //console.log("NEW myleftkd.ptnd = " + myleftkd.ptnd);
+                //console.log("NEW myleftkd.ptnd.data = " + myleftkd.ptnd.data);
+                //console.log("NEW myleftkd.ptnd.id = " + myleftkd.ptnd.id);
+                //console.log("NEW myrightkd.ptnd = " + myrightkd.ptnd);
+                //console.log("NEW myrightkd.ptnd.data = " + myrightkd.ptnd.data);
+                //console.log("NEW myrightkd.ptnd.id = " + myrightkd.ptnd.id);
+                //console.log("NEW flkdrkthis.leftkd = " + flkdrkthis.leftkd);
+                //console.log("NEW flkdrkthis.leftkd.data = " + flkdrkthis.leftkd.data);
+                //console.log("NEW flkdrkthis.leftkd.id = " + flkdrkthis.leftkd.id);
+                //console.log("NEW flkdrkthis.rightkd = " + flkdrkthis.rightkd);
+                //console.log("NEW flkdrkthis.rightkd.data = " + flkdrkthis.rightkd.data);
+                //console.log("NEW flkdrkthis.rightkd.id = " + flkdrkthis.rightkd.id);
 
                 //what we have so far:
                 //   4 <- remove this, replace with 5
@@ -853,42 +853,42 @@ class Bintreend {
 
                 if (flkdrkthis.ptnd.leftkd === flkdrkthis)
                 {
-                    console.log("OLD flkdrkthis.ptnd.leftkd = " + flkdrkthis.ptnd.leftkd);
-                    console.log("OLD flkdrkthis.ptnd.leftkd.data = " + flkdrkthis.ptnd.leftkd.data);
-                    console.log("OLD flkdrkthis.ptnd.leftkd.id = " + flkdrkthis.ptnd.leftkd.id);
+                    //console.log("OLD flkdrkthis.ptnd.leftkd = " + flkdrkthis.ptnd.leftkd);
+                    //console.log("OLD flkdrkthis.ptnd.leftkd.data = " + flkdrkthis.ptnd.leftkd.data);
+                    //console.log("OLD flkdrkthis.ptnd.leftkd.id = " + flkdrkthis.ptnd.leftkd.id);
 
                     flkdrkthis.ptnd.leftkd = null;
 
-                    console.log("NEW flkdrkthis.ptnd.leftkd = " + flkdrkthis.ptnd.leftkd);
+                    //console.log("NEW flkdrkthis.ptnd.leftkd = " + flkdrkthis.ptnd.leftkd);
                 }
                 else if (flkdrkthis.ptnd.rightkd === flkdrkthis)
                 {
-                    console.log("OLD flkdrkthis.ptnd.rightkd = " + flkdrkthis.ptnd.rightkd);
-                    console.log("OLD flkdrkthis.ptnd.rightkd.data = " + flkdrkthis.ptnd.rightkd.data);
-                    console.log("OLD flkdrkthis.ptnd.rightkd.id = " + flkdrkthis.ptnd.rightkd.id);
+                    //console.log("OLD flkdrkthis.ptnd.rightkd = " + flkdrkthis.ptnd.rightkd);
+                    //console.log("OLD flkdrkthis.ptnd.rightkd.data = " + flkdrkthis.ptnd.rightkd.data);
+                    //console.log("OLD flkdrkthis.ptnd.rightkd.id = " + flkdrkthis.ptnd.rightkd.id);
 
                     flkdrkthis.ptnd.rightkd = null;
 
-                    console.log("NEW flkdrkthis.ptnd.rightkd = " + flkdrkthis.ptnd.rightkd);
+                    //console.log("NEW flkdrkthis.ptnd.rightkd = " + flkdrkthis.ptnd.rightkd);
                 }
                 else throw "the parent of the node must have the node as one of its kids, but it did not!";
 
-                console.log("OLD flkdrkthis.ptnd = " + flkdrkthis.ptnd);
+                //console.log("OLD flkdrkthis.ptnd = " + flkdrkthis.ptnd);
                 if (flkdrkthis.ptnd == null);
                 else
                 {
-                    console.log("OLD flkdrkthis.ptnd.data = " + flkdrkthis.ptnd.data);
-                    console.log("OLD flkdrkthis.ptnd.id = " + flkdrkthis.ptnd.id);
+                    //console.log("OLD flkdrkthis.ptnd.data = " + flkdrkthis.ptnd.data);
+                    //console.log("OLD flkdrkthis.ptnd.id = " + flkdrkthis.ptnd.id);
                 }
 
                 flkdrkthis.ptnd = myptnd;
 
-                console.log("NEW flkdrkthis.ptnd = " + flkdrkthis.ptnd);
+                //console.log("NEW flkdrkthis.ptnd = " + flkdrkthis.ptnd);
                 if (myptnd == null);
                 else
                 {
-                    console.log("NEW flkdrkthis.ptnd.data = " + flkdrkthis.ptnd.data);
-                    console.log("NEW flkdrkthis.ptnd.id = " + flkdrkthis.ptnd.id);
+                    //console.log("NEW flkdrkthis.ptnd.data = " + flkdrkthis.ptnd.data);
+                    //console.log("NEW flkdrkthis.ptnd.id = " + flkdrkthis.ptnd.id);
                 }
 
                 if (myptnd == null);
@@ -896,27 +896,27 @@ class Bintreend {
                 {
                     if (islkdofptnd)
                     {
-                        console.log("OLD myptnd.leftkd = " + myptnd.leftkd);
-                        console.log("OLD myptnd.leftkd.data = " + myptnd.leftkd.data);
-                        console.log("OLD myptnd.leftkd.id = " + myptnd.leftkd.id);
+                        //console.log("OLD myptnd.leftkd = " + myptnd.leftkd);
+                        //console.log("OLD myptnd.leftkd.data = " + myptnd.leftkd.data);
+                        //console.log("OLD myptnd.leftkd.id = " + myptnd.leftkd.id);
 
                         myptnd.leftkd = flkdrkthis;
 
-                        console.log("NEW myptnd.leftkd = " + myptnd.leftkd);
-                        console.log("NEW myptnd.leftkd.data = " + myptnd.leftkd.data);
-                        console.log("NEW myptnd.leftkd.id = " + myptnd.leftkd.id);
+                        //console.log("NEW myptnd.leftkd = " + myptnd.leftkd);
+                        //console.log("NEW myptnd.leftkd.data = " + myptnd.leftkd.data);
+                        //console.log("NEW myptnd.leftkd.id = " + myptnd.leftkd.id);
                     }
                     else if (isrkdofptnd)
                     {
-                        console.log("OLD myptnd.rightkd = " + myptnd.rightkd);
-                        console.log("OLD myptnd.rightkd.data = " + myptnd.rightkd.data);
-                        console.log("OLD myptnd.rightkd.id = " + myptnd.rightkd.id);
+                        //console.log("OLD myptnd.rightkd = " + myptnd.rightkd);
+                        //console.log("OLD myptnd.rightkd.data = " + myptnd.rightkd.data);
+                        //console.log("OLD myptnd.rightkd.id = " + myptnd.rightkd.id);
 
                         myptnd.rightkd = flkdrkthis;
 
-                        console.log("NEW myptnd.rightkd = " + myptnd.rightkd);
-                        console.log("NEW myptnd.rightkd.data = " + myptnd.rightkd.data);
-                        console.log("NEW myptnd.rightkd.id = " + myptnd.rightkd.id);
+                        //console.log("NEW myptnd.rightkd = " + myptnd.rightkd);
+                        //console.log("NEW myptnd.rightkd.data = " + myptnd.rightkd.data);
+                        //console.log("NEW myptnd.rightkd.id = " + myptnd.rightkd.id);
                     }
                     //else;//do nothing
                 }
@@ -925,7 +925,7 @@ class Bintreend {
             }
             else
             {
-                console.log("THIS HAS ONE KID! IT IS EITHER THE LEFT OR THE RIGHT KID!");
+                //console.log("THIS HAS ONE KID! IT IS EITHER THE LEFT OR THE RIGHT KID!");
                 
                 let mynwptndref = this.ptnd;
                 //the node we want is: flkdrkthis
@@ -936,16 +936,16 @@ class Bintreend {
                     if (islkdofptnd)
                     {
                         mynwptndref.leftkd = flkdrkthis;
-                        console.log("NEW this.ptnd.leftkd = " + this.ptnd.leftkd);
-                        console.log("NEW this.ptnd.leftkd.id = " + this.ptnd.leftkd.id);
-                        console.log("NEW this.ptnd.leftkd.data = " + this.ptnd.leftkd.data);
+                        //console.log("NEW this.ptnd.leftkd = " + this.ptnd.leftkd);
+                        //console.log("NEW this.ptnd.leftkd.id = " + this.ptnd.leftkd.id);
+                        //console.log("NEW this.ptnd.leftkd.data = " + this.ptnd.leftkd.data);
                     }
                     else //if (isrkdofptnd)
                     {
                         mynwptndref.rightkd = flkdrkthis;
-                        console.log("NEW this.ptnd.rightkd = " + this.ptnd.rightkd);
-                        console.log("NEW this.ptnd.rightkd.id = " + this.ptnd.rightkd.id);
-                        console.log("NEW this.ptnd.rightkd.data = " + this.ptnd.rightkd.data);
+                        //console.log("NEW this.ptnd.rightkd = " + this.ptnd.rightkd);
+                        //console.log("NEW this.ptnd.rightkd.id = " + this.ptnd.rightkd.id);
+                        //console.log("NEW this.ptnd.rightkd.data = " + this.ptnd.rightkd.data);
                     }
                     //else throw "this must be a kid of the parent node, but it was not!";
                 }
@@ -953,15 +953,15 @@ class Bintreend {
                 
                 this.clearDataProperties();
                 
-                console.log("NEW flkdrkthis = " + flkdrkthis);
-                console.log("NEW flkdrkthis.id = " + flkdrkthis.id);
-                console.log("NEW flkdrkthis.data = " + flkdrkthis.data);
-                console.log("NEW flkdrkthis.ptnd = " + flkdrkthis.ptnd);
+                //console.log("NEW flkdrkthis = " + flkdrkthis);
+                //console.log("NEW flkdrkthis.id = " + flkdrkthis.id);
+                //console.log("NEW flkdrkthis.data = " + flkdrkthis.data);
+                //console.log("NEW flkdrkthis.ptnd = " + flkdrkthis.ptnd);
                 if (flkdrkthis.ptnd == null);
                 else
                 {
-                    console.log("NEW flkdrkthis.ptnd.id = " + flkdrkthis.ptnd.id);
-                    console.log("NEW flkdrkthis.ptnd.data = " + flkdrkthis.ptnd.data);
+                    //console.log("NEW flkdrkthis.ptnd.id = " + flkdrkthis.ptnd.id);
+                    //console.log("NEW flkdrkthis.ptnd.data = " + flkdrkthis.ptnd.data);
                 }
                 //debugger;
             }
@@ -2095,7 +2095,9 @@ function addLeftOrRightKidBtnListener(mybtn, mybinnd, useleft)
         console.log("mybinnd = " + mybinnd);
         debugger;
         buildUserBinaryTree(mybtn.parentNode, mybinnd, useleft, !useleft);
-        mybtn.remove();
+        mybtn.disabled = true;
+        mybtn.style.display = "none";
+        //mybtn.remove();//must only hide and disable because we need it later
         debugger;
     });
     console.log("successfully added the add " + (useleft ? "left" : "right") + " kid listener!");
@@ -2108,6 +2110,211 @@ function addRightKidBtnListener(mybtn, mybinnd)
 function addLeftKidBtnListener(mybtn, mybinnd)
 {
     addLeftOrRightKidBtnListener(mybtn, mybinnd, true);
+}
+
+function getNumKidsDOMNodeHas(tabledomnd)
+{
+    //the id if we are removing dom node only implies that the dom node has no kids
+    //if that is not the case, then it may have kids or not
+    //
+    //each node contains a table that has two rows
+    //the second row has the add left delete table and add right buttons
+    //inside the second row are three columns
+    //on the first and 3rd columns: is a span which contains either a table or a button
+    //the second column is a table also with three rows which centers the delete button
+    //<table>
+    // <tr>
+    //  <td></td>
+    //  <td><div>text area and svg</div></td>
+    //  <td></td>
+    // <tr>
+    //  <td> <span> button and table or just button </span></td>
+    //  <td> table for delete button </td>
+    //  <td> <span> button and table or just button </span></td>
+    //</table>
+
+    if (tabledomnd == undefined || tabledomnd == null) return 0;
+    else
+    {
+        let myrwsontable = tabledomnd.children;
+        let mykidsrw = myrwsontable[1];
+        let numkids = 0;
+        for (let n = 0; n < 2; n++)
+        {
+            let mycolindx = -1;
+            if (n == 0) mycolindx = 0;
+            else mycolindx = 2;
+            let myspan = mykidsrw.children[mycolindx].firstChild;
+            let myspankids = myspan.children;
+            //for (let k = 0; k < myspankids.length; k++)
+            //{
+            //    console.log("myspankids[" + k + "].tagName = " + myspankids[k].tagName);
+            //}
+            if (myspankids.length < 2);
+            else if (myspankids.length == 2)
+            {
+                let mybtnortableelem = myspankids[1];
+                if (mybtnortableelem.tagName === "TABLE") numkids++;
+                //else;//do nothing
+            }
+            else throw "illegal number of kids of the span found!";
+        }
+        return numkids;
+    }
+}
+
+function getLeftOrRightKidDOMNodeHas(tabledomnd, useleft, usetable=true)
+{
+    if (useleft == undefined || useleft == null)
+    {
+        throw "useleft must be a defined boolean variable!";
+    }
+    else
+    {
+        if (useleft == true || useleft == false);
+        else throw "useleft must be a defined boolean variable!";
+    }
+
+    if (usetable == undefined || usetable == null)
+    {
+        throw "usetable must be a defined boolean variable!";
+    }
+    else
+    {
+        if (usetable == true || usetable == false);
+        else throw "usetable must be a defined boolean variable!";
+    }
+
+    if (tabledomnd == undefined || tabledomnd == null) return null;
+    //else;//do nothing
+
+    let mytindx = -1;
+    if (usetable) mytindx = 1;
+    else mytindx = 0;
+    let mykdindx = -1;
+    if (useleft) mykdindx = 0;
+    else mykdindx = 2;
+    
+    return tabledomnd.children[1].children[mykdindx].firstChild.children[mytindx];
+}
+function getLeftKidDOMNodeHas(tabledomnd, usetable=true)
+{
+    return getLeftOrRightKidDOMNodeHas(tabledomnd, true, usetable);
+}
+function getRightKidDOMNodeHas(tabledomnd, usetable=true)
+{
+    return getLeftOrRightKidDOMNodeHas(tabledomnd, false, usetable);
+}
+
+function getParentDOMNodeHas(tabledomnd)
+{
+    if (tabledomnd == undefined || tabledomnd == null) return null;
+    else return tabledomnd.parentNode.parentNode.parentNode.parentNode;
+    //table.span.td.tr.table
+}
+
+function removeDOMNode(mytabledomnode)
+{
+    let numkidsofdomnd = getNumKidsDOMNodeHas(mytabledomnode);
+    console.log("numkidsofdomnd = " + numkidsofdomnd);
+
+    if (numkidsofdomnd == 0)
+    {
+        removeAllDOMKidsOfDOMNode(mytabledomnode, true);
+    }
+    else if (numkidsofdomnd > 0 && numkidsofdomnd < 3)
+    {
+        //   4
+        // 2   6
+        //0 3 5 8
+        //
+        //the id if we are removing dom node only implies that the dom node has no kids
+        //if that is not the case, then it may have kids or not
+        //
+        //each node contains a table that has two rows
+        //the second row has the add left delete table and add right buttons
+        //inside the second row are three columns
+        //on the first and 3rd columns: is a span which contains either a table or a button
+        //the second column is a table also with three rows which centers the delete button
+        //
+        //<table>
+        // <tr>
+        //  <td></td>
+        //  <td><div>text area and svg</div></td>
+        //  <td></td>
+        // <tr>
+        //  <td> <span> button and table or just button </span></td>
+        //  <td> table for delete button
+        //  <td> <span> button and table or just button </span></td>
+        //</table>
+
+        //we can access the parent node using .parentNode
+        //we can access the children nodes using .children
+        //we can get the first child node using .firstChild
+        //we can get the last child node using .lastChild
+        //
+        //
+        //to get the parent dom node: getParentDOMNodeHas(tabledomnd)
+        //tabledomnode.parentNode.parentNode.parentNode.parentNode
+        //table.span.td.tr.table
+        //
+        //to get the kids of the current dom node:
+        //to get the right kid: getRightKidDOMNodeHas(tabledomnd, usetable=true)
+        //tabledomnode.children[1].children[2].firstChild.children[1] for the table (kid itself)
+        //tabledomnode.children[1].children[2].firstChild.children[0] for the button
+        //
+        //to get the left kid: getLeftKidDOMNodeHas(tabledomnd, usetable=true)
+        //tabledomnode.children[1].children[0].firstChild.children[1] for the table (kid itself)
+        //tabledomnode.children[1].children[0].firstChild.children[0] for the button
+        //
+        
+        
+        if (numkidsofdomnd == 1)
+        {
+            //   4
+            // 2   6 <- remove this
+            //0 3   8
+            //
+            //suppose we have the tree above: we want to remove 6 what do we need to do to accomplish that?
+            //
+            //
+            //
+            //
+        }
+        else //if (numkidsofdomnd == 2)
+        {
+            //
+        }
+
+        throw "NOT DONE YET 8-1-2023 7 PM!";
+    }
+    else throw "illegal number of kids of the dom node was found and used here!";
+}
+
+function removeDOMNodeAndShowButton(mypttable, domnode)
+{
+    if (mypttable == undefined || mypttable == null)
+    {
+        throw "mypttable must be defined and not null!";
+    }
+    //else;//do nothing
+
+    removeDOMNode(mypttable);
+    
+    //re-enable and show hidden add kid button here
+    console.log("domnode = " + domnode);
+    if (domnode == null);
+    else
+    {
+        let myhbtn = domnode.firstChild;
+        if (myhbtn.tagName === "BUTTON")
+        {
+            myhbtn.style.display = "block";
+            myhbtn.disabled = false;
+        }
+        else throw "this must be a button!";
+    }
+    console.log("successfully deleted the node!");
 }
 
 let numids = 0;
@@ -2272,7 +2479,7 @@ function buildUserBinaryTree(domnode=null, binptnd=null, addonleft=false, addonr
     let mynwtextareaelem = mydivondoc.getElementsByTagName("textarea")[0];
     let mywdthstr = "" + mynwtextareaelem.offsetWidth;
     let mywdthnumstr = "" + mywdthstr;//.substring(0, mywdthstr.length - 2);
-    console.log("mywdthnumstr = " + mywdthnumstr);
+    //console.log("mywdthnumstr = " + mywdthnumstr);
     myleftimg.style.width = "" + mywdthstr;
     myleftimg.style.height = "" + Number(mywdthnumstr) / 2 + "px";
     //0,0 is the top left corner to the svg and it is relative to its container
@@ -2302,7 +2509,6 @@ function buildUserBinaryTree(domnode=null, binptnd=null, addonleft=false, addonr
     //console.log("leftoffset = " + mydivondoc.offsetLeft);
     //console.log("heightoffset = " + mydivondoc.offsetHeight);//actual of element
     //console.log("widthoffset = " + mydivondoc.offsetWidth);//actual of element
-    console.error("NOT DONE YET 7-18-2023 1:50 AM!");
     
     mynwtextareaelem.addEventListener("change", function(bl, br, event){
         console.log("the textarea was changed!");
@@ -2563,28 +2769,69 @@ function buildUserBinaryTree(domnode=null, binptnd=null, addonleft=false, addonr
         //
         //the dom nodes will be the same, but more complicated because it is more complicated
         //
+        //the id if we are removing dom node only implies that the dom node has no kids
+        //if that is not the case, then it may have kids or not
+        //
+        //each node contains a table that has two rows
+        //the second row has the add left delete table and add right buttons
+        //inside the second row are three columns
+        //on the first and 3rd columns: is a span which contains either a table or a button
+        //the second column is a table also with three rows which centers the delete button
+        //<table>
+        // <tr>
+        //  <td></td>
+        //  <td><div>text area and svg</div></td>
+        //  <td></td>
+        // <tr>
+        //  <td> <span> table or button </span></td>
+        //  <td> table for delete button
+        //  <td> <span> table or button </span></td>
+        //</table>
         
-        if (remdomonly)
-        {
-            //
-        }
+        if (remdomonly) removeDOMNodeAndShowButton(mypttable, domnode);
         else
         {
             //remove software node and
             //remove dom nodes
             //
+            mybinnd = getBintreendObjForIdFromArray(mydivtarget.id);
+            
+            if (mybinnd == null) throw "the node must have been on the list!";
+            else
+            {
+                //post the changes on the server
+                let mydelconfigobj = {
+                    method: "DELETE",
+                    headers: {
+                        "Content-Type" : "application/json",
+                        "Accept" : "application/json"
+                    },
+                    body: ""
+                };
+                fetch("http://localhost:3000/nodes/" + mydivtarget.id, mydelconfigobj).
+                then((response) => response.json()).
+                then(function(response){
+                    console.log("response = " + response);
+                    mybinnd.remove();
+                    removeDOMNodeAndShowButton(mypttable, domnode);
+                    console.log("succesfully deleted the node from the server!");
+                }).catch(function(err){
+                    console.error("Error: there was a problem removing the nodes from the server!");
+                    console.error(err);
+                    alert("Error: there was a problem removing data from the server! See log for details!");
+                });
+            }
         }
-        console.error("NOT DONE YET 7-18-2023 1:50 AM!");
         debugger;
     }.bind(mydelbtn));
     console.log("successfully added delete button listener!");
 }
 
 document.addEventListener("DOMContentLoaded", function(event){
-    makeBinarySearchTreeNodesToSave();
+    //makeBinarySearchTreeNodesToSave();
     //display the number of nodes and levels on the tree in the statistics section
     //hide the root nodes on the transversals
-    //displayTreeStatsAndUpdateThem(null);
+    displayTreeStatsAndUpdateThem(null);
 
     //show the form
     let myloadfrm = document.getElementById("myloadingform");
