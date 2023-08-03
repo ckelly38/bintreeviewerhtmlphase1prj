@@ -652,6 +652,12 @@ class Bintreend {
         //console.log("NEW this.leftkd = " + this.leftkd);
         //console.log("NEW this.rightkd = " + this.rightkd);
     }
+    areAllPropertiesNull()
+    {
+        return ((this.data == null) && (this.id == null) && (this.leftkd == null) &&
+        (this.rightkd == null) && (this.ptnd == null));
+    }
+    get areAllPropertiesCleared() { return this.areAllPropertiesNull(); }
     remove()
     {
         //if the node has no kids, then it can be removed immediately
@@ -2064,6 +2070,58 @@ function getBintreendObjForIdFromArray(myid)
     return mybinnd;
 }
 
+function getArrayIndexForNodeOnArray(mybinnd)
+{
+    if (mybinnd == undefined || mybinnd == null)
+    {
+        console.error("the bin node was null, so not on the array!");
+        return -1;
+    }
+    else
+    {
+        if (mygenndsarr == undefined || mygenndsarr == null || mygenndsarr.length < 1);
+        else
+        {
+            for (let n = 0; n < mygenndsarr.length; n++)
+            {
+                if (mygenndsarr[n] == null) throw "not allowed to have null nodes on this list!";
+                else
+                {
+                    //console.log("mygenndsarr[" + n + "] = " + mygenndsarr[n]);
+                    //console.log("mygenndsarr[" + n + "].id = " + mygenndsarr[n].id);
+                    if (mygenndsarr[n] == mybinnd) return n;
+                    //else;//do nothing
+                }
+            }//end of n for loop
+        }
+        console.error("the bin node was not on the array!");
+        return -1;
+    }
+}
+
+function getFirstNonNullBinTreeNodeFromArray()
+{
+    let mybinnd = null;
+    if (mygenndsarr == undefined || mygenndsarr == null || mygenndsarr.length < 1);
+    else
+    {
+        for (let n = 0; n < mygenndsarr.length; n++)
+        {
+            console.log("mygenndsarr[" + n + "] = " + mygenndsarr[n]);
+            debugger;
+            if (mygenndsarr[n] == null) throw "not allowed to have null nodes on this list!";
+            else
+            {
+                //console.log("mygenndsarr[" + n + "] = " + mygenndsarr[n]);
+                console.log("mygenndsarr[" + n + "].id = " + mygenndsarr[n].id);
+                mybinnd = mygenndsarr[n];
+                break;
+            }
+        }
+    }
+    return mybinnd;
+}
+
 function addLeftOrRightKidBtnListener(mybtn, mybinnd, useleft)
 {
     if (mybtn == undefined || mybtn == null)
@@ -2230,8 +2288,15 @@ function getRightKidDOMNodeHas(tabledomnd, usetable=true)
 function getParentDOMNodeHas(tabledomnd)
 {
     if (tabledomnd == undefined || tabledomnd == null) return null;
-    else return tabledomnd.parentNode.parentNode.parentNode.parentNode;
-    //table.span.td.tr.table
+    else
+    {
+        //console.log("tabledomnd.parentNode = " + tabledomnd.parentNode);
+        //console.log("tabledomnd.parentNode.id = " + tabledomnd.parentNode.id);
+        if (tabledomnd.parentNode.id === "tree") return null;
+        else return tabledomnd.parentNode.parentNode.parentNode.parentNode;
+        //table.span.td.tr.table
+        //table.section.main.body.html (WHAT WE HAVE IF WE DON'T CHECK FOR IT ON ROOT NODE)
+    }
 }
 
 function getFarthestLeftHTMLDOMNodeOfDOMNode(tabledomnd)
@@ -2411,7 +2476,12 @@ function removeDOMNode(mytabledomnode)
                 }
                 //else throw "this must be a kid of the parent node, but it was not!";
             }
-            //else;//do nothing parent node will be null
+            else
+            {
+                console.log("parent node was null! We are removing the root node!");
+                //it has a kid
+                document.getElementById("tree").appendChild(nwrtdomnd);
+            }
             //debugger;
 
             //now can remove it...
@@ -2426,7 +2496,90 @@ function removeDOMNode(mytabledomnode)
     else throw "illegal number of kids of the dom node was found and used here!";
 }
 
-function removeDOMNodeAndShowButton(mypttable, domnode)
+function makeSureAllButtonsAreDisplayedIfTheyAreSupposedTo(snddomnode=null, usert=true)
+{
+    //go through every node on the dom tree and make sure that the buttons are showing correctly
+    //get the root node
+    //the tree section contains an h2 and if there is at least one node a table as the other kid
+    if (usert == undefined || usert == null)
+    {
+        throw "usert must be a defined boolean variable!";
+    }
+    else
+    {
+        if (usert == true || usert == false);
+        else throw "usert must be a defined boolean variable!";
+    }
+
+    let mydomrootnd = null;
+    if (usert && (snddomnode == undefined || snddomnode == null))
+    {
+        let mytreesectkds = document.getElementById("tree").children;
+        if (mytreesectkds == undefined || mytreesectkds == null || mytreesectkds.length < 1);
+        else
+        {
+            if (mytreesectkds.length > 1) mydomrootnd = mytreesectkds[1];
+            //else;//do nothing
+        }
+    }
+    else mydomrootnd = snddomnode;
+
+    if (mydomrootnd == null) return;
+    //else;//do nothing
+
+    //take care of it for this node
+    //get the span, then check the number of kids
+    //then display the button
+    for (let n = 0; n < 2; n++)
+    {
+        let myspan = null;
+        if (n == 0) myspan = getLeftKidSpanDOMNodeHas(mydomrootnd);
+        else if (n == 1) myspan = getRightKidSpanDOMNodeHas(mydomrootnd);
+        else throw "illegal value for index n was found and used here!";
+
+        console.log("myspan.children.length = " + myspan.children.length);
+        if (myspan.children.length == 2)
+        {
+            if (myspan.children[1].tagName === "TABLE");
+            else throw "this kid must be a table, but it was not!";
+        }
+        else if (myspan.children.length == 1)
+        {
+            let mydiv = mydomrootnd.children[0].children[1].firstChild;
+            console.log("mydiv = " + mydiv);
+            console.log("mydiv.id = " + mydiv.id);
+            let mydividstr = "" + mydiv.id;
+            let btnsdisable = (mydividstr.indexOf("nwnd") == 0);
+            console.log("btnsdisable = " + btnsdisable);
+            
+            let myhbtn = myspan.firstChild;
+            console.log("myhbtn = " + myhbtn);
+            console.log("(myhbtn.tagName === 'BUTTON') = " + (myhbtn.tagName === "BUTTON"));
+            if (myhbtn.tagName === "BUTTON")
+            {
+                if (btnsdisable)
+                {
+                    myhbtn.disabled = true;
+                }
+                else
+                {
+                    myhbtn.style.display = "block";
+                    myhbtn.disabled = false;
+                }
+                console.log("displayed the button!");
+            }
+            else throw "this must be a button!";
+            debugger;
+        }
+        else throw "the dom node has an illegal number of kids!";
+    }//end of n for loop
+
+    //visit the child nodes
+    makeSureAllButtonsAreDisplayedIfTheyAreSupposedTo(getLeftKidDOMNodeHas(mydomrootnd), false);
+    makeSureAllButtonsAreDisplayedIfTheyAreSupposedTo(getRightKidDOMNodeHas(mydomrootnd), false);
+}
+
+function removeDOMNodeAndShowButton(mypttable)
 {
     if (mypttable == undefined || mypttable == null)
     {
@@ -2437,33 +2590,7 @@ function removeDOMNodeAndShowButton(mypttable, domnode)
     removeDOMNode(mypttable);
     
     //re-enable and show hidden add kid button here
-    console.log("domnode = " + domnode);
-    if (domnode == null);
-    else
-    {
-        console.log("domnode.children.length = " + domnode.children.length);
-        if (domnode.children.length == 2)
-        {
-            if (domnode.children[1].tagName === "TABLE");
-            else throw "this kid must be a table, but it was not!";
-        }
-        else if (domnode.children.length == 1)
-        {
-            let myhbtn = domnode.firstChild;
-            console.log("myhbtn = " + myhbtn);
-            console.log("(myhbtn.tagName === 'BUTTON') = " + (myhbtn.tagName === "BUTTON"));
-            debugger;
-            if (myhbtn.tagName === "BUTTON")
-            {
-                myhbtn.style.display = "block";
-                myhbtn.disabled = false;
-                console.log("displayed the button!");
-            }
-            else throw "this must be a button!";
-            debugger;
-        }
-        else throw "the dom node has an illegal number of kids!";
-    }
+    makeSureAllButtonsAreDisplayedIfTheyAreSupposedTo(null, true);
 
     console.log("successfully deleted the node!");
 }
@@ -2714,12 +2841,24 @@ function buildUserBinaryTree(domnode=null, binptnd=null, addonleft=false, addonr
         console.log("usepost = " + usepost);
 
         let mybinnd = null;
+        let mybinptnd = null;
+        let treatasrt = false;
+        if (binptnd == null) treatasrt = true;
+        else treatasrt = binptnd.areAllPropertiesNull();
+        if (treatasrt) mybinptnd = null;
+        else mybinptnd = binptnd;
+        console.log("treatasrt = " + treatasrt);
+
         if (usepost)
         {
-            mybinnd = new Bintreend("", "" + event.target.value, binptnd, null, null);
-            if (addonleft) binptnd.leftkd = mybinnd;
-            else if (addonright) binptnd.rightkd = mybinnd;
-            //else;//do nothing
+            mybinnd = new Bintreend("", "" + event.target.value, mybinptnd, null, null);
+            if (treatasrt);
+            else
+            {
+                if (addonleft) mybinptnd.leftkd = mybinnd;
+                else if (addonright) mybinptnd.rightkd = mybinnd;
+                //else;//do nothing
+            }
         }
         else
         {
@@ -2837,18 +2976,20 @@ function buildUserBinaryTree(domnode=null, binptnd=null, addonleft=false, addonr
         debugger;
 
         //update the parent node here
-        if (usepost && (addonleft || addonright))
+        if (!treatasrt && usepost && (addonleft || addonright))
         {
             console.log("begin updating the parent node on the server here!");
+            console.log("mybinptnd = " + mybinptnd);
+            debugger;
             let myoconfigobj = {
                 method: "PATCH",
                 headers: {
                     "Content-Type" : "application/json",
                     "Accept" : "application/json"
                 },
-                body: JSON.stringify(getAndGenerateServerObject(binptnd, false))
+                body: JSON.stringify(getAndGenerateServerObject(mybinptnd, false))
             };
-            fetch("http://localhost:3000/nodes/" + binptnd.id, myoconfigobj).
+            fetch("http://localhost:3000/nodes/" + mybinptnd.id, myoconfigobj).
             then((response) => response.json()).
             then(function(response){
                 console.log("response = " + response);
@@ -2939,7 +3080,7 @@ function buildUserBinaryTree(domnode=null, binptnd=null, addonleft=false, addonr
         //  <td> <span> table or button </span></td>
         //</table>
         
-        if (remdomonly) removeDOMNodeAndShowButton(mypttable, domnode);
+        if (remdomonly) removeDOMNodeAndShowButton(mypttable);//, domnode
         else
         {
             //remove software node and
@@ -2963,8 +3104,52 @@ function buildUserBinaryTree(domnode=null, binptnd=null, addonleft=false, addonr
                 then((response) => response.json()).
                 then(function(response){
                     console.log("response = " + response);
+                    //console.log("mygenndsarr = " + mygenndsarr);
+                    //debugger;
+                    let myndi = getArrayIndexForNodeOnArray(mybinnd);
+                    console.log("myndi = " + myndi);
+                    console.log("OLD mygenndsarr.length = " + mygenndsarr.length);
+                    
                     mybinnd.remove();
-                    removeDOMNodeAndShowButton(mypttable, domnode);
+                    mybinnd = null;
+                    if (myndi < 0 || myndi > mygenndsarr.length - 1);
+                    else
+                    {
+                        mygenndsarr[myndi] = null;
+                        mygenndsarr = mygenndsarr.filter(function(item, index){
+                            if (index == myndi) return false;//get rid of this
+                            else return true;//keep these
+                        });
+                    }
+                    console.log("NEW mygenndsarr.length = " + mygenndsarr.length);
+
+                    removeDOMNodeAndShowButton(mypttable);//, domnode
+                    
+                    //display the transversals here
+                    //update the type of tree here
+                    //update the number of nodes on the tree
+                    displayTreeStatsAndUpdateThem(getFirstNonNullBinTreeNodeFromArray());
+
+                    //show the form when all nodes are removed from the tree
+                    //so the page does not need to be reloaded in order to function
+                    let mytreesectkds = document.getElementById("tree").children;
+                    let hasatleastonendontree = false;
+                    if (mytreesectkds == undefined || mytreesectkds == null || mytreesectkds.length < 1);
+                    else
+                    {
+                        if (mytreesectkds.length > 1) hasatleastonendontree = true;
+                        //else;//do nothing
+                    }
+                    console.log("hasatleastonendontree = " + hasatleastonendontree);
+                    
+                    if (!hasatleastonendontree && (mygenndsarr == null || mygenndsarr.length < 1))
+                    {
+                        let myloadfrm = document.getElementById("myloadingform");
+                        myloadfrm.style.display = "block";
+                        console.log("no nodes on the tree, so displayed the loading form again!");
+                    }
+                    //else;//do nothing
+                    
                     console.log("succesfully deleted the node from the server!");
                 }).catch(function(err){
                     console.error("Error: there was a problem removing the nodes from the server!");
@@ -2986,7 +3171,7 @@ document.addEventListener("DOMContentLoaded", function(event){
 
     //show the form
     let myloadfrm = document.getElementById("myloadingform");
-    myloadfrm.style.display="block";
+    myloadfrm.style.display = "block";
     let myloadopts = myloadfrm.getElementsByTagName("input");
     for (let n = 0; n < 3; n++)
     {
