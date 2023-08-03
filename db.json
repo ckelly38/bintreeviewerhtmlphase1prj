@@ -1,5 +1,14 @@
 {
-  "nodes": [],
+  "nodes": [
+    {
+      "ptnd": null,
+      "leftkd": "",
+      "rightkd": null,
+      "data": "8",
+      "isbinsrchtree": true,
+      "id": 1
+    }
+  ],
   "exbinsearchtreenodes": [
     {
       "ptnd": null,

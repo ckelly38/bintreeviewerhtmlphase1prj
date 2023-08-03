@@ -2163,7 +2163,7 @@ function getNumKidsDOMNodeHas(tabledomnd)
     }
 }
 
-function getLeftOrRightKidDOMNodeHas(tabledomnd, useleft, usetable=true)
+function getLeftOrRightKidDOMNodeHas(tabledomnd, useleft, usespan=false, usetable=true)
 {
     if (useleft == undefined || useleft == null)
     {
@@ -2185,6 +2185,16 @@ function getLeftOrRightKidDOMNodeHas(tabledomnd, useleft, usetable=true)
         else throw "usetable must be a defined boolean variable!";
     }
 
+    if (usespan == undefined || usespan == null)
+    {
+        throw "usespan must be a defined boolean variable!";
+    }
+    else
+    {
+        if (usespan == true || usespan == false);
+        else throw "usespan must be a defined boolean variable!";
+    }
+
     if (tabledomnd == undefined || tabledomnd == null) return null;
     //else;//do nothing
 
@@ -2195,15 +2205,26 @@ function getLeftOrRightKidDOMNodeHas(tabledomnd, useleft, usetable=true)
     if (useleft) mykdindx = 0;
     else mykdindx = 2;
     
-    return tabledomnd.children[1].children[mykdindx].firstChild.children[mytindx];
+    //table.tr.td.span.(table or button)
+    let myspan = tabledomnd.children[1].children[mykdindx].firstChild;
+    if (usespan) return myspan;
+    else return myspan.children[mytindx];
+}
+function getLeftKidSpanDOMNodeHas(tabledomnd)
+{
+    return getLeftOrRightKidDOMNodeHas(tabledomnd, true, true, false);
+}
+function getRightKidSpanDOMNodeHas(tabledomnd)
+{
+    return getLeftOrRightKidDOMNodeHas(tabledomnd, false, true, false);
 }
 function getLeftKidDOMNodeHas(tabledomnd, usetable=true)
 {
-    return getLeftOrRightKidDOMNodeHas(tabledomnd, true, usetable);
+    return getLeftOrRightKidDOMNodeHas(tabledomnd, true, false, usetable);
 }
 function getRightKidDOMNodeHas(tabledomnd, usetable=true)
 {
-    return getLeftOrRightKidDOMNodeHas(tabledomnd, false, usetable);
+    return getLeftOrRightKidDOMNodeHas(tabledomnd, false, false, usetable);
 }
 
 function getParentDOMNodeHas(tabledomnd)
@@ -2211,6 +2232,17 @@ function getParentDOMNodeHas(tabledomnd)
     if (tabledomnd == undefined || tabledomnd == null) return null;
     else return tabledomnd.parentNode.parentNode.parentNode.parentNode;
     //table.span.td.tr.table
+}
+
+function getFarthestLeftHTMLDOMNodeOfDOMNode(tabledomnd)
+{
+    if (tabledomnd == undefined || tabledomnd == null) return null;
+    else
+    {
+        let mylkd = getLeftKidDOMNodeHas(tabledomnd);
+        if (mylkd == null) return tabledomnd;
+        else return getFarthestLeftHTMLDOMNodeOfDOMNode(mylkd);
+    }
 }
 
 function removeDOMNode(mytabledomnode)
@@ -2267,8 +2299,76 @@ function removeDOMNode(mytabledomnode)
         //tabledomnode.children[1].children[0].firstChild.children[1] for the table (kid itself)
         //tabledomnode.children[1].children[0].firstChild.children[0] for the button
         //
+        //to get the farthest left kid of the DOM Node: getFarthestLeftHTMLDOMNodeOfDOMNode(tabledomnd)
         
+        console.log("this has at one or two kids!");
         
+        let noleftkd = (getLeftKidDOMNodeHas(mytabledomnode) == null);
+        let norightkd = (getRightKidDOMNodeHas(mytabledomnode) == null);
+        
+        console.log("noleftkd = " + noleftkd);
+        console.log("norightkd = " + norightkd);
+
+        let nwrtdomnd = null;
+        let hasbothkids = false;
+        if (noleftkd || norightkd)
+        {
+            //has one kid
+            console.log("this has one kid!");
+            if (norightkd) nwrtdomnd = getLeftKidDOMNodeHas(mytabledomnode);
+            else nwrtdomnd = getRightKidDOMNodeHas(mytabledomnode);
+        }
+        else
+        {
+            //has both kids
+            console.log("this has both kids!");
+            hasbothkids = true;
+            nwrtdomnd = getFarthestLeftHTMLDOMNodeOfDOMNode(getRightKidDOMNodeHas(mytabledomnode));
+        }
+        console.log("hasbothkids = " + hasbothkids);
+        console.log("nwrtdomnd = " + nwrtdomnd);
+        debugger;
+
+        let islkdofptnd = false;
+        let isrkdofptnd = false;
+        let mynwptndref = getParentDOMNodeHas(mytabledomnode);
+        console.log("mynwptndref = " + mynwptndref);
+
+        if (mynwptndref == null);
+        else
+        {
+            if (getLeftKidDOMNodeHas(mynwptndref) == mytabledomnode)
+            {
+                islkdofptnd = true;
+                console.log("this is the left kid of its parent node!");
+            }
+            else
+            {
+                if (getRightKidDOMNodeHas(mynwptndref) == mytabledomnode)
+                {
+                    isrkdofptnd = true;
+                    console.log("this is the left kid of its parent node!");
+                }
+                else throw "this must be a kid of the parent node, but it was not!";
+            }
+        }
+        console.log("islkdofptnd = " + islkdofptnd);
+        console.log("isrkdofptnd = " + isrkdofptnd);
+
+        //   4 <- remove this, replace with 5
+        // 2   6
+        //0 3 5 8
+        //
+        //   4
+        // 2   6 <- remove this, replace with 8
+        //0 3   8
+        //
+        //so on the right tree find the farthest left node that has no kids
+        //this will then be the new root
+        //then we just hook up the kids
+        //we also set the left and right kids new parent node
+        //then we are free to set that parent node to null after we nullify all of the properties
+
         if (numkidsofdomnd == 1)
         {
             //   4
@@ -2277,16 +2377,51 @@ function removeDOMNode(mytabledomnode)
             //
             //suppose we have the tree above: we want to remove 6 what do we need to do to accomplish that?
             //
+            //we want the parent of [the node we are removing] to now have the kid of
+            //[the node we are removing] as its kid
             //
-            //
-            //
+
+            console.log("THIS HAS ONE KID! IT IS EITHER THE LEFT OR THE RIGHT KID!");
+            
+            //get the parent node reference: mynwptndref
+            //the node we want is: nwrtdomnd
+            //nwrtdomnd.ptnd = mynwptndref;
+            console.log("mynwptndref = " + mynwptndref);
+            console.log("nwrtdomnd = " + nwrtdomnd);
+            console.log("mytabledomnode = " + mytabledomnode);
+            //debugger;
+
+            if (islkdofptnd || isrkdofptnd)
+            {
+                if (islkdofptnd)
+                {
+                    //mynwptndref.leftkd = nwrtdomnd;
+                    getLeftKidSpanDOMNodeHas(mynwptndref).appendChild(nwrtdomnd);
+                    //console.log("NEW this.ptnd.leftkd = " + this.ptnd.leftkd);
+                    //console.log("NEW this.ptnd.leftkd.id = " + this.ptnd.leftkd.id);
+                    //console.log("NEW this.ptnd.leftkd.data = " + this.ptnd.leftkd.data);
+                }
+                else //if (isrkdofptnd)
+                {
+                    //mynwptndref.rightkd = nwrtdomnd;
+                    getRightKidSpanDOMNodeHas(mynwptndref).appendChild(nwrtdomnd);
+                    //console.log("NEW this.ptnd.rightkd = " + this.ptnd.rightkd);
+                    //console.log("NEW this.ptnd.rightkd.id = " + this.ptnd.rightkd.id);
+                    //console.log("NEW this.ptnd.rightkd.data = " + this.ptnd.rightkd.data);
+                }
+                //else throw "this must be a kid of the parent node, but it was not!";
+            }
+            //else;//do nothing parent node will be null
+            //debugger;
+
+            //now can remove it...
+            removeAllDOMKidsOfDOMNode(mytabledomnode, true);
         }
         else //if (numkidsofdomnd == 2)
         {
-            //
+            throw "NOT DONE YET 8-1-2023 7 PM!";
         }
-
-        throw "NOT DONE YET 8-1-2023 7 PM!";
+        console.log("node removed successfully!");
     }
     else throw "illegal number of kids of the dom node was found and used here!";
 }
@@ -2306,14 +2441,30 @@ function removeDOMNodeAndShowButton(mypttable, domnode)
     if (domnode == null);
     else
     {
-        let myhbtn = domnode.firstChild;
-        if (myhbtn.tagName === "BUTTON")
+        console.log("domnode.children.length = " + domnode.children.length);
+        if (domnode.children.length == 2)
         {
-            myhbtn.style.display = "block";
-            myhbtn.disabled = false;
+            if (domnode.children[1].tagName === "TABLE");
+            else throw "this kid must be a table, but it was not!";
         }
-        else throw "this must be a button!";
+        else if (domnode.children.length == 1)
+        {
+            let myhbtn = domnode.firstChild;
+            console.log("myhbtn = " + myhbtn);
+            console.log("(myhbtn.tagName === 'BUTTON') = " + (myhbtn.tagName === "BUTTON"));
+            debugger;
+            if (myhbtn.tagName === "BUTTON")
+            {
+                myhbtn.style.display = "block";
+                myhbtn.disabled = false;
+                console.log("displayed the button!");
+            }
+            else throw "this must be a button!";
+            debugger;
+        }
+        else throw "the dom node has an illegal number of kids!";
     }
+
     console.log("successfully deleted the node!");
 }
 
