@@ -1338,8 +1338,8 @@ function clearAndHideAllTransversals()
 
 function showOrHideToolTip(pdivelem, showelem, useclick)
 {
-    console.log("showelem = " + showelem);
-    console.log("useclick = " + useclick);
+    //console.log("showelem = " + showelem);
+    //console.log("useclick = " + useclick);
     if (showelem == undefined || showelem == null)
     {
         throw "showelem must be a defined boolean variable!";
@@ -1369,13 +1369,13 @@ function showOrHideToolTip(pdivelem, showelem, useclick)
     if (useclick) console.log("clicked node in transversal!");
     else console.log("hovered " + (showelem ? "on" : "off") + " node in transversal!");
     //console.log("this = " + this);
-    console.log("this.id = " + this.id);
-    console.log("this.data = " + this.data);
+    //console.log("this.id = " + this.id);
+    //console.log("this.data = " + this.data);
     //console.log("this.level = " + this.level);
     let mydatinfospan = pdivelem.getElementsByTagName("span")[0];
     if (useclick)
     {
-        console.log("mydatinfospan.style.display = " + mydatinfospan.style.display);
+        //console.log("mydatinfospan.style.display = " + mydatinfospan.style.display);
         if (mydatinfospan.style.display === "none") mydatinfospan.style.display = "inline-block";
         else if (mydatinfospan.style.display === "inline-block") mydatinfospan.style.display = "none";
         else throw "invalid display value found and used here!";
@@ -1588,7 +1588,7 @@ function displayTransversals(mybinnd)
         }
         //else;//do nothing
     }
-    console.log("fndmybinnd = " + fndmybinnd);
+    //console.log("fndmybinnd = " + fndmybinnd);
 
     if (fndmybinnd);
     else throw "the bin node must have been found on the transversal, but it was not!";
@@ -1658,8 +1658,8 @@ function displayTransversals(mybinnd)
             let myuselenvar;
             if (n == 0) myuselenvar = 1;
             else myuselenvar = myinordertransbeforert.length;
-            console.log("n = " + n);
-            console.log("myuselenvar = " + myuselenvar);
+            //console.log("n = " + n);
+            //console.log("myuselenvar = " + myuselenvar);
             generateTransversalDOMNodesFor(myinordertransbeforert[n], myuselenvar,
                 document.getElementById("innrmalndsparta"), (n + 1 == myinordertransbeforert.length));
             //islastnd, isrtnd
@@ -1817,42 +1817,43 @@ function testDeletingNodes(mytransarr, arrnm="mytransarr")
             console.log("oldnumnodesontree = " + oldnumnodesontree);
             mytransarr[n].remove();
             mytransarr[n] = null;
+            //doTransversalsHaveAllGenNodes();
 
             for (let p = 0; p < mytransarr.length; p++)
             {
                 if (mytransarr[p] == null)
                 {
-                    console.log("NEW mytransarr[" + p + "] = null");
+                    //console.log("NEW mytransarr[" + p + "] = null");
                 }
                 else
                 {
-                    console.log("NEW " + arrnm + "[" + p + "].id = " + mytransarr[p].id);
-                    console.log("NEW " + arrnm + "[" + p + "].data = " + mytransarr[p].data);
-                    console.log("NEW " + arrnm + "[" + p + "].leftkd = " + mytransarr[p].leftkd);
+                    //console.log("NEW " + arrnm + "[" + p + "].id = " + mytransarr[p].id);
+                    //console.log("NEW " + arrnm + "[" + p + "].data = " + mytransarr[p].data);
+                    //console.log("NEW " + arrnm + "[" + p + "].leftkd = " + mytransarr[p].leftkd);
                     if (mytransarr[p].leftkd == null);
                     else
                     {
-                        console.log("NEW " + arrnm + "[" + p + "].leftkd.id = " +
-                            mytransarr[p].leftkd.id);
-                        console.log("NEW " + arrnm + "[" + p + "].leftkd.data = " +
-                            mytransarr[p].leftkd.data);
+                        //console.log("NEW " + arrnm + "[" + p + "].leftkd.id = " +
+                        //    mytransarr[p].leftkd.id);
+                        //console.log("NEW " + arrnm + "[" + p + "].leftkd.data = " +
+                        //    mytransarr[p].leftkd.data);
                     }
-                    console.log("NEW " + arrnm + "[" + p + "].rightkd = " + mytransarr[p].rightkd);
+                    //console.log("NEW " + arrnm + "[" + p + "].rightkd = " + mytransarr[p].rightkd);
                     if (mytransarr[p].rightkd == null);
                     else
                     {
-                        console.log("NEW " + arrnm + "[" + p + "].rightkd.id = " +
-                            mytransarr[p].rightkd.id);
-                        console.log("NEW " + arrnm + "[" + p + "].rightkd.data = " +
-                            mytransarr[p].rightkd.data);
+                        //console.log("NEW " + arrnm + "[" + p + "].rightkd.id = " +
+                        //    mytransarr[p].rightkd.id);
+                        //console.log("NEW " + arrnm + "[" + p + "].rightkd.data = " +
+                        //    mytransarr[p].rightkd.data);
                     }
-                    console.log("NEW " + arrnm + "[" + p + "].ptnd = " + mytransarr[p].ptnd);
+                    //console.log("NEW " + arrnm + "[" + p + "].ptnd = " + mytransarr[p].ptnd);
                     if (mytransarr[p].ptnd == null);
                     else
                     {
-                        console.log("NEW " + arrnm + "[" + p + "].ptnd.id = " + mytransarr[p].ptnd.id);
-                        console.log("NEW " + arrnm + "[" + p + "].ptnd.data = " +
-                            mytransarr[p].ptnd.data);
+                        //console.log("NEW " + arrnm + "[" + p + "].ptnd.id = " + mytransarr[p].ptnd.id);
+                        //console.log("NEW " + arrnm + "[" + p + "].ptnd.data = " +
+                        //    mytransarr[p].ptnd.data);
                     }
                 }
             }//end of p for loop
@@ -1961,9 +1962,9 @@ function makeBinarySearchTreeNodesToSave()
     for (let n = 0; n < mypreordertree.length; n++)
     {
         let cndlv = mypreordertree[n].level;
-        console.log("mypreordertree[" + n + "].level = cndlv = " + cndlv);
-        console.log("mypreordertree[" + n + "].data = " + mypreordertree[n].data);
-        console.log("mypreordertree[" + n + "].isRootNode() = " + mypreordertree[n].isRootNode());
+        //console.log("mypreordertree[" + n + "].level = cndlv = " + cndlv);
+        //console.log("mypreordertree[" + n + "].data = " + mypreordertree[n].data);
+        //console.log("mypreordertree[" + n + "].isRootNode() = " + mypreordertree[n].isRootNode());
         if (mypreordertree[n].isRootNode())
         {
             if (cndlv == 0);
@@ -1971,16 +1972,16 @@ function makeBinarySearchTreeNodesToSave()
         }
         else
         {
-            console.log("mypreordertree[" + n + "].root.data = " + mypreordertree[n].root.data);
-            console.log("mypreordertree[" + n + "].root.id = " + mypreordertree[n].root.id);
-            console.log("mypreordertree[" + n + "].root.isParentOf(mypreordertree[" + n + "]) = " +
-                mypreordertree[n].root.isParentOf(mypreordertree[n]));
-            console.log("mypreordertree[" + n + "].root.isParentOf(mypreordertree[" + n + "], " +
-                "mypreordertree[" + n + "].root) = " +
-                mypreordertree[n].root.isParentOf(mypreordertree[n], mypreordertree[n].root));
-            console.log("mypreordertree[" + n + "].isKidOfParent(mypreordertree[" + n +
-                "], mypreordertree[" + n + "].root) = " +
-                mypreordertree[n].isKidOfParent(mypreordertree[n], mypreordertree[n].root));
+            //console.log("mypreordertree[" + n + "].root.data = " + mypreordertree[n].root.data);
+            //console.log("mypreordertree[" + n + "].root.id = " + mypreordertree[n].root.id);
+            //console.log("mypreordertree[" + n + "].root.isParentOf(mypreordertree[" + n + "]) = " +
+            //    mypreordertree[n].root.isParentOf(mypreordertree[n]));
+            //console.log("mypreordertree[" + n + "].root.isParentOf(mypreordertree[" + n + "], " +
+            //    "mypreordertree[" + n + "].root) = " +
+            //    mypreordertree[n].root.isParentOf(mypreordertree[n], mypreordertree[n].root));
+            //console.log("mypreordertree[" + n + "].isKidOfParent(mypreordertree[" + n +
+            //    "], mypreordertree[" + n + "].root) = " +
+            //    mypreordertree[n].isKidOfParent(mypreordertree[n], mypreordertree[n].root));
             if (mypreordertree[n].root.isParentOf(mypreordertree[n]))
             {
                 if (cndlv == 1);
@@ -2089,13 +2090,13 @@ function makeBinarySearchTreeNodesToSave()
             };
             fetch("http://localhost:3000/nodes", configobj).then((response) => response.json()).
             then(function(response){
-                console.log("response = " + response);
+                //console.log("response = " + response);
                 //debugger;
-                console.log("response.id = " + response.id);
-                console.log("response.data = " + response.data);
-                console.log("myndsbyid[" + n + "].id = " + myndsbyid[n].id);
-                console.log("myndsbyid[" + n + "].data = " + myndsbyid[n].data);
-                debugger;
+                //console.log("response.id = " + response.id);
+                //console.log("response.data = " + response.data);
+                //console.log("myndsbyid[" + n + "].id = " + myndsbyid[n].id);
+                //console.log("myndsbyid[" + n + "].data = " + myndsbyid[n].data);
+                //debugger;
             })
             .catch(function(err){
                 console.error("there was a problem posting the data on the server!");
@@ -2186,13 +2187,13 @@ function getFirstNonNullBinTreeNodeFromArray()
     {
         for (let n = 0; n < mygenndsarr.length; n++)
         {
-            console.log("mygenndsarr[" + n + "] = " + mygenndsarr[n]);
-            debugger;
+            //console.log("mygenndsarr[" + n + "] = " + mygenndsarr[n]);
+            //debugger;
             if (mygenndsarr[n] == null) throw "not allowed to have null nodes on this list!";
             else
             {
                 //console.log("mygenndsarr[" + n + "] = " + mygenndsarr[n]);
-                console.log("mygenndsarr[" + n + "].id = " + mygenndsarr[n].id);
+                //console.log("mygenndsarr[" + n + "].id = " + mygenndsarr[n].id);
                 mybinnd = mygenndsarr[n];
                 break;
             }
@@ -2227,18 +2228,18 @@ function addLeftOrRightKidBtnListener(mybtn, mybinnd, useleft)
 
     mybtn.addEventListener("click", function(event){
         console.log("clicked the " + (useleft ? "left" : "right") + " button!");
-        console.log("event = " + event);
-        console.log("event.target = " + event.target);
-        console.log("mybinnd = " + mybinnd);
-        debugger;
+        //console.log("event = " + event);
+        //console.log("event.target = " + event.target);
+        //console.log("mybinnd = " + mybinnd);
+        //debugger;
         buildUserBinaryTree(mybtn.parentNode, mybinnd, useleft, !useleft);
         mybtn.disabled = true;
         mybtn.style.display = "none";
         //mybtn.remove();//must only hide and disable because we need it later
-        debugger;
+        //debugger;
     });
     console.log("successfully added the add " + (useleft ? "left" : "right") + " kid listener!");
-    debugger;
+    //debugger;
 }
 function addRightKidBtnListener(mybtn, mybinnd)
 {
@@ -2403,16 +2404,15 @@ function trimTreeToMemory(mysnd=null)
     //else;//do nothing
 
     let mydiv = mysnd.children[0].children[1].firstChild;
-    console.log("mydiv = " + mydiv);
-    console.log("mydiv.id = " + mydiv.id);
+    //console.log("mydiv = " + mydiv);
+    //console.log("mydiv.id = " + mydiv.id);
     let mydividstr = "" + mydiv.id;
     let btnsdisable = (mydividstr.indexOf("nwnd") == 0);
-    console.log("btnsdisable = " + btnsdisable);
+    //console.log("btnsdisable = " + btnsdisable);
 
     if (btnsdisable)
     {
         removeAllDOMKidsOfDOMNode(mysnd, true);
-        return;
     }
     else
     {
@@ -2422,14 +2422,13 @@ function trimTreeToMemory(mysnd=null)
         let myrightkd = getRightKidDOMNodeHas(mysnd);
         if (myrightkd == null);
         else trimTreeToMemory(myrightkd);
-        return;
     }
 }
 
 function removeDOMNode(mytabledomnode)
 {
     let numkidsofdomnd = getNumKidsDOMNodeHas(mytabledomnode);
-    console.log("numkidsofdomnd = " + numkidsofdomnd);
+    //console.log("numkidsofdomnd = " + numkidsofdomnd);
 
     if (numkidsofdomnd == 0)
     {
@@ -2495,20 +2494,20 @@ function removeDOMNode(mytabledomnode)
         if (noleftkd || norightkd)
         {
             //has one kid
-            console.log("this has one kid!");
+            //console.log("this has one kid!");
             if (norightkd) nwrtdomnd = getLeftKidDOMNodeHas(mytabledomnode);
             else nwrtdomnd = getRightKidDOMNodeHas(mytabledomnode);
         }
         else
         {
             //has both kids
-            console.log("this has both kids!");
+            //console.log("this has both kids!");
             hasbothkids = true;
             nwrtdomnd = getFarthestLeftHTMLDOMNodeOfDOMNode(getRightKidDOMNodeHas(mytabledomnode));
         }
         console.log("hasbothkids = " + hasbothkids);
         console.log("nwrtdomnd = " + nwrtdomnd);
-        debugger;
+        //debugger;
 
         let islkdofptnd = false;
         let isrkdofptnd = false;
@@ -2521,14 +2520,14 @@ function removeDOMNode(mytabledomnode)
             if (getLeftKidDOMNodeHas(mynwptndref) == mytabledomnode)
             {
                 islkdofptnd = true;
-                console.log("this is the left kid of its parent node!");
+                //console.log("this is the left kid of its parent node!");
             }
             else
             {
                 if (getRightKidDOMNodeHas(mynwptndref) == mytabledomnode)
                 {
                     isrkdofptnd = true;
-                    console.log("this is the left kid of its parent node!");
+                    //console.log("this is the left kid of its parent node!");
                 }
                 else throw "this must be a kid of the parent node, but it was not!";
             }
@@ -2616,8 +2615,8 @@ function removeDOMNode(mytabledomnode)
             console.log("trimmed the tree to memory!");
 
             let nwnumkidsofdomnd = getNumKidsDOMNodeHas(mytabledomnode);
-            console.log("nwnumkidsofdomnd = " + nwnumkidsofdomnd);
-            debugger;
+            //console.log("nwnumkidsofdomnd = " + nwnumkidsofdomnd);
+            //debugger;
 
             if (nwnumkidsofdomnd == numkidsofdomnd);
             else
@@ -2634,7 +2633,7 @@ function removeDOMNode(mytabledomnode)
             console.log("mynwptndref = " + mynwptndref);
             console.log("nwrtdomnd = " + nwrtdomnd);
             //my new root is nwrtdomnd
-            debugger;
+            //debugger;
 
 
             //what we are starting with:
@@ -2699,13 +2698,13 @@ function removeDOMNode(mytabledomnode)
                 //it has a kid
                 document.getElementById("tree").appendChild(nwrtdomnd);
             }
-            debugger;
+            //debugger;
 
             if (nwrtdomnd === myleftkd);
             else getLeftKidSpanDOMNodeHas(nwrtdomnd).appendChild(myleftkd);
             if (nwrtdomnd === myrightkd);
             else getRightKidSpanDOMNodeHas(nwrtdomnd).appendChild(myrightkd);
-            debugger;
+            //debugger;
 
             //now can remove it...
             removeAllDOMKidsOfDOMNode(mytabledomnode, true);
@@ -2756,7 +2755,7 @@ function makeSureAllButtonsAreDisplayedIfTheyAreSupposedTo(snddomnode=null, user
         else if (n == 1) myspan = getRightKidSpanDOMNodeHas(mydomrootnd);
         else throw "illegal value for index n was found and used here!";
 
-        console.log("myspan.children.length = " + myspan.children.length);
+        //console.log("myspan.children.length = " + myspan.children.length);
         if (myspan.children.length == 2)
         {
             if (myspan.children[0].tagName === "BUTTON" && myspan.children[1].tagName === "TABLE")
@@ -2778,15 +2777,15 @@ function makeSureAllButtonsAreDisplayedIfTheyAreSupposedTo(snddomnode=null, user
         else if (myspan.children.length == 1)
         {
             let mydiv = mydomrootnd.children[0].children[1].firstChild;
-            console.log("mydiv = " + mydiv);
-            console.log("mydiv.id = " + mydiv.id);
+            //console.log("mydiv = " + mydiv);
+            //console.log("mydiv.id = " + mydiv.id);
             let mydividstr = "" + mydiv.id;
             let btnsdisable = (mydividstr.indexOf("nwnd") == 0);
             console.log("btnsdisable = " + btnsdisable);
             
             let myhbtn = myspan.firstChild;
-            console.log("myhbtn = " + myhbtn);
-            console.log("(myhbtn.tagName === 'BUTTON') = " + (myhbtn.tagName === "BUTTON"));
+            //console.log("myhbtn = " + myhbtn);
+            //console.log("(myhbtn.tagName === 'BUTTON') = " + (myhbtn.tagName === "BUTTON"));
             if (myhbtn.tagName === "BUTTON")
             {
                 if (btnsdisable)
@@ -2944,10 +2943,10 @@ function buildUserBinaryTree(domnode=null, binptnd=null, addonleft=false, addonr
     
     const mynwndidstr = "nwnd" + ((numids <= 0) ? "" : ("" + numids));
     mydiv.id = "" + mynwndidstr;
-    console.log("mynwndidstr = " + mynwndidstr);
+    //console.log("mynwndidstr = " + mynwndidstr);
     
     numids++;
-    console.log("NEW numids = " + numids);
+    //console.log("NEW numids = " + numids);
     
     let myleftbtn = document.createElement("button");
     let myrightbtn = document.createElement("button");
@@ -3059,17 +3058,17 @@ function buildUserBinaryTree(domnode=null, binptnd=null, addonleft=false, addonr
     
     mynwtextareaelem.addEventListener("change", function(bl, br, event){
         console.log("the textarea was changed!");
-        console.log("event = " + event);
-        console.log("this = " + this);
-        console.log("this.parentNode = " + this.parentNode);
-        console.log("this.parentNode.id = " + this.parentNode.id);
-        console.log("this.value = " + this.value);
-        console.log("event.target = " + event.target);
-        console.log("event.target.value = " + event.target.value);
-        console.log("event.target.parentNode = " + event.target.parentNode);
-        console.log("event.target.parentNode.id = " + event.target.parentNode.id);
-        console.log("bl = " + bl);
-        console.log("br = " + br);
+        //console.log("event = " + event);
+        //console.log("this = " + this);
+        //console.log("this.parentNode = " + this.parentNode);
+        //console.log("this.parentNode.id = " + this.parentNode.id);
+        //console.log("this.value = " + this.value);
+        //console.log("event.target = " + event.target);
+        //console.log("event.target.value = " + event.target.value);
+        //console.log("event.target.parentNode = " + event.target.parentNode);
+        //console.log("event.target.parentNode.id = " + event.target.parentNode.id);
+        //console.log("bl = " + bl);
+        //console.log("br = " + br);
         //if empty, do not update server and disable the add child buttons until not empty
         //need to get the left and right buttons that correspond with this and then enable them
         //bl.disabled = false;
@@ -3146,7 +3145,7 @@ function buildUserBinaryTree(domnode=null, binptnd=null, addonleft=false, addonr
         }
 
         let myptchbdystr = JSON.stringify(getAndGenerateServerObject(mybinnd, false));
-        console.log("myptchbdystr = " + myptchbdystr);
+        //console.log("myptchbdystr = " + myptchbdystr);
         let myidindx = myptchbdystr.indexOf('"id":');
         let cmaafteridindx = -1;
         for (let i = myidindx + 5; i < myptchbdystr.length; i++)
@@ -3158,13 +3157,13 @@ function buildUserBinaryTree(domnode=null, binptnd=null, addonleft=false, addonr
             }
             //else;//do nothing
         }
-        console.log("cmaafteridindx = " + cmaafteridindx);
+        //console.log("cmaafteridindx = " + cmaafteridindx);
         if (cmaafteridindx < 0 || cmaafteridindx > myptchbdystr.length - 1)
         {
             throw "illegal value found and used for the cmaafteridindx index!";
         }
         let mypstbdystr = myptchbdystr.substring(0, myidindx) + myptchbdystr.substring(cmaafteridindx + 1);
-        console.log("mypstbdystr = " + mypstbdystr);
+        //console.log("mypstbdystr = " + mypstbdystr);
         
         let mymethdstr = "";
         let mybdystr = "";
@@ -3180,9 +3179,9 @@ function buildUserBinaryTree(domnode=null, binptnd=null, addonleft=false, addonr
             mybdystr = "" + myptchbdystr;
             myresurl += "/" + mybinnd.id;
         }
-        console.log("mymethdstr = " + mymethdstr);
-        console.log("mybdystr = " + mybdystr);
-        console.log("myresurl = " + myresurl);
+        //console.log("mymethdstr = " + mymethdstr);
+        //console.log("mybdystr = " + mybdystr);
+        //console.log("myresurl = " + myresurl);
 
         //we need to asynchronously add this to the server
         //get the id and then update said object
@@ -3197,11 +3196,11 @@ function buildUserBinaryTree(domnode=null, binptnd=null, addonleft=false, addonr
         };
         fetch(myresurl, myconfigobj).then((response) => response.json()).
         then(function(response){
-            console.log("response = " + response);
-            console.log("response.id = " + response.id);
+            //console.log("response = " + response);
+            //console.log("response.id = " + response.id);
             let myresidstr = "" + response.id;
             console.log("usepost = " + usepost);
-            debugger;
+            //debugger;
             if (response.id == undefined || response.id == null || myresidstr.length < 1)
             {
                 throw "illegal response id found and used here!";
@@ -3231,7 +3230,7 @@ function buildUserBinaryTree(domnode=null, binptnd=null, addonleft=false, addonr
             }
             else
             {
-                console.log("response.data = " + response.data);
+                //console.log("response.data = " + response.data);
                 
                 //display the transversals here
                 //update the type of tree here
@@ -3248,14 +3247,14 @@ function buildUserBinaryTree(domnode=null, binptnd=null, addonleft=false, addonr
             alert("Error: There was a problem updating or putting the data on the server! " +
                 "See log for details!");
         });
-        debugger;
+        //debugger;
 
         //update the parent node here
         if (!treatasrt && usepost && (addonleft || addonright))
         {
             console.log("begin updating the parent node on the server here!");
-            console.log("mybinptnd = " + mybinptnd);
-            debugger;
+            //console.log("mybinptnd = " + mybinptnd);
+            //debugger;
             let myoconfigobj = {
                 method: "PATCH",
                 headers: {
@@ -3267,10 +3266,10 @@ function buildUserBinaryTree(domnode=null, binptnd=null, addonleft=false, addonr
             fetch("http://localhost:3000/nodes/" + mybinptnd.id, myoconfigobj).
             then((response) => response.json()).
             then(function(response){
-                console.log("response = " + response);
-                console.log("response.id = " + response.id);
+                //console.log("response = " + response);
+                //console.log("response.id = " + response.id);
                 let myresidstr = "" + response.id;
-                console.log("response.data = " + response.data);
+                //console.log("response.data = " + response.data);
                 
                 if (response.id == undefined || response.id == null || myresidstr.length < 1)
                 {
@@ -3285,30 +3284,30 @@ function buildUserBinaryTree(domnode=null, binptnd=null, addonleft=false, addonr
                 alert("Error: There was a problem updating the data on the server! " +
                     "See log for details!");
             });
-            debugger;
+            //debugger;
         }
         //else;//do nothing
     }.bind(mynwtextareaelem, myleftbtn, myrightbtn));
     console.log("successfully added my on change listener for the textarea for my node here!");
-    debugger;
+    //debugger;
 
     mydelbtn.addEventListener("click", function(event){
         console.log("delete button clicked for the node!");
-        console.log("event.target = " + event.target);
+        //console.log("event.target = " + event.target);
         
         //get the DOM node we are trying to remove...
         //we also need to get the BintreeNode we are trying to remove...
         //there is a case where we may not be getting the BintreeNode because it was not created yet
         
         let mypttable = event.target.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode;
-        console.log("mypttable = " + mypttable);
+        //console.log("mypttable = " + mypttable);
         let mypttrws = mypttable.getElementsByTagName("tr");
-        console.log("mypttrws[0] = " + mypttrws[0]);
+        //console.log("mypttrws[0] = " + mypttrws[0]);
         let mydivtargetcol = mypttrws[0].getElementsByTagName("td")[1];
-        console.log("mydivtargetcol = " + mydivtargetcol);
+        //console.log("mydivtargetcol = " + mydivtargetcol);
         let mydivtarget = mydivtargetcol.getElementsByTagName("div")[0];
-        console.log("mydivtarget = " + mydivtarget);
-        console.log("mydivtarget.id = " + mydivtarget.id);
+        //console.log("mydivtarget = " + mydivtarget);
+        //console.log("mydivtarget.id = " + mydivtarget.id);
         let mydividstr = "" + mydivtarget.id;
         let remdomonly = (mydividstr.indexOf("nwnd") == 0);
         console.log("remdomonly = " + remdomonly);
@@ -3383,12 +3382,12 @@ function buildUserBinaryTree(domnode=null, binptnd=null, addonleft=false, addonr
                 fetch("http://localhost:3000/nodes/" + mydivtarget.id, mydelconfigobj).
                 then((response) => response.json()).
                 then(function(response){
-                    console.log("response = " + response);
+                    //console.log("response = " + response);
                     //console.log("mygenndsarr = " + mygenndsarr);
                     //debugger;
                     let myndi = getArrayIndexForNodeOnArray(mybinnd);
-                    console.log("myndi = " + myndi);
-                    console.log("OLD mygenndsarr.length = " + mygenndsarr.length);
+                    //console.log("myndi = " + myndi);
+                    //console.log("OLD mygenndsarr.length = " + mygenndsarr.length);
                     
                     mybinnd.remove();
                     mybinnd = null;
@@ -3401,7 +3400,7 @@ function buildUserBinaryTree(domnode=null, binptnd=null, addonleft=false, addonr
                             else return true;//keep these
                         });
                     }
-                    console.log("NEW mygenndsarr.length = " + mygenndsarr.length);
+                    //console.log("NEW mygenndsarr.length = " + mygenndsarr.length);
 
                     doTransversalsHaveAllGenNodes();
                     
@@ -3416,7 +3415,7 @@ function buildUserBinaryTree(domnode=null, binptnd=null, addonleft=false, addonr
                 });
             }
         }
-        debugger;
+        //debugger;
     }.bind(mydelbtn));
     console.log("successfully added delete button listener!");
 }
