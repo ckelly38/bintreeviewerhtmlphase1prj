@@ -3,6 +3,232 @@ let loadbinsrchtree = false;
 let userbuildowntree = false;
 const myswdth = screen.width;
 let mygenndsarr = null;
+function getTransversalForNodeArray(svrndarr, usepost, usein, srtnd=null)
+{
+    if (svrndarr == undefined || svrndarr == null) return null;
+    else
+    {
+        if (svrndarr.length < 2) return svrndarr;
+        //else;//do nothing safe to proceed
+    }
+
+    let myretarr = new Array();
+    if (srtnd == undefined || srtnd == null)
+    {
+        throw "srtnd  is not allowed to be null!";
+    }
+    //else;//do nothing
+
+    if (usein == undefined || usepost == undefined || usein == null || usepost == null)
+    {
+        throw "usein and usepost must be defined boolean variables!";
+    }
+    else
+    {
+        if ((usepost === true || usepost === false) && (usein === true || usein === false));
+        else throw "usein and usepost must be defined boolean variables!";
+    }
+
+    if (usein === true && usepost === true)
+    {
+        throw "illegal transversal selected; you there is no transversal for in and post orders!";
+    }
+    //else;//do nothing
+
+    //in order: left root right
+    //pre order: root left right
+    //post order: left right root
+    //
+    //       f
+    //  d       k
+    // b e    h   m
+    //a c    g i l n
+    //  IN ORDER: a b c d e f g h i k l m n
+    // PRE ORDER: f d b a c e k h g i m l n
+    //POST ORDER: a c b e d g i h l n m k f
+    
+    if (usepost || usein);
+    else
+    {
+        //add the root node now
+        myretarr.push(srtnd);
+    }
+
+    let myleftkdstr = "";
+    if (srtnd.leftkd == null);
+    else myleftkdstr = "" + srtnd.leftkd;
+
+    let myrightkdstr = "";
+    if (srtnd.rightkd == null);
+    else myrightkdstr = "" + srtnd.rightkd;
+
+    if (myleftkdstr.length < 1)
+    {
+        //no left kid
+        //console.log("left kid is null!");
+            
+        if (usein)
+        {
+            //left root right
+            //console.log("using inorder!");
+            
+            myretarr.push(srtnd);//push current root now
+            
+            //console.log("added srtnd.data = " + srtnd.data + " to the list!");
+        }
+        //else;//do nothing
+
+        if (myrightkdstr.length < 1)
+        {
+            //console.log("right kid is null!");
+        }
+        else
+        {
+            let myrkdndi = -1;
+            for (let k = 0; k < svrndarr.length; k++)
+            {
+                if (svrndarr[k].id === srtnd.rightkd)
+                {
+                    myrkdndi = k;
+                    break;
+                }
+                //else;//do nothing
+            }
+            console.log("myrkdndi = " + myrkdndi);
+
+            if (myrkdndi < 0 || myrkdndi > svrndarr.length || myrkdndi == svrndarr.length)
+            {
+                throw "illegal index found and used for the root node!";
+            }
+            //else;//do nothing
+
+            let myrightrlist = getTransversalForNodeArray(svrndarr, usepost, usein, svrndarr[myrkdndi]);
+            if (myrightrlist == null || myrightrlist.length < 1);
+            else
+            {
+                for (let n = 0; n < myrightrlist.length; n++)
+                {
+                    //console.log("added myrightrlist[" + n + "].data = " + myrightrlist[n].data +
+                    //    " to the list!");
+                    myretarr.push(myrightrlist[n]);
+                }
+            }
+        }
+    }
+    else
+    {
+        //we have at least a left kid
+        let mylkdndi = -1;
+        for (let k = 0; k < svrndarr.length; k++)
+        {
+            if (svrndarr[k].id === srtnd.leftkd)
+            {
+                mylkdndi = k;
+                break;
+            }
+            //else;//do nothing
+        }
+        console.log("mylkdndi = " + mylkdndi);
+
+        if (mylkdndi < 0 || mylkdndi > svrndarr.length || mylkdndi == svrndarr.length)
+        {
+            throw "illegal index found and used for the root node!";
+        }
+        //else;//do nothing
+
+        let myleftrlist = getTransversalForNodeArray(svrndarr, usepost, usein, svrndarr[mylkdndi]);
+        if (myleftrlist == null || myleftrlist.length < 1);
+        else
+        {
+            for (let n = 0; n < myleftrlist.length; n++)
+            {
+                //console.log("added myleftrlist[" + n + "].data = " + myleftrlist[n].data +
+                //    " to the list!");
+                myretarr.push(myleftrlist[n]);
+            }
+        }
+
+        if (usein)
+        {
+            //left root right
+            //console.log("using inorder!");
+            
+            myretarr.push(srtnd);//push current root now
+            
+            //console.log("added srtnd.data = " + srtnd.data + " to the list!");
+        }
+        //else;//do nothing
+
+        if (myrightkdstr.length < 1)
+        {
+            //console.log("right kid is null!");
+        }
+        else
+        {
+            let myrkdndi = -1;
+            for (let k = 0; k < svrndarr.length; k++)
+            {
+                if (svrndarr[k].id === srtnd.rightkd)
+                {
+                    myrkdndi = k;
+                    break;
+                }
+                //else;//do nothing
+            }
+            console.log("myrkdndi = " + myrkdndi);
+
+            if (myrkdndi < 0 || myrkdndi > svrndarr.length || myrkdndi == svrndarr.length)
+            {
+                throw "illegal index found and used for the root node!";
+            }
+            //else;//do nothing
+
+            let myrightrlist = getTransversalForNodeArray(svrndarr, usepost, usein, svrndarr[myrkdndi]);
+            if (myrightrlist == null || myrightrlist.length < 1);
+            else
+            {
+                for (let n = 0; n < myrightrlist.length; n++)
+                {
+                    //console.log("added myrightrlist[" + n + "].data = " + myrightrlist[n].data +
+                    //    " to the list!");
+                    myretarr.push(myrightrlist[n]);
+                }
+            }
+        }
+    }
+
+    if (usepost)
+    {
+        //right left root
+        //console.log("using postorder!");
+        
+        myretarr.push(srtnd);//push current root now
+        
+        //console.log("added srtnd.data = " + srtnd.data + " to the list!");
+    }
+    //else;//do nothing
+
+    if (myretarr == undefined || myretarr == null || myretarr.length < 1)
+    {
+        throw "the return list must have at minimum the starting node on it!";
+    }
+    //else;//do nothing
+
+    return myretarr;
+}
+function getPreOrderTransversalForNodeArray(svrndarr, srtnd=null)
+{
+    return getTransversalForNodeArray(svrndarr, false, false, srtnd);
+}
+function getInOrderTransversalForNodeArray(svrndarr, srtnd=null)
+{
+    return getTransversalForNodeArray(svrndarr, false, true, srtnd);
+}
+function getPostOrderTransversalForNodeArray(svrndarr, srtnd=null)
+{
+    return getTransversalForNodeArray(svrndarr, true, false, srtnd);
+}
+
 function loadBinaryOrSearchTree(usesrchtree)
 {
     //get the list of nodes from the api
@@ -36,10 +262,53 @@ function loadBinaryOrSearchTree(usesrchtree)
     then(function(response){
         console.log(response);
         let mynodesarr = response;
+        let myrtndi = -1;
         for (let n = 0; n < mynodesarr.length; n++)
         {
-            console.log("mynodesarr[" + n + "] = " + mynodesarr[n]);
+            //console.log("mynodesarr[" + n + "] = " + mynodesarr[n]);
+            if (mynodesarr[n].ptnd == null)
+            {
+                myrtndi = n;
+                break;
+            }
+            //else;//do nothing
         }
+        console.log("myrtndi = " + myrtndi);
+
+        if (myrtndi < 0 || myrtndi > mynodesarr.length || myrtndi == mynodesarr.length)
+        {
+            throw "illegal root node index found and used here!";
+        }
+        //else;//do nothing
+
+        let mypretransndarr = getPreOrderTransversalForNodeArray(mynodesarr, mynodesarr[myrtndi]);
+        for (let n = 0; n < mypretransndarr.length; n++)
+        {
+            console.log("mypretransndarr[" + n + "] = " + mypretransndarr[n]);
+            if (n == 0)
+            {
+                buildUserBinaryTree();
+                //now get the text area for the first node and provide the data
+                document.getElementById("tree").children[1].
+                children[0].children[1].firstChild.firstChild.value = mypretransndarr[n].data;
+                let mychangeevent = new Event("change");
+                document.getElementById("tree").children[1].
+                children[0].children[1].firstChild.firstChild.dispatchEvent(mychangeevent);
+                //let mynd = mygenndsarr.get(mygenndsarr.length - 1);
+            }
+            else if (n > 0 && n < mypretransndarr.length)
+            {
+                //determine which kid to click
+                //click the left kid
+            }
+            else throw "illegal value found and used for index n here!";
+        }
+        
+        //put the array in pre-order transversal: root left right
+        //then build each node calling:
+        //buildUserBinaryTree(domnode=null, binptnd=null, addonleft=false, addonright=false)
+        //when we want to add a left kid we find the left kid button and click it
+
         console.error("NOT DONE YET 7-15-2023 2:53 AM!");
         debugger;
     }).catch(function(err){
@@ -1142,7 +1411,7 @@ class Bintreend {
         }
         //else;//do nothing
 
-        if (rlist == undefined || null || rlist.length < 1)
+        if (rlist == undefined || rlist == null || rlist.length < 1)
         {
             throw "the return list must have at minimum the starting node on it!";
         }
