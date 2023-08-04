@@ -2310,6 +2310,43 @@ function getFarthestLeftHTMLDOMNodeOfDOMNode(tabledomnd)
     }
 }
 
+function trimTreeToMemory(mysnd=null)
+{
+    let treendkds = document.getElementById("tree").children;
+    if (treendkds == undefined || treendkds == null || treendkds.length < 2) return;
+    //else;//do nothing
+
+    if (treendkds.length == 2);//do nothing proceed below
+    else throw "illegal number of dom kids of the tree section found here!";
+
+    //eliminate all dom nodes that do not have a bintreenode associated with it
+    if (mysnd == null) return trimTreeToMemory(treendkds[1]);
+    //else;//do nothing
+
+    let mydiv = mysnd.children[0].children[1].firstChild;
+    console.log("mydiv = " + mydiv);
+    console.log("mydiv.id = " + mydiv.id);
+    let mydividstr = "" + mydiv.id;
+    let btnsdisable = (mydividstr.indexOf("nwnd") == 0);
+    console.log("btnsdisable = " + btnsdisable);
+
+    if (btnsdisable)
+    {
+        removeAllDOMKidsOfDOMNode(mysnd, true);
+        return;
+    }
+    else
+    {
+        let myleftkd = getLeftKidDOMNodeHas(mysnd);
+        if (myleftkd == null);
+        else trimTreeToMemory(myleftkd);
+        let myrightkd = getRightKidDOMNodeHas(mysnd);
+        if (myrightkd == null);
+        else trimTreeToMemory(myrightkd);
+        return;
+    }
+}
+
 function removeDOMNode(mytabledomnode)
 {
     let numkidsofdomnd = getNumKidsDOMNodeHas(mytabledomnode);
@@ -2489,7 +2526,108 @@ function removeDOMNode(mytabledomnode)
         }
         else //if (numkidsofdomnd == 2)
         {
-            throw "NOT DONE YET 8-1-2023 7 PM!";
+            console.log("THIS HAS BOTH KIDS!");
+            //first create new references to the nodes we want to keep
+            let myleftkd = getLeftKidDOMNodeHas(mytabledomnode);
+            let myrightkd = getRightKidDOMNodeHas(mytabledomnode);
+            console.log("myleftkd = " + myleftkd);
+            console.log("myrightkd = " + myrightkd);
+            console.log("mynwptndref = " + mynwptndref);
+            console.log("nwrtdomnd = " + nwrtdomnd);
+            //my new root is nwrtdomnd
+            debugger;
+            
+            //we want to first get rid of any nodes that are not initialized
+            //then check to see if we still have the same number of nodes
+            //if we do not have the same number of nodes, then call again
+            //otherwise proceed below
+            
+            trimTreeToMemory();
+            console.log("trimmed the tree to memory!");
+            
+            let nwnumkidsofdomnd = getNumKidsDOMNodeHas(mytabledomnode);
+            console.log("nwnumkidsofdomnd = " + nwnumkidsofdomnd);
+            debugger;
+
+            if (nwnumkidsofdomnd == numkidsofdomnd);
+            else
+            {
+                removeDOMNode(mytabledomnode);
+                return;
+            }
+
+            //what we are starting with:
+            //   4
+            // 2   6 <- remove this replace with 5
+            //0 3 5 8
+            //
+            //first we node the nodes kids and parent
+            //myleftkd = this.leftkd
+            //myrightkd = this.rightkd
+            //myparent = this.ptnd
+            //then we get the farthest left kid of the right hand side
+            //this will be the new root
+            //
+
+            //what we actually have:
+            // 4 <- remove this replace with 8
+            //2 8
+            //
+            //this.leftkd = 2
+            //this.rightkd = 8
+            //newrt = 8
+            //newparentref = this.ptnd = null
+            //
+            //newrt.leftkd = this.leftkd
+            //newrt.rightkd = this.rightkd
+            //unless the left kid or the right kid is equal to the newrt
+            //
+            //if newparentref is not null: newparentref.(leftkd or rightkd?) = newrt
+            //if newparentref is null: newrt is the new root, but still needs to be added to DOM
+
+
+            //nwrtdomnd has no kids initially it may have a parent node though
+            //myleftkd.ptnd = flkdrkthis;
+            //myrightkd.ptnd = flkdrkthis;
+            //flkdrkthis.leftkd = myleftkd;
+            //flkdrkthis.rightkd = myrightkd;
+
+            if (nwrtdomnd === myleftkd);
+            else getLeftKidSpanDOMNodeHas(nwrtdomnd).appendChild(myleftkd);
+            if (nwrtdomnd === myrightkd);
+            else getRightKidSpanDOMNodeHas(nwrtdomnd).appendChild(myrightkd);
+            debugger;
+            
+            if (islkdofptnd || isrkdofptnd)
+            {
+                if (islkdofptnd)
+                {
+                    //mynwptndref.leftkd = nwrtdomnd;
+                    getLeftKidSpanDOMNodeHas(mynwptndref).appendChild(nwrtdomnd);
+                    //console.log("NEW this.ptnd.leftkd = " + this.ptnd.leftkd);
+                    //console.log("NEW this.ptnd.leftkd.id = " + this.ptnd.leftkd.id);
+                    //console.log("NEW this.ptnd.leftkd.data = " + this.ptnd.leftkd.data);
+                }
+                else //if (isrkdofptnd)
+                {
+                    //mynwptndref.rightkd = nwrtdomnd;
+                    getRightKidSpanDOMNodeHas(mynwptndref).appendChild(nwrtdomnd);
+                    //console.log("NEW this.ptnd.rightkd = " + this.ptnd.rightkd);
+                    //console.log("NEW this.ptnd.rightkd.id = " + this.ptnd.rightkd.id);
+                    //console.log("NEW this.ptnd.rightkd.data = " + this.ptnd.rightkd.data);
+                }
+                //else throw "this must be a kid of the parent node, but it was not!";
+            }
+            else
+            {
+                console.log("parent node was null! We are removing the root node!");
+                //it has a kid
+                document.getElementById("tree").appendChild(nwrtdomnd);
+            }
+            //debugger;
+
+            //now can remove it...
+            removeAllDOMKidsOfDOMNode(mytabledomnode, true);
         }
         console.log("node removed successfully!");
     }
@@ -3088,7 +3226,12 @@ function buildUserBinaryTree(domnode=null, binptnd=null, addonleft=false, addonr
             //
             mybinnd = getBintreendObjForIdFromArray(mydivtarget.id);
             
-            if (mybinnd == null) throw "the node must have been on the list!";
+            if (mybinnd == null)
+            {
+                console.error("the node must have been on the list!");
+                removeDOMNodeAndShowButton(mypttable);//, domnode
+                return;
+            }
             else
             {
                 //post the changes on the server

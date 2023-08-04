@@ -31,6 +31,10 @@
                     <li>The root node has a level of zero because we index that way!</li>
                     <li>The numbers and the transversals will update <b><i>after </i></b>
                         the server is updated!</li>
+                    <li>When deleting nodes, the tree will be trimmed if you are removing a DOM node
+                         that has 2 kids!<br>Only nodes that have been saved in a more simplified version
+                          of the tree will be saved!<br>That means that if the node is <b><i>empty</i></b>,
+                           it will be removed <b><u>immediately</u></b>!</li>
                     <br>
                     <li>RULE: Cannot have a node with empty data!<br>
                         REASON: This will not be printed in the transversals!</li>

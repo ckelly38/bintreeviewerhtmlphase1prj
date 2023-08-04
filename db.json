@@ -1,5 +1,22 @@
 {
-  "nodes": [],
+  "nodes": [
+    {
+      "ptnd": 1,
+      "leftkd": null,
+      "rightkd": null,
+      "data": "4",
+      "isbinsrchtree": true,
+      "id": 2
+    },
+    {
+      "ptnd": 1,
+      "leftkd": null,
+      "rightkd": null,
+      "data": "12",
+      "isbinsrchtree": false,
+      "id": 3
+    }
+  ],
   "exbinsearchtreenodes": [
     {
       "ptnd": null,
