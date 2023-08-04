@@ -815,6 +815,10 @@ class Bintreend {
                 let myrightkd = this.rightkd;
                 let myptnd = this.ptnd;
                 //my new root is flkdrkthis
+                
+                //   4         5         6
+                // 2   6  TO: 3 6  TO:  3 8
+                //0 3 5 8    0   8     0
 
                 //set the parents of the left and right kid and add the kids to the parent node
                 //console.log("OLD flkdrkthis.leftkd = " + flkdrkthis.leftkd);
@@ -826,10 +830,18 @@ class Bintreend {
                 //console.log("OLD myrightkd.ptnd.data = " + myrightkd.ptnd.data);
                 //console.log("OLD myrightkd.ptnd.id = " + myrightkd.ptnd.id);
 
-                myleftkd.ptnd = flkdrkthis;
-                myrightkd.ptnd = flkdrkthis;
-                flkdrkthis.leftkd = myleftkd;
-                flkdrkthis.rightkd = myrightkd;
+                if (myleftkd === flkdrkthis);
+                else
+                {
+                    myleftkd.ptnd = flkdrkthis;
+                    flkdrkthis.leftkd = myleftkd;
+                }
+                if (myrightkd === flkdrkthis);
+                else
+                {
+                    myrightkd.ptnd = flkdrkthis;
+                    flkdrkthis.rightkd = myrightkd;
+                }
 
                 //console.log("NEW myleftkd.ptnd = " + myleftkd.ptnd);
                 //console.log("NEW myleftkd.ptnd.data = " + myleftkd.ptnd.data);
@@ -1498,6 +1510,57 @@ function generateTransversalDOMNodesFor(binnd, lenpreordertrans, exdomnode, isla
     }
 }
 
+function doTransversalsHaveAllGenNodes()
+{
+    if (mygenndsarr == null || mygenndsarr.length < 1) return;
+    //else;//do nothing
+
+    for (let n = 0; n < mygenndsarr.length; n++)
+    {
+        let mypretrans = mygenndsarr[n].preOrderTransversal;
+        let ndfnd = false;
+        for (let k = 0; k < mypretrans.length; k++)
+        {
+            if (mypretrans[k] === mygenndsarr[n])
+            {
+                ndfnd = true;
+                break;
+            }
+            //else;//do nothing
+        }
+
+        let myposttrans = mygenndsarr[n].postOrderTransversal;
+        ndfnd = false;
+        for (let k = 0; k < myposttrans.length; k++)
+        {
+            if (myposttrans[k] === mygenndsarr[n])
+            {
+                ndfnd = true;
+                break;
+            }
+            //else;//do nothing
+        }
+
+        if (ndfnd);
+        else throw "the bin node must have been found on the transversal, but it was not!";
+
+        let myinordertrans = mygenndsarr[n].inOrderTransversal;
+        ndfnd = false;
+        for (let k = 0; k < myinordertrans.length; k++)
+        {
+            if (myinordertrans[k] === mygenndsarr[n])
+            {
+                ndfnd = true;
+                break;
+            }
+            //else;//do nothing
+        }
+
+        if (ndfnd);
+        else throw "the bin node must have been found on the transversal, but it was not!";
+    }
+}
+
 function displayTransversals(mybinnd)
 {
     clearAndHideAllTransversals();
@@ -1509,11 +1572,27 @@ function displayTransversals(mybinnd)
     }
     //else;//do nothing
 
-    //console.log("mybinnd.id = " + mybinnd.id);
-    //console.log("mybinnd.data = " + mybinnd.data);
+    console.log("mybinnd.id = " + mybinnd.id);
+    console.log("mybinnd.data = " + mybinnd.data);
     
     let mypreordertrans = mybinnd.preOrderTransversal;
     console.log("number of items in pre-order transversal = " + mypreordertrans.length);
+    
+    let fndmybinnd = false;
+    for (let n = 0; n < mypreordertrans.length; n++)
+    {
+        if (mypreordertrans[n] === mybinnd)
+        {
+            fndmybinnd = true;
+            break;
+        }
+        //else;//do nothing
+    }
+    console.log("fndmybinnd = " + fndmybinnd);
+
+    if (fndmybinnd);
+    else throw "the bin node must have been found on the transversal, but it was not!";
+
     
     let myrtnds = document.getElementsByClassName("rtnd");
     for (let n = 0; n < myrtnds.length; n++)
@@ -2527,16 +2606,7 @@ function removeDOMNode(mytabledomnode)
         else //if (numkidsofdomnd == 2)
         {
             console.log("THIS HAS BOTH KIDS!");
-            //first create new references to the nodes we want to keep
-            let myleftkd = getLeftKidDOMNodeHas(mytabledomnode);
-            let myrightkd = getRightKidDOMNodeHas(mytabledomnode);
-            console.log("myleftkd = " + myleftkd);
-            console.log("myrightkd = " + myrightkd);
-            console.log("mynwptndref = " + mynwptndref);
-            console.log("nwrtdomnd = " + nwrtdomnd);
-            //my new root is nwrtdomnd
-            debugger;
-            
+
             //we want to first get rid of any nodes that are not initialized
             //then check to see if we still have the same number of nodes
             //if we do not have the same number of nodes, then call again
@@ -2544,7 +2614,7 @@ function removeDOMNode(mytabledomnode)
             
             trimTreeToMemory();
             console.log("trimmed the tree to memory!");
-            
+
             let nwnumkidsofdomnd = getNumKidsDOMNodeHas(mytabledomnode);
             console.log("nwnumkidsofdomnd = " + nwnumkidsofdomnd);
             debugger;
@@ -2555,6 +2625,17 @@ function removeDOMNode(mytabledomnode)
                 removeDOMNode(mytabledomnode);
                 return;
             }
+
+            //first create new references to the nodes we want to keep
+            let myleftkd = getLeftKidDOMNodeHas(mytabledomnode);
+            let myrightkd = getRightKidDOMNodeHas(mytabledomnode);
+            console.log("myleftkd = " + myleftkd);
+            console.log("myrightkd = " + myrightkd);
+            console.log("mynwptndref = " + mynwptndref);
+            console.log("nwrtdomnd = " + nwrtdomnd);
+            //my new root is nwrtdomnd
+            debugger;
+
 
             //what we are starting with:
             //   4
@@ -2592,12 +2673,6 @@ function removeDOMNode(mytabledomnode)
             //flkdrkthis.leftkd = myleftkd;
             //flkdrkthis.rightkd = myrightkd;
 
-            if (nwrtdomnd === myleftkd);
-            else getLeftKidSpanDOMNodeHas(nwrtdomnd).appendChild(myleftkd);
-            if (nwrtdomnd === myrightkd);
-            else getRightKidSpanDOMNodeHas(nwrtdomnd).appendChild(myrightkd);
-            debugger;
-            
             if (islkdofptnd || isrkdofptnd)
             {
                 if (islkdofptnd)
@@ -2624,7 +2699,13 @@ function removeDOMNode(mytabledomnode)
                 //it has a kid
                 document.getElementById("tree").appendChild(nwrtdomnd);
             }
-            //debugger;
+            debugger;
+
+            if (nwrtdomnd === myleftkd);
+            else getLeftKidSpanDOMNodeHas(nwrtdomnd).appendChild(myleftkd);
+            if (nwrtdomnd === myrightkd);
+            else getRightKidSpanDOMNodeHas(nwrtdomnd).appendChild(myrightkd);
+            debugger;
 
             //now can remove it...
             removeAllDOMKidsOfDOMNode(mytabledomnode, true);
@@ -2678,7 +2759,20 @@ function makeSureAllButtonsAreDisplayedIfTheyAreSupposedTo(snddomnode=null, user
         console.log("myspan.children.length = " + myspan.children.length);
         if (myspan.children.length == 2)
         {
-            if (myspan.children[1].tagName === "TABLE");
+            if (myspan.children[0].tagName === "BUTTON" && myspan.children[1].tagName === "TABLE")
+            {
+                //the span has a button as the first child and the table as the other
+                //need to make sure that that button is not displayed
+                //if it is displayed, hide it
+                //if it is enabled, disable it
+                let myhbtn = myspan.children[0];
+                if (myhbtn.disabled);
+                else myhbtn.disabled = true;
+                if (myhbtn.style.display === "none");
+                else myhbtn.style.display = "none";
+                console.log("the button is now hidden and disabled!");
+                //debugger;
+            }
             else throw "this kid must be a table, but it was not!";
         }
         else if (myspan.children.length == 1)
@@ -2707,7 +2801,7 @@ function makeSureAllButtonsAreDisplayedIfTheyAreSupposedTo(snddomnode=null, user
                 console.log("displayed the button!");
             }
             else throw "this must be a button!";
-            debugger;
+            //debugger;
         }
         else throw "the dom node has an illegal number of kids!";
     }//end of n for loop
@@ -2731,6 +2825,43 @@ function removeDOMNodeAndShowButton(mypttable)
     makeSureAllButtonsAreDisplayedIfTheyAreSupposedTo(null, true);
 
     console.log("successfully deleted the node!");
+}
+
+function deleteAndUpdateDOMNodesOnly(mypttable)
+{
+    if (mypttable == undefined || mypttable == null)
+    {
+        throw "mypttable must be defined and not null!";
+    }
+    //else;//do nothing
+
+    removeDOMNodeAndShowButton(mypttable);//, domnode
+    
+    //display the transversals here
+    //update the type of tree here
+    //update the number of nodes on the tree
+    displayTreeStatsAndUpdateThem(getFirstNonNullBinTreeNodeFromArray());
+
+    //show the form when all nodes are removed from the tree
+    //so the page does not need to be reloaded in order to function
+    let mytreesectkds = document.getElementById("tree").children;
+    let hasatleastonendontree = false;
+    if (mytreesectkds == undefined || mytreesectkds == null || mytreesectkds.length < 1);
+    else
+    {
+        if (mytreesectkds.length > 1) hasatleastonendontree = true;
+        //else;//do nothing
+    }
+    console.log("hasatleastonendontree = " + hasatleastonendontree);
+    
+    if (!hasatleastonendontree && (mygenndsarr == null || mygenndsarr.length < 1))
+    {
+        let myloadfrm = document.getElementById("myloadingform");
+        myloadfrm.style.display = "block";
+        console.log("no nodes on the tree, so displayed the loading form again!");
+    }
+    //else;//do nothing
+    console.log("successfully updated the DOM ONLY after deleting a node!");
 }
 
 let numids = 0;
@@ -3101,6 +3232,12 @@ function buildUserBinaryTree(domnode=null, binptnd=null, addonleft=false, addonr
             else
             {
                 console.log("response.data = " + response.data);
+                
+                //display the transversals here
+                //update the type of tree here
+                //update the number of nodes on the tree
+                displayTreeStatsAndUpdateThem(mybinnd);
+                
                 console.log("successfully updated the binary tree node object on the server!");
             }
             debugger;
@@ -3229,7 +3366,7 @@ function buildUserBinaryTree(domnode=null, binptnd=null, addonleft=false, addonr
             if (mybinnd == null)
             {
                 console.error("the node must have been on the list!");
-                removeDOMNodeAndShowButton(mypttable);//, domnode
+                deleteAndUpdateDOMNodesOnly(mypttable);
                 return;
             }
             else
@@ -3266,32 +3403,10 @@ function buildUserBinaryTree(domnode=null, binptnd=null, addonleft=false, addonr
                     }
                     console.log("NEW mygenndsarr.length = " + mygenndsarr.length);
 
-                    removeDOMNodeAndShowButton(mypttable);//, domnode
+                    doTransversalsHaveAllGenNodes();
                     
-                    //display the transversals here
-                    //update the type of tree here
-                    //update the number of nodes on the tree
-                    displayTreeStatsAndUpdateThem(getFirstNonNullBinTreeNodeFromArray());
-
-                    //show the form when all nodes are removed from the tree
-                    //so the page does not need to be reloaded in order to function
-                    let mytreesectkds = document.getElementById("tree").children;
-                    let hasatleastonendontree = false;
-                    if (mytreesectkds == undefined || mytreesectkds == null || mytreesectkds.length < 1);
-                    else
-                    {
-                        if (mytreesectkds.length > 1) hasatleastonendontree = true;
-                        //else;//do nothing
-                    }
-                    console.log("hasatleastonendontree = " + hasatleastonendontree);
-                    
-                    if (!hasatleastonendontree && (mygenndsarr == null || mygenndsarr.length < 1))
-                    {
-                        let myloadfrm = document.getElementById("myloadingform");
-                        myloadfrm.style.display = "block";
-                        console.log("no nodes on the tree, so displayed the loading form again!");
-                    }
-                    //else;//do nothing
+                    //update the DOM here
+                    deleteAndUpdateDOMNodesOnly(mypttable);
                     
                     console.log("succesfully deleted the node from the server!");
                 }).catch(function(err){

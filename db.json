@@ -2,19 +2,35 @@
   "nodes": [
     {
       "ptnd": 1,
-      "leftkd": null,
-      "rightkd": null,
-      "data": "4",
+      "leftkd": "",
+      "rightkd": 3,
+      "data": "6",
       "isbinsrchtree": true,
       "id": 2
     },
     {
-      "ptnd": 1,
+      "ptnd": 2,
       "leftkd": null,
       "rightkd": null,
-      "data": "12",
-      "isbinsrchtree": false,
+      "data": "8",
+      "isbinsrchtree": true,
       "id": 3
+    },
+    {
+      "ptnd": 5,
+      "leftkd": null,
+      "rightkd": null,
+      "data": "3",
+      "isbinsrchtree": true,
+      "id": 6
+    },
+    {
+      "ptnd": 5,
+      "leftkd": null,
+      "rightkd": null,
+      "data": "0",
+      "isbinsrchtree": true,
+      "id": 7
     }
   ],
   "exbinsearchtreenodes": [
