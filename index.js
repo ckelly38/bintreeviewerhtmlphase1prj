@@ -229,10 +229,246 @@ function getPostOrderTransversalForNodeArray(svrndarr, srtnd=null)
     return getTransversalForNodeArray(svrndarr, true, false, srtnd);
 }
 
+let myprevtabledomnd = null;
+let myndsloaded = 0;
+let addmydatanow = false;
+let doneloading = false;
+function addDataAndFireChangeListener(ndfromarr, prevtbldomnd, isfirst=false)
+{
+    if (prevtbldomnd == undefined || prevtbldomnd == null)
+    {
+        throw "illegal dom node found and used here!";
+    }
+    //else;//do nothing
+
+    if (isfirst == undefined || isfirst == null)
+    {
+        throw "isfirst must be a defined boolean variable!";
+    }
+    else
+    {
+        if (isfirst === true || isfirst === false);
+        else throw "isfirst must be a defined boolean variable!";
+    }
+
+    if (ndfromarr == undefined || ndfromarr == null)
+    {
+        throw "the node from the array must be defined and not null!";
+    }
+    //else;//do nothing
+
+    console.log("adding the data now!");
+    //debugger;
+    prevtbldomnd.children[0].children[1].firstChild.firstChild.value = ndfromarr.data;
+    //debugger;
+    let mychangeevent = new Event("change");
+    addmydatanow = false;
+    console.log("NEW addmydatanow = " + addmydatanow);
+    prevtbldomnd.children[0].children[1].firstChild.firstChild.dispatchEvent(mychangeevent);
+    if (isfirst) myprevtabledomnd = prevtbldomnd;
+    //else;//do nothing
+    myndsloaded++;
+    console.log("NEW myndsloaded = " + myndsloaded);
+    console.log("DONE ADDING DATA FOR THE NODE!");
+}
+
+function canClickTheParentNode(ndarr, ptndi, si, mtabledomnd)
+{
+    if (mtabledomnd == undefined || mtabledomnd == null)
+    {
+        throw "illegal dom node found and used here!";
+    }
+    //else;//do nothing
+
+    if (ptndi == undefined || ptndi == null || isNaN(ptndi) || ptndi < 0)
+    {
+        throw "illegal value for the parent node index! It must be a number at least zero!";
+    }
+    //else;//do nothing
+
+    if (si == undefined || si == null || isNaN(si) || si < 0)
+    {
+        throw "illegal value for the starting node index! It must be a number at least zero!";
+    }
+    //else;//do nothing
+
+    if (ndarr == undefined || ndarr == null || ndarr.length < 1) return false;
+    else
+    {
+        if (ptndi == undefined || ptndi == null || isNaN(ptndi) || ptndi < 0 || ptndi > ndarr.length)
+        {
+            throw "illegal index for the parent node or illegal number of nodes in the node array!";
+        }
+        //else;//do nothing
+
+        if (si < 0 || si > ndarr.length || si == ndarr.length)
+        {
+            throw "illegal value for the starting node index! It must be a number at least zero!";
+        }
+        //else;//do nothing
+    }
+
+    let myprevlkdstr = "";
+    if (ndarr[ptndi].leftkd === null);
+    else myprevlkdstr = "" + ndarr[ptndi].leftkd;
+
+    let myprevrkdstr = "";
+    if (ndarr[ptndi].rightkd === null);
+    else myprevrkdstr = "" + ndarr[ptndi].rightkd;
+
+    let useleftkd = false;
+    let userightkd = false;
+    if (myprevlkdstr.length < 1);
+    else
+    {
+        if (ndarr[ptndi].leftkd === ndarr[si].id) useleftkd = true;
+        //else;//do nothing
+    }
+
+    if (myprevrkdstr.length < 1);
+    else
+    {
+        if (ndarr[ptndi].rightkd === ndarr[si].id) userightkd = true;
+        //else;//do nothing
+    }
+    console.log("useleftkd = " + useleftkd);
+    console.log("userightkd = " + userightkd);
+
+    if (useleftkd || userightkd)
+    {
+        let myprebtn = null;
+        if (useleftkd) myprebtn = getLeftKidDOMNodeHas(mtabledomnd, false);
+        else myprebtn = getRightKidDOMNodeHas(mtabledomnd, false);
+        addmydatanow = true;
+        
+        console.log("NEW addmydatanow = " + addmydatanow);
+        console.log("myprebtn = " + myprebtn);
+        
+        //debugger;
+
+        myprebtn.click();
+        return true;
+    }
+    else return false;
+}
+
+function treeLoadedHandler(event){
+    console.log("inside of other dom loaded function");
+    console.log("myprevtabledomnd = " + myprevtabledomnd);
+    console.log("myndsloaded = " + myndsloaded);
+    debugger;
+    loadDOMFromTreeNodesArray(this, myprevtabledomnd, myndsloaded);
+}
+
+function loadDOMFromTreeNodesArray(ndarr, prevtbldomnd, si=0)
+{
+    if (ndarr == undefined || ndarr == null || ndarr.length < 1) return;
+    else
+    {
+        if (si == undefined || si == null || si < 0 || isNaN(si))
+        {
+            throw "illegal value found and used for the starting node array index si index here!";
+        }
+        else
+        {
+            if (si > 0)
+            {
+                if (prevtbldomnd == undefined || prevtbldomnd == null)
+                {
+                    throw "illegal dom node found and used here!";
+                }
+                //else;//do nothing
+            }
+            //else;//do nothing
+        }
+    }
+
+    if (si == 0)
+    {
+        //now get the text area for the first node and provide the data
+        addDataAndFireChangeListener(ndarr[si], document.getElementById("tree").children[1], true);
+        console.log("DONE ADDING DATA FOR THE FIRST NODE!");
+    }
+    else if (si > 0 && si < ndarr.length)
+    {
+        //get the previous node and the current node and check to see if they are directly related
+        //if they are related, use the relationship to determine which kid to click
+        //if they are not related, get the parent node and
+        //then get the dom id for that node
+        //determine which kid to click
+        //click the kid
+        console.log("si is greater than zero!");
+        console.log("addmydatanow = " + addmydatanow);
+
+        if (addmydatanow) addDataAndFireChangeListener(ndarr[si], prevtbldomnd);
+        else
+        {
+            console.log("determinging the node to click!");
+            if (canClickTheParentNode(ndarr, si - 1, si, prevtbldomnd));
+            else
+            {
+                //build the binary tree here
+                //
+                //      10
+                //    6     17
+                //  5  8  15  20
+                //3  7
+                //
+                //cannot click either, so need to get the parent node of the current node
+                //the last node in the generated array will correspond to ndarr[si - 1] and below
+                //si and above will not have been generated yet
+                
+                console.log("ndarr[" + (si - 1) + "] = " + ndarr[si - 1]);
+                console.log("ndarr[" + si + "] = " + ndarr[si]);
+                console.log("ndarr[" + si + "].ptnd = " + ndarr[si].ptnd);
+
+                let ptndi = -1;
+                for (let n = 0; n < ndarr.length; n++)
+                {
+                    if (ndarr[n].id === ndarr[si].ptnd)
+                    {
+                        ptndi = n;
+                        break;
+                    }
+                    //else;//do nothing
+                }
+                console.log("ptndi = " + ptndi);
+
+                if (ptndi < 0 || ptndi == ndarr.length || ptndi > ndarr.length)
+                {
+                    throw "illegal value found and used for the ptndi index here!";
+                }
+                //else;//do nothing
+                console.log("ndarr[" + ptndi + "] = " + ndarr[ptndi]);
+                
+                let mybintnd = mygenndsarr[ptndi];
+                console.log("mybintnd = " + mybintnd);
+                
+                let myptdomnddiv = document.getElementById(mybintnd.id);
+                let mypttabledomnd = myptdomnddiv.parentNode.parentNode.parentNode;
+                console.log("mypttabledomnd = " + mypttabledomnd);
+                
+                if (canClickTheParentNode(ndarr, ptndi, si, mypttabledomnd));
+                else throw "the parent node and this node must be related somehow!";
+            }
+        }
+    }
+    else if (si == ndarr.length)
+    {
+        document.getElementById("tree").removeEventListener("treeDOMLoaded", treeLoadedHandler);
+        doneloading = true;
+        console.log("DONE LOADING ALL OF THE NODES!");
+        alert("DONE LOADING ALL OF THE NODES!");
+    }
+    else throw "illegal value found and used here for the si index!";
+}
+
 function loadBinaryOrSearchTree(usesrchtree)
 {
     //get the list of nodes from the api
-    //then ?
+    //then get the preorder of that list
+    //then build the tree in that order
+    //
     //GOAL: we want to take this list of nodes from the server and
     //-build a tree of the Binnodes and of the DOM nodes
     //
@@ -242,6 +478,10 @@ function loadBinaryOrSearchTree(usesrchtree)
     //concern: I cannot push them and gurantee the id
     //to build the tree, I need to have the ids guaranteed
     //
+    //WAY AROUND THAT: use the event loop and build the tree in the right order,
+    //then we don't care about the ids
+    //but we need a custom event to signal that we are ready to laod the next one
+
     if (usesrchtree == undefined || usesrchtree == null)
     {
         throw "usesrchtree must be a defined boolean variable!";
@@ -262,6 +502,12 @@ function loadBinaryOrSearchTree(usesrchtree)
     then(function(response){
         console.log(response);
         let mynodesarr = response;
+        
+        //put the array in pre-order transversal: root left right
+        //then build each node calling:
+        //buildUserBinaryTree(domnode=null, binptnd=null, addonleft=false, addonright=false)
+        //when we want to add a left kid we find the left kid button and click it
+
         let myrtndi = -1;
         for (let n = 0; n < mynodesarr.length; n++)
         {
@@ -282,33 +528,14 @@ function loadBinaryOrSearchTree(usesrchtree)
         //else;//do nothing
 
         let mypretransndarr = getPreOrderTransversalForNodeArray(mynodesarr, mynodesarr[myrtndi]);
-        for (let n = 0; n < mypretransndarr.length; n++)
-        {
-            console.log("mypretransndarr[" + n + "] = " + mypretransndarr[n]);
-            if (n == 0)
-            {
-                buildUserBinaryTree();
-                //now get the text area for the first node and provide the data
-                document.getElementById("tree").children[1].
-                children[0].children[1].firstChild.firstChild.value = mypretransndarr[n].data;
-                let mychangeevent = new Event("change");
-                document.getElementById("tree").children[1].
-                children[0].children[1].firstChild.firstChild.dispatchEvent(mychangeevent);
-                //let mynd = mygenndsarr.get(mygenndsarr.length - 1);
-            }
-            else if (n > 0 && n < mypretransndarr.length)
-            {
-                //determine which kid to click
-                //click the left kid
-            }
-            else throw "illegal value found and used for index n here!";
-        }
         
-        //put the array in pre-order transversal: root left right
-        //then build each node calling:
-        //buildUserBinaryTree(domnode=null, binptnd=null, addonleft=false, addonright=false)
-        //when we want to add a left kid we find the left kid button and click it
+        console.log("mypretransndarr[0] = " + mypretransndarr[0]);
+        
+        document.getElementById("tree").addEventListener("treeDOMLoaded",
+            treeLoadedHandler.bind(mypretransndarr));
 
+        buildUserBinaryTree();
+                
         console.error("NOT DONE YET 7-15-2023 2:53 AM!");
         debugger;
     }).catch(function(err){
@@ -2279,7 +2506,7 @@ function makeBinarySearchTreeNodesToSave()
 
     //build the binary tree here
     //
-    //     10
+    //      10
     //    6     17
     //  5  8  15  20
     //3  7
@@ -2378,11 +2605,6 @@ function makeBinarySearchTreeNodesToSave()
     }//end of n for loop
 }
 //makeBinarySearchTreeNodesToSave();
-
-function getDOMElements(ndobj)
-{
-    console.error("NOT DONE YET 7-15-2023 2:53 AM!");
-}
 
 function getBintreendObjForIdFromArray(myid)
 {
@@ -3496,6 +3718,14 @@ function buildUserBinaryTree(domnode=null, binptnd=null, addonleft=false, addonr
 
                 addLeftKidBtnListener(myleftbtn, mybinnd);
                 addRightKidBtnListener(myrightbtn, mybinnd);
+
+                if (doneloading);
+                else
+                {
+                    let mytreebuiltevent = new Event("treeDOMLoaded");
+                    myprevtabledomnd = mytable;
+                    document.getElementById("tree").dispatchEvent(mytreebuiltevent);
+                }
             }
             else
             {
@@ -3623,7 +3853,7 @@ function buildUserBinaryTree(domnode=null, binptnd=null, addonleft=false, addonr
         //  <td> <span> table or button </span></td>
         //</table>
         
-        if (remdomonly) removeDOMNodeAndShowButton(mypttable);//, domnode
+        if (remdomonly) deleteAndUpdateDOMNodesOnly(mypttable);
         else
         {
             //remove software node and
@@ -3687,6 +3917,14 @@ function buildUserBinaryTree(domnode=null, binptnd=null, addonleft=false, addonr
         //debugger;
     }.bind(mydelbtn));
     console.log("successfully added delete button listener!");
+
+    if (doneloading);
+    else
+    {
+        let mytreebuiltevent = new Event("treeDOMLoaded");
+        myprevtabledomnd = mytable;
+        document.getElementById("tree").dispatchEvent(mytreebuiltevent);
+    }
 }
 
 document.addEventListener("DOMContentLoaded", function(event){
