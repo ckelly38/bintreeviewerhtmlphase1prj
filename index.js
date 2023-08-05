@@ -132,7 +132,7 @@ function getTransversalForNodeArray(svrndarr, usepost, usein, srtnd=null)
 
         if (mylkdndi < 0 || mylkdndi > svrndarr.length || mylkdndi == svrndarr.length)
         {
-            throw "illegal index found and used for the root node!";
+            throw "illegal index found and used for the left kid node!";
         }
         //else;//do nothing
 
@@ -179,7 +179,7 @@ function getTransversalForNodeArray(svrndarr, usepost, usein, srtnd=null)
 
             if (myrkdndi < 0 || myrkdndi > svrndarr.length || myrkdndi == svrndarr.length)
             {
-                throw "illegal index found and used for the root node!";
+                throw "illegal index found and used for the right kid node!";
             }
             //else;//do nothing
 

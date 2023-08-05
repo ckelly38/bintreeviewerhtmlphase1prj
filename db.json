@@ -3,38 +3,38 @@
   "exbinsearchtreenodes": [
     {
       "ptnd": null,
-      "leftkd": "2",
-      "rightkd": "3",
+      "leftkd": 2,
+      "rightkd": 3,
       "data": "f",
       "id": 1,
       "isbinsrchtree": true
     },
     {
-      "ptnd": "1",
-      "leftkd": "4",
-      "rightkd": "5",
+      "ptnd": 1,
+      "leftkd": 4,
+      "rightkd": 5,
       "data": "d",
       "id": 2,
       "isbinsrchtree": true
     },
     {
-      "ptnd": "1",
-      "leftkd": "6",
-      "rightkd": "7",
+      "ptnd": 1,
+      "leftkd": 6,
+      "rightkd": 7,
       "data": "k",
       "id": 3,
       "isbinsrchtree": true
     },
     {
-      "ptnd": "2",
-      "leftkd": "8",
-      "rightkd": "9",
+      "ptnd": 2,
+      "leftkd": 8,
+      "rightkd": 9,
       "data": "b",
       "id": 4,
       "isbinsrchtree": true
     },
     {
-      "ptnd": "2",
+      "ptnd": 2,
       "leftkd": null,
       "rightkd": null,
       "data": "e",
@@ -42,23 +42,23 @@
       "isbinsrchtree": true
     },
     {
-      "ptnd": "3",
-      "leftkd": "10",
-      "rightkd": "11",
+      "ptnd": 3,
+      "leftkd": 10,
+      "rightkd": 11,
       "data": "hello, me",
       "id": 6,
       "isbinsrchtree": true
     },
     {
-      "ptnd": "3",
-      "leftkd": "12",
-      "rightkd": "13",
+      "ptnd": 3,
+      "leftkd": 12,
+      "rightkd": 13,
       "data": "m",
       "id": 7,
       "isbinsrchtree": true
     },
     {
-      "ptnd": "4",
+      "ptnd": 4,
       "leftkd": null,
       "rightkd": null,
       "data": "a",
@@ -66,7 +66,7 @@
       "isbinsrchtree": true
     },
     {
-      "ptnd": "4",
+      "ptnd": 4,
       "leftkd": null,
       "rightkd": null,
       "data": "c",
@@ -74,7 +74,7 @@
       "isbinsrchtree": true
     },
     {
-      "ptnd": "6",
+      "ptnd": 6,
       "leftkd": null,
       "rightkd": null,
       "data": "g",
@@ -82,7 +82,7 @@
       "isbinsrchtree": true
     },
     {
-      "ptnd": "6",
+      "ptnd": 6,
       "leftkd": null,
       "rightkd": null,
       "data": "i",
@@ -90,7 +90,7 @@
       "isbinsrchtree": true
     },
     {
-      "ptnd": "7",
+      "ptnd": 7,
       "leftkd": null,
       "rightkd": null,
       "data": "n",
@@ -98,7 +98,7 @@
       "isbinsrchtree": true
     },
     {
-      "ptnd": "7",
+      "ptnd": 7,
       "leftkd": null,
       "rightkd": null,
       "data": "l",
