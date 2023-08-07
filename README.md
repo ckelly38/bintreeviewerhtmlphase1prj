@@ -86,3 +86,18 @@ DEPENDING ON THE TYPE OF FAILURE ON THE SERVER, YOU MAY STILL BE ABLE TO REMOVE 
 IF YOU CHOSE TO RELOAD THE PAGE WITHOUT REMOVING THE NODES: The user tree will still be on the server.
 
 The user tree generically refers to all of the nodes on the server, even if you started with an example tree, you are not allowed to change the example trees on the server. Only the user tree.
+
+SOME HELPFUL WEBSITES FOR THE TOOLTIP AND THE SUMMARY AND DETAILS TAGS:
+
+https://css-tricks.com/exploring-what-the-details-and-summary-elements-can-do/
+https://www.w3schools.com/css/css_tooltip.asp
+
+IN GENERAL, I RECOMMEND USING https://www.w3schools.com/ FOR ALL WEB DEVELOPMENT NEEDS.
+
+RESOURCES:
+
+Robin Rendle on Nov 26, Rendle, R., Coyier, C., &amp; Hoebregts, L. (2020, November 26). Exploring what the details and summary elements can do: CSS-tricks. CSS. https://css-tricks.com/exploring-what-the-details-and-summary-elements-can-do/
+
+https://www.w3schools.com/. (n.d.). CSS Tooltip. https://www.w3schools.com/css/css_tooltip.asp 
+
+SOME PUBLISHER INFORMATION COULD NOT BE FOUND.
