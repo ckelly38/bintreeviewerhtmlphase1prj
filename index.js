@@ -4071,7 +4071,7 @@ document.addEventListener("DOMContentLoaded", function(event){
     let myloadfrm = document.getElementById("myloadingform");
     myloadfrm.style.display = "block";
     let myloadopts = myloadfrm.getElementsByTagName("input");
-    for (let n = 0; n < 3; n++)
+    for (let n = 0; n < 4; n++)
     {
         myloadopts[n].addEventListener("click", function(oevent){
             //console.log("selected an option on the form!");
