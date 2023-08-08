@@ -1388,11 +1388,20 @@ class Bintreend {
                 console.log("NEW myrightkd.ptnd.data = " + myrightkd.ptnd.data);
                 console.log("NEW myrightkd.ptnd.id = " + myrightkd.ptnd.id);
                 //console.log("NEW flkdrkthis.leftkd = " + flkdrkthis.leftkd);
-                console.log("NEW flkdrkthis.leftkd.data = " + flkdrkthis.leftkd.data);
-                console.log("NEW flkdrkthis.leftkd.id = " + flkdrkthis.leftkd.id);
+                if (flkdrkthis.leftkd == null);
+                else
+                {
+                    console.log("NEW flkdrkthis.leftkd.data = " + flkdrkthis.leftkd.data);
+                    console.log("NEW flkdrkthis.leftkd.id = " + flkdrkthis.leftkd.id);
+                }
                 //console.log("NEW flkdrkthis.rightkd = " + flkdrkthis.rightkd);
-                console.log("NEW flkdrkthis.rightkd.data = " + flkdrkthis.rightkd.data);
-                console.log("NEW flkdrkthis.rightkd.id = " + flkdrkthis.rightkd.id);
+                if (flkdrkthis.rightkd == null);
+                else
+                {
+                    console.log("NEW flkdrkthis.rightkd.data = " + flkdrkthis.rightkd.data);
+                    console.log("NEW flkdrkthis.rightkd.id = " + flkdrkthis.rightkd.id);
+                }
+                
 
                 //what we have so far:
                 //   4 <- remove this, replace with 5
