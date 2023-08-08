@@ -535,7 +535,6 @@ function loadBinaryOrSearchTree(usesrchtree, useuserbintree)
         //buildUserBinaryTree(domnode=null, binptnd=null, addonleft=false, addonright=false)
         //when we want to add a left kid we find the left kid button and click it
 
-        let myrtndi = -1;
         if (mynodesarr == undefined || mynodesarr == null || mynodesarr.length < 1)
         {
             console.error("no nodes on the server to load in for the user tree!");
@@ -545,6 +544,7 @@ function loadBinaryOrSearchTree(usesrchtree, useuserbintree)
         }
         else if (mynodesarr.length > 0)
         {
+            let myrtndi = -1;
             for (let n = 0; n < mynodesarr.length; n++)
             {
                 //console.log("mynodesarr[" + n + "] = " + mynodesarr[n]);
@@ -555,10 +555,13 @@ function loadBinaryOrSearchTree(usesrchtree, useuserbintree)
                 }
                 //else;//do nothing
             }
-            //console.log("myrtndi = " + myrtndi);
+            console.log("myrtndi = " + myrtndi);
             
             if (myrtndi < 0 || myrtndi > mynodesarr.length || myrtndi == mynodesarr.length)
             {
+                console.error("myrtndi = " + myrtndi);
+                console.error("illegal root node index found and used here!");
+                debugger;
                 throw "illegal root node index found and used here!";
             }
             //else;//do nothing
@@ -2306,13 +2309,25 @@ function getAndGenerateServerObject(binnd=null, usepost=true)
     {
         let initptndid = null;
         if (binnd.ptnd == null);
-        else initptndid = binnd.ptnd.id;
+        else
+        {
+            if (binnd.ptnd.id == undefined || binnd.ptnd.id == null || binnd.ptnd.id === "");
+            else initptndid = binnd.ptnd.id;
+        }
         let initrkdndid = null;
         if (binnd.rightkd == null);
-        else initrkdndid = binnd.rightkd.id;
+        else
+        {
+            if (binnd.rightkd.id == undefined || binnd.rightkd.id == null || binnd.rightkd.id === "");
+            else initrkdndid = binnd.rightkd.id;
+        }
         let initlkdndid = null;
         if (binnd.leftkd == null);
-        else initlkdndid = binnd.leftkd.id;
+        else
+        {
+            if (binnd.leftkd.id == undefined || binnd.leftkd.id == null || binnd.leftkd.id === "");
+            else initlkdndid = binnd.leftkd.id;
+        }
         //console.log("initptndid = " + initptndid);
         //console.log("initlkdndid = " + initlkdndid);
         //console.log("initrkdndid = " + initrkdndid);
@@ -3495,6 +3510,73 @@ function finishLoadingDOMOptionsAfterServerCleared(event)
     else buildUserBinaryTree();
 }
 
+function updateTheEntireTreeOnTheServer(si=0)
+{
+    console.log("si = " + si);
+    if (si == undefined || si == null || isNaN(si))
+    {
+        throw "illegal value found and used for starting index si! It must be a number!";
+    }
+    //else;//do nothing
+
+    if (mygenndsarr == undefined || mygenndsarr == null || mygenndsarr.length < 1)
+    {
+        console.log("done no nodes on the tree!");
+        return;
+    }
+    else
+    {
+        if (si == undefined || si == null || isNaN(si) || si < 0 || si > mygenndsarr.length)
+        {
+            throw "illegal value found and used for starting index si for the node array update tree " +
+                "request!";
+        }
+        else if (si == mygenndsarr.length)
+        {
+            console.log("finished updating the tree nodes on the server!");
+            return;
+        }
+        else
+        {
+            if (mygenndsarr[si] == null)
+            {
+                updateTheEntireTreeOnTheServer(si + 1);
+                return;
+            }
+            //else;//do nothing
+
+            //we need to asynchronously add this to the server
+            //get the id and then update said object
+            //set the dom node id correctly
+            let myconfigobj = {
+                method: "PATCH",
+                headers: {
+                    "Content-Type" : "application/json",
+                    "Accept" : "application/json"
+                },
+                body: JSON.stringify(getAndGenerateServerObject(mygenndsarr[si], false))
+            };
+            fetch("http://localhost:3000/nodes/" + mygenndsarr[si].id, myconfigobj).
+            then((response) => response.json()).
+            then(function(response){
+                //console.log("response = " + response);
+                //debugger;
+                console.log("updated the node on the tree on the server successfully!");
+
+                updateTheEntireTreeOnTheServer(si + 1);
+            })
+            .catch(function(err){
+                console.error("there was a problem updating the data on the server trying to update " +
+                    "the tree!");
+                console.error(err);
+                alert("Error: There was a problem updating the data on the server trying to update the " +
+                    "tree! See log for details!");
+            });
+            //debugger;
+        }
+    }
+}
+
 let numids = 0;
 function buildUserBinaryTree(domnode=null, binptnd=null, addonleft=false, addonright=false)
 {
@@ -4049,6 +4131,10 @@ function buildUserBinaryTree(domnode=null, binptnd=null, addonleft=false, addonr
                     deleteAndUpdateDOMNodesOnly(mypttable);
                     
                     console.log("succesfully deleted the node from the server!");
+
+                    updateTheEntireTreeOnTheServer();
+
+                    console.log("successfully updated the entire tree on the server!");
                 }).catch(function(err){
                     console.error("Error: there was a problem removing the nodes from the server!");
                     console.error(err);
