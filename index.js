@@ -738,6 +738,125 @@ function getAllBeforeOrAfterRoot(transversalarr, usebefore)
 function getAllBeforeRoot(transversalarr) { return getAllBeforeOrAfterRoot(transversalarr, true); }
 function getAllAfterRoot(transversalarr) { return getAllBeforeOrAfterRoot(transversalarr, false); }
 
+function myStringComparator(stra, strb)
+{
+    //mya, myb
+    //0, myb
+    if (isNaN(stra) == isNaN(strb))
+    {
+        if (isNaN(stra));
+        else
+        {
+            if (stra == undefined || stra == null)
+            {
+                if (strb == undefined || strb == null) return 0;
+                else return -1;
+            }
+            else
+            {
+                if (strb == undefined || strb == null) return 1;
+                else
+                {
+                    let mynuma = Number(stra);
+                    let mynumb = Number(strb);
+                    if (mynuma < mynumb) return -1;
+                    else if (mynumb < mynuma) return 1;
+                    else return 0;
+                }
+            }
+        }
+    }
+    else
+    {
+        if (isNaN(stra)) return -1;
+        else return 1;
+    }
+
+    if (stra.length == strb.length);
+    else
+    {
+        if (stra.length < 1)
+        {
+            if (strb.length < 1) return 0;
+            else return -1;
+        }
+        else
+        {
+            if (strb.length < 1) return 1;
+            //else;//do nothing
+        }
+    }
+
+    for (let n = 0; n < stra.length; n++)
+    {
+        //let mychara = stra.charAt(n);
+        //let mycharb = '';
+        let mycodeb = -1;
+        if (n < strb.length)
+        {
+            //mycharb = strb.charAt(n);
+            mycodeb = strb.charCodeAt(n);
+        }
+        //else;//do nothing
+
+        let mycodea = stra.charCodeAt(n);
+        if (mycodea < mycodeb) return -1;
+        else if (mycodea == mycodeb);
+        else return 1;
+    }
+    return 0;
+}
+
+function mySortCmptr(a, b)
+{
+    //1 a moves on
+    //-1 b moves on
+    //0 otherwise
+
+    if (a == undefined || a == null)
+    {
+        if (b == undefined || b == null) return 0;
+        else return -1;
+    }
+    else
+    {
+        if (b == undefined || b == null) return 1;
+        //else;//do nothing proceed below
+    }
+
+    if (isNaN(a) || isNaN(b))
+    {
+        if (isNaN(a) == isNaN(b))
+        {
+            //they both are nan
+            return myStringComparator("" + a, "" + b);
+        }
+        else
+        {
+            if (isNaN(a)) return -1;
+            else return 1;
+        }
+    }
+    else
+    {
+        let mynuma = Number(a);
+        let mynumb = Number(b);
+        if (mynuma < mynumb) return -1;
+        else if (mynumb < mynuma) return 1;
+        else return 0;
+    }
+}
+function testMySortComparator(){
+    console.log("null < 2: " + mySortCmptr(null, 2));
+    console.log("2 > null: " + mySortCmptr(2, null));
+    console.log("1 == 1: " + mySortCmptr(1, 1));
+    console.log("1 < 2: " + mySortCmptr(1, 2));
+    console.log("8 < 33: " + mySortCmptr(8, 33));
+    console.log("33 < 39: " + mySortCmptr(33, 39));
+    console.log("mya < 2: " + mySortCmptr("mya", 2));
+    console.log("mya < myb: " + mySortCmptr("mya", "myb"));
+}
+
 class Bintreend {
     constructor(myid, mydatstr, myptnd=null, myleftkdnd=null, myrightkdnd=null)
     {
@@ -1123,7 +1242,7 @@ class Bintreend {
     {
         return this.levelForNode(this.root, this, 0, null);
     }
-    get isBinarySearchTree()
+    isBinSearchTree()
     {
         //then the data must be in order
         //it will either be all numbers or all strings
@@ -1137,9 +1256,32 @@ class Bintreend {
         else if (mydataarr.length == 1) return true;
         //else;//do nothing
 
+        //console.log("orig array:");
+        //for (let p = 0; p < mydataarr.length; p++)
+        //{
+        //    console.log("mydataarr[" + p + "] = " + mydataarr[p]);
+        //}
+
         let mydatacparr = new Array();
         for (let n = 0; n < mydataarr.length; n++) mydatacparr.push("" + mydataarr[n]);
-        mydatacparr = mydatacparr.sort();
+
+        //console.log("copy array BEFORE SORTING:");
+        //for (let p = 0; p < mydatacparr.length; p++)
+        //{
+        //    console.log("mydatacparr[" + p + "] = " + mydatacparr[p]);
+        //}
+        //console.log("");
+
+        mydatacparr = mydatacparr.sort(mySortCmptr);
+        
+        //console.log("sorted copy array:");
+        //for (let p = 0; p < mydatacparr.length; p++)
+        //{
+        //    console.log("mydatacparr[" + p + "] = " + mydatacparr[p]);
+        //}
+        //console.log("");
+        
+
         for (let n = 0; n < mydataarr.length; n++)
         {
             //console.log("mydataarr[" + n + "] = " + mydataarr[n]);
@@ -1149,6 +1291,7 @@ class Bintreend {
         }
         return true;
     }
+    get isBinarySearchTree() { return this.isBinSearchTree(); }
     farthestLeftKidOfNode(nd)
     {
         if (nd == undefined || nd == null)
@@ -2311,6 +2454,7 @@ function getAndGenerateServerObject(binnd=null, usepost=true)
         if (binnd.ptnd == null);
         else
         {
+            console.log("binnd.ptnd.id = " + binnd.ptnd.id);
             if (binnd.ptnd.id == undefined || binnd.ptnd.id == null || binnd.ptnd.id === "");
             else initptndid = binnd.ptnd.id;
         }
@@ -2318,6 +2462,7 @@ function getAndGenerateServerObject(binnd=null, usepost=true)
         if (binnd.rightkd == null);
         else
         {
+            console.log("binnd.rightkd.id = " + binnd.rightkd.id);
             if (binnd.rightkd.id == undefined || binnd.rightkd.id == null || binnd.rightkd.id === "");
             else initrkdndid = binnd.rightkd.id;
         }
@@ -2325,12 +2470,14 @@ function getAndGenerateServerObject(binnd=null, usepost=true)
         if (binnd.leftkd == null);
         else
         {
+            console.log("binnd.leftkd.id = " + binnd.leftkd.id);
             if (binnd.leftkd.id == undefined || binnd.leftkd.id == null || binnd.leftkd.id === "");
             else initlkdndid = binnd.leftkd.id;
         }
-        //console.log("initptndid = " + initptndid);
-        //console.log("initlkdndid = " + initlkdndid);
-        //console.log("initrkdndid = " + initrkdndid);
+        console.log("initptndid = " + initptndid);
+        console.log("initlkdndid = " + initlkdndid);
+        console.log("initrkdndid = " + initrkdndid);
+        console.log("usepost = " + usepost);
 
         if (usepost)
         {
@@ -3507,7 +3654,11 @@ function finishLoadingDOMOptionsAfterServerCleared(event)
     {
         loadBinaryOrSearchTree(loadbinsrchtree, loaduserbintree);
     }
-    else buildUserBinaryTree();
+    else
+    {
+        doneloading = true;
+        buildUserBinaryTree();
+    }
 }
 
 function updateTheEntireTreeOnTheServer(si=0)
@@ -3837,6 +3988,8 @@ function buildUserBinaryTree(domnode=null, binptnd=null, addonleft=false, addonr
             if (treatasrt);
             else
             {
+                console.log("addonleft = " + addonleft);
+                console.log("addonright = " + addonright);
                 if (addonleft) mybinptnd.leftkd = mybinnd;
                 else if (addonright) mybinptnd.rightkd = mybinnd;
                 //else;//do nothing
@@ -3859,7 +4012,7 @@ function buildUserBinaryTree(domnode=null, binptnd=null, addonleft=false, addonr
         }
 
         let myptchbdystr = JSON.stringify(getAndGenerateServerObject(mybinnd, false));
-        //console.log("myptchbdystr = " + myptchbdystr);
+        console.log("myptchbdystr = " + myptchbdystr);
         let myidindx = myptchbdystr.indexOf('"id":');
         let cmaafteridindx = -1;
         for (let i = myidindx + 5; i < myptchbdystr.length; i++)
@@ -3872,12 +4025,22 @@ function buildUserBinaryTree(domnode=null, binptnd=null, addonleft=false, addonr
             //else;//do nothing
         }
         //console.log("cmaafteridindx = " + cmaafteridindx);
+        let cori = 0;
+        if (cmaafteridindx < 0 || cmaafteridindx > myptchbdystr.length - 1)
+        {
+            cmaafteridindx = myptchbdystr.length - 2;
+            cori = 1;
+            //console.log("NEW cmaafteridindx = " + cmaafteridindx);
+        }
+        //else;//do nothing
+        //console.log("NEW cori = " + cori);
         if (cmaafteridindx < 0 || cmaafteridindx > myptchbdystr.length - 1)
         {
             throw "illegal value found and used for the cmaafteridindx index!";
         }
-        let mypstbdystr = myptchbdystr.substring(0, myidindx) + myptchbdystr.substring(cmaafteridindx + 1);
-        //console.log("mypstbdystr = " + mypstbdystr);
+        let mypstbdystr = myptchbdystr.substring(0, myidindx - cori) +
+            myptchbdystr.substring(cmaafteridindx + 1);
+        console.log("mypstbdystr = " + mypstbdystr);
         
         let mymethdstr = "";
         let mybdystr = "";
@@ -3893,9 +4056,9 @@ function buildUserBinaryTree(domnode=null, binptnd=null, addonleft=false, addonr
             mybdystr = "" + myptchbdystr;
             myresurl += "/" + mybinnd.id;
         }
-        //console.log("mymethdstr = " + mymethdstr);
-        //console.log("mybdystr = " + mybdystr);
-        //console.log("myresurl = " + myresurl);
+        console.log("mymethdstr = " + mymethdstr);
+        console.log("mybdystr = " + mybdystr);
+        console.log("myresurl = " + myresurl);
 
         //we need to asynchronously add this to the server
         //get the id and then update said object
@@ -3910,8 +4073,8 @@ function buildUserBinaryTree(domnode=null, binptnd=null, addonleft=false, addonr
         };
         fetch(myresurl, myconfigobj).then((response) => response.json()).
         then(function(response){
-            //console.log("response = " + response);
-            //console.log("response.id = " + response.id);
+            console.log("response = " + response);
+            console.log("response.id = " + response.id);
             let myresidstr = "" + response.id;
             console.log("usepost = " + usepost);
             //debugger;
@@ -3953,7 +4116,7 @@ function buildUserBinaryTree(domnode=null, binptnd=null, addonleft=false, addonr
             }
             else
             {
-                //console.log("response.data = " + response.data);
+                console.log("response.data = " + response.data);
                 
                 //display the transversals here
                 //update the type of tree here
@@ -3963,6 +4126,45 @@ function buildUserBinaryTree(domnode=null, binptnd=null, addonleft=false, addonr
                 console.log("successfully updated the binary tree node object on the server!");
             }
             //debugger;
+
+            //update the parent node here
+            if (!treatasrt && usepost && (addonleft || addonright))
+            {
+                console.log("begin updating the parent node on the server here!");
+                //console.log("mybinptnd = " + mybinptnd);
+                //debugger;
+                let myoconfigobj = {
+                    method: "PATCH",
+                    headers: {
+                        "Content-Type" : "application/json",
+                        "Accept" : "application/json"
+                    },
+                    body: JSON.stringify(getAndGenerateServerObject(mybinptnd, false))
+                };
+                fetch("http://localhost:3000/nodes/" + mybinptnd.id, myoconfigobj).
+                then((response) => response.json()).
+                then(function(response){
+                    //console.log("response = " + response);
+                    //console.log("response.id = " + response.id);
+                    let myresidstr = "" + response.id;
+                    //console.log("response.data = " + response.data);
+                    
+                    if (response.id == undefined || response.id == null || myresidstr.length < 1)
+                    {
+                        throw "illegal response id found and used here!";
+                    }
+                    //else;//do nothing
+        
+                    console.log("successfully updated the parent binary tree node object on the server!");
+                }).catch(function(err){
+                    console.error("there was a problem updating the data on the server!");
+                    console.error(err);
+                    alert("Error: There was a problem updating the data on the server! " +
+                        "See log for details!");
+                });
+                //debugger;
+            }
+            //else;//do nothing
         }.bind(mynwtextareaelem)).catch(function(err){
             console.error("there was a problem updating the data on the server or adding data on the " +
                 "server!");
@@ -3971,45 +4173,6 @@ function buildUserBinaryTree(domnode=null, binptnd=null, addonleft=false, addonr
                 "See log for details!");
         });
         //debugger;
-
-        //update the parent node here
-        if (!treatasrt && usepost && (addonleft || addonright))
-        {
-            console.log("begin updating the parent node on the server here!");
-            //console.log("mybinptnd = " + mybinptnd);
-            //debugger;
-            let myoconfigobj = {
-                method: "PATCH",
-                headers: {
-                    "Content-Type" : "application/json",
-                    "Accept" : "application/json"
-                },
-                body: JSON.stringify(getAndGenerateServerObject(mybinptnd, false))
-            };
-            fetch("http://localhost:3000/nodes/" + mybinptnd.id, myoconfigobj).
-            then((response) => response.json()).
-            then(function(response){
-                //console.log("response = " + response);
-                //console.log("response.id = " + response.id);
-                let myresidstr = "" + response.id;
-                //console.log("response.data = " + response.data);
-                
-                if (response.id == undefined || response.id == null || myresidstr.length < 1)
-                {
-                    throw "illegal response id found and used here!";
-                }
-                //else;//do nothing
-    
-                console.log("successfully updated the parent binary tree node object on the server!");
-            }).catch(function(err){
-                console.error("there was a problem updating the data on the server!");
-                console.error(err);
-                alert("Error: There was a problem updating the data on the server! " +
-                    "See log for details!");
-            });
-            //debugger;
-        }
-        //else;//do nothing
     }.bind(mynwtextareaelem, myleftbtn, myrightbtn));
     console.log("successfully added my on change listener for the textarea for my node here!");
     //debugger;
