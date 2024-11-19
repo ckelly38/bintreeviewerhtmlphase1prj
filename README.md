@@ -87,6 +87,11 @@ IF YOU CHOSE TO RELOAD THE PAGE WITHOUT REMOVING THE NODES: The user tree will s
 
 The user tree generically refers to all of the nodes on the server, even if you started with an example tree, you are not allowed to change the example trees on the server. Only the user tree.
 
+TO LAUNCH IT:
+
+You need to have JSON-SERVER INSTALLED. Then run json-server --watch db.json
+You can then launch the HTML file in the browser.
+
 SOME HELPFUL WEBSITES FOR THE TOOLTIP AND THE SUMMARY AND DETAILS TAGS:
 
 https://css-tricks.com/exploring-what-the-details-and-summary-elements-can-do/
