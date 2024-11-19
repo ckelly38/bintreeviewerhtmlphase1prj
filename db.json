@@ -1,5 +1,78 @@
 {
-  "nodes": [],
+  "nodes": [
+    {
+      "ptnd": null,
+      "leftkd": 2,
+      "rightkd": 7,
+      "data": "10",
+      "isbinsrchtree": false,
+      "id": 1
+    },
+    {
+      "ptnd": 1,
+      "leftkd": 3,
+      "rightkd": 6,
+      "data": "6",
+      "isbinsrchtree": false,
+      "id": 2
+    },
+    {
+      "ptnd": 2,
+      "leftkd": 4,
+      "rightkd": 5,
+      "data": "5",
+      "isbinsrchtree": false,
+      "id": 3
+    },
+    {
+      "ptnd": 3,
+      "leftkd": null,
+      "rightkd": null,
+      "data": "3",
+      "isbinsrchtree": true,
+      "id": 4
+    },
+    {
+      "ptnd": 3,
+      "leftkd": null,
+      "rightkd": null,
+      "data": "7",
+      "isbinsrchtree": false,
+      "id": 5
+    },
+    {
+      "ptnd": 2,
+      "leftkd": null,
+      "rightkd": null,
+      "data": "8",
+      "isbinsrchtree": false,
+      "id": 6
+    },
+    {
+      "ptnd": 1,
+      "leftkd": 8,
+      "rightkd": 9,
+      "data": "17",
+      "isbinsrchtree": false,
+      "id": 7
+    },
+    {
+      "ptnd": 7,
+      "leftkd": null,
+      "rightkd": null,
+      "data": "15",
+      "isbinsrchtree": false,
+      "id": 8
+    },
+    {
+      "ptnd": 7,
+      "leftkd": null,
+      "rightkd": null,
+      "data": "20",
+      "isbinsrchtree": false,
+      "id": 9
+    }
+  ],
   "exbinsearchtreenodes": [
     {
       "ptnd": null,

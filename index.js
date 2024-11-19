@@ -4,33 +4,53 @@ let loaduserbintree = false;
 let userbuildowntree = false;
 const myswdth = screen.width;
 let mygenndsarr = null;
+
+function isLetUndefinedOrNull(val)
+{
+    return (val === undefined || val === null);
+}
+function isLetEmptyNullOrUndefined(val)
+{
+    return (isLetUndefinedOrNull(val) ? true : (val.length < 1));
+}
+function letMustBeDefinedAndNotNull(val, varnm="varnm")
+{
+    if (isLetEmptyNullOrUndefined(varnm)) return letMustBeDefinedAndNotNull(val, "varnm");
+    //else;//do nothing
+    if (isLetUndefinedOrNull(val)) throw new Error("" + varnm + " must not be null!");
+    else return true;
+}
+function letMustBeBoolean(val, varnm="varnm")
+{
+    if (isLetEmptyNullOrUndefined(varnm)) return letMustBeBoolean(val, "varnm");
+    //else;//do nothing
+    letMustBeDefinedAndNotNull(val, varnm);
+    if (val === true || val === false) return true;
+    else throw new Error("" + varnm + " must be boolean, but it was not!");
+}
+function letMustNotBeEmpty(val, varnm="varnm")
+{
+    if (isLetEmptyNullOrUndefined(val))
+    {
+        throw new Error("" + varnm + " must not be empty, but it was!");
+    }
+    else return true;
+}
+
 function getTransversalForNodeArray(svrndarr, usepost, usein, srtnd=null)
 {
-    if (svrndarr == undefined || svrndarr == null) return null;
+    if (isLetUndefinedOrNull(svrndarr)) return null;
     else
     {
         if (svrndarr.length < 2) return svrndarr;
         //else;//do nothing safe to proceed
     }
 
-    let myretarr = new Array();
-    if (srtnd == undefined || srtnd == null)
-    {
-        throw "srtnd  is not allowed to be null!";
-    }
-    //else;//do nothing
+    letMustBeDefinedAndNotNull(srtnd, "srtnd");
+    letMustBeBoolean(usein, "usein");
+    letMustBeBoolean(usepost, "usepost");
 
-    if (usein == undefined || usepost == undefined || usein == null || usepost == null)
-    {
-        throw "usein and usepost must be defined boolean variables!";
-    }
-    else
-    {
-        if ((usepost === true || usepost === false) && (usein === true || usein === false));
-        else throw "usein and usepost must be defined boolean variables!";
-    }
-
-    if (usein === true && usepost === true)
+    if (usein && usepost)
     {
         throw "illegal transversal selected; you there is no transversal for in and post orders!";
     }
@@ -48,19 +68,16 @@ function getTransversalForNodeArray(svrndarr, usepost, usein, srtnd=null)
     // PRE ORDER: f d b a c e k h g i m l n
     //POST ORDER: a c b e d g i h l n m k f
     
+    let myretarr = [];
     if (usepost || usein);
-    else
-    {
-        //add the root node now
-        myretarr.push(srtnd);
-    }
+    else myretarr.push(srtnd);//add the root node now
 
     let myleftkdstr = "";
-    if (srtnd.leftkd == null);
+    if (isLetUndefinedOrNull(srtnd.leftkd));
     else myleftkdstr = "" + srtnd.leftkd;
 
     let myrightkdstr = "";
-    if (srtnd.rightkd == null);
+    if (isLetUndefinedOrNull(srtnd.rightkd));
     else myrightkdstr = "" + srtnd.rightkd;
 
     if (myleftkdstr.length < 1)
@@ -97,14 +114,14 @@ function getTransversalForNodeArray(svrndarr, usepost, usein, srtnd=null)
             }
             //console.log("myrkdndi = " + myrkdndi);
 
-            if (myrkdndi < 0 || myrkdndi > svrndarr.length || myrkdndi == svrndarr.length)
+            if (myrkdndi < 0 || svrndarr.length < myrkdndi || myrkdndi === svrndarr.length)
             {
                 throw "illegal index found and used for the root node!";
             }
             //else;//do nothing
 
             let myrightrlist = getTransversalForNodeArray(svrndarr, usepost, usein, svrndarr[myrkdndi]);
-            if (myrightrlist == null || myrightrlist.length < 1);
+            if (isLetEmptyNullOrUndefined(myrightrlist));
             else
             {
                 for (let n = 0; n < myrightrlist.length; n++)
@@ -138,7 +155,7 @@ function getTransversalForNodeArray(svrndarr, usepost, usein, srtnd=null)
         //else;//do nothing
 
         let myleftrlist = getTransversalForNodeArray(svrndarr, usepost, usein, svrndarr[mylkdndi]);
-        if (myleftrlist == null || myleftrlist.length < 1);
+        if (isLetEmptyNullOrUndefined(myleftrlist));
         else
         {
             for (let n = 0; n < myleftrlist.length; n++)
@@ -178,14 +195,14 @@ function getTransversalForNodeArray(svrndarr, usepost, usein, srtnd=null)
             }
             //console.log("myrkdndi = " + myrkdndi);
 
-            if (myrkdndi < 0 || myrkdndi > svrndarr.length || myrkdndi == svrndarr.length)
+            if (myrkdndi < 0 || myrkdndi > svrndarr.length || myrkdndi === svrndarr.length)
             {
                 throw "illegal index found and used for the right kid node!";
             }
             //else;//do nothing
 
             let myrightrlist = getTransversalForNodeArray(svrndarr, usepost, usein, svrndarr[myrkdndi]);
-            if (myrightrlist == null || myrightrlist.length < 1);
+            if (isLetEmptyNullOrUndefined(myrightrlist));
             else
             {
                 for (let n = 0; n < myrightrlist.length; n++)
@@ -209,12 +226,7 @@ function getTransversalForNodeArray(svrndarr, usepost, usein, srtnd=null)
     }
     //else;//do nothing
 
-    if (myretarr == undefined || myretarr == null || myretarr.length < 1)
-    {
-        throw "the return list must have at minimum the starting node on it!";
-    }
-    //else;//do nothing
-
+    letMustNotBeEmpty(myretarr, "myretarr");
     return myretarr;
 }
 function getPreOrderTransversalForNodeArray(svrndarr, srtnd=null)
@@ -230,33 +242,17 @@ function getPostOrderTransversalForNodeArray(svrndarr, srtnd=null)
     return getTransversalForNodeArray(svrndarr, true, false, srtnd);
 }
 
+//SOME LOADING METHODS HERE
+
 let myprevtabledomnd = null;
 let myndsloaded = 0;
 let addmydatanow = false;
 let doneloading = false;
 function addDataAndFireChangeListener(ndfromarr, prevtbldomnd, isfirst=false)
 {
-    if (prevtbldomnd == undefined || prevtbldomnd == null)
-    {
-        throw "illegal dom node found and used here!";
-    }
-    //else;//do nothing
-
-    if (isfirst == undefined || isfirst == null)
-    {
-        throw "isfirst must be a defined boolean variable!";
-    }
-    else
-    {
-        if (isfirst === true || isfirst === false);
-        else throw "isfirst must be a defined boolean variable!";
-    }
-
-    if (ndfromarr == undefined || ndfromarr == null)
-    {
-        throw "the node from the array must be defined and not null!";
-    }
-    //else;//do nothing
+    letMustBeDefinedAndNotNull(prevtbldomnd, "prevtbldomnd");
+    letMustBeBoolean(isfirst, "isfirst");
+    letMustBeDefinedAndNotNull(ndfromarr, "ndfromarr");
 
     console.log("adding the data now!");
     //debugger;
@@ -275,34 +271,29 @@ function addDataAndFireChangeListener(ndfromarr, prevtbldomnd, isfirst=false)
 
 function canClickTheParentNode(ndarr, ptndi, si, mtabledomnd)
 {
-    if (mtabledomnd == undefined || mtabledomnd == null)
-    {
-        throw "illegal dom node found and used here!";
-    }
-    //else;//do nothing
-
-    if (ptndi == undefined || ptndi == null || isNaN(ptndi) || ptndi < 0)
+    letMustBeDefinedAndNotNull(mtabledomnd, "mtabledomnd");
+    if (isLetUndefinedOrNull(ptndi) || isNaN(ptndi) || ptndi < 0)
     {
         throw "illegal value for the parent node index! It must be a number at least zero!";
     }
     //else;//do nothing
 
-    if (si == undefined || si == null || isNaN(si) || si < 0)
+    if (isLetUndefinedOrNull(si) || isNaN(si) || si < 0)
     {
         throw "illegal value for the starting node index! It must be a number at least zero!";
     }
     //else;//do nothing
 
-    if (ndarr == undefined || ndarr == null || ndarr.length < 1) return false;
+    if (isLetEmptyNullOrUndefined(ndarr)) return false;
     else
     {
-        if (ptndi == undefined || ptndi == null || isNaN(ptndi) || ptndi < 0 || ptndi > ndarr.length)
+        if (isLetUndefinedOrNull(ptndi) || isNaN(ptndi) || ptndi < 0 || ndarr.length < ptndi)
         {
             throw "illegal index for the parent node or illegal number of nodes in the node array!";
         }
         //else;//do nothing
 
-        if (si < 0 || si > ndarr.length || si == ndarr.length)
+        if (si < 0 || ndarr.length < si || si === ndarr.length)
         {
             throw "illegal value for the starting node index! It must be a number at least zero!";
         }
@@ -310,11 +301,11 @@ function canClickTheParentNode(ndarr, ptndi, si, mtabledomnd)
     }
 
     let myprevlkdstr = "";
-    if (ndarr[ptndi].leftkd === null);
+    if (isLetUndefinedOrNull(ndarr[ptndi].leftkd));
     else myprevlkdstr = "" + ndarr[ptndi].leftkd;
 
     let myprevrkdstr = "";
-    if (ndarr[ptndi].rightkd === null);
+    if (isLetUndefinedOrNull(ndarr[ptndi].rightkd));
     else myprevrkdstr = "" + ndarr[ptndi].rightkd;
 
     let useleftkd = false;
@@ -353,266 +344,20 @@ function canClickTheParentNode(ndarr, ptndi, si, mtabledomnd)
     else return false;
 }
 
-function treeLoadedHandler(event){
-    console.log("inside of other dom loaded function");
-    console.log("myprevtabledomnd = " + myprevtabledomnd);
-    console.log("myndsloaded = " + myndsloaded);
-    //debugger;
-    loadDOMFromTreeNodesArray(this, myprevtabledomnd, myndsloaded);
-}
 
-function loadDOMFromTreeNodesArray(ndarr, prevtbldomnd, si=0)
-{
-    if (ndarr == undefined || ndarr == null || ndarr.length < 1) return;
-    else
-    {
-        if (si == undefined || si == null || si < 0 || isNaN(si))
-        {
-            throw "illegal value found and used for the starting node array index si index here!";
-        }
-        else
-        {
-            if (si > 0)
-            {
-                if (prevtbldomnd == undefined || prevtbldomnd == null)
-                {
-                    throw "illegal dom node found and used here!";
-                }
-                //else;//do nothing
-            }
-            //else;//do nothing
-        }
-    }
-
-    if (si == 0)
-    {
-        //now get the text area for the first node and provide the data
-        addDataAndFireChangeListener(ndarr[si], document.getElementById("tree").children[1], true);
-        console.log("DONE ADDING DATA FOR THE FIRST NODE!");
-    }
-    else if (si > 0 && si < ndarr.length)
-    {
-        //get the previous node and the current node and check to see if they are directly related
-        //if they are related, use the relationship to determine which kid to click
-        //if they are not related, get the parent node and
-        //then get the dom id for that node
-        //determine which kid to click
-        //click the kid
-        console.log("si is greater than zero!");
-        console.log("addmydatanow = " + addmydatanow);
-
-        if (addmydatanow) addDataAndFireChangeListener(ndarr[si], prevtbldomnd);
-        else
-        {
-            console.log("determinging the node to click!");
-            if (canClickTheParentNode(ndarr, si - 1, si, prevtbldomnd));
-            else
-            {
-                //build the binary tree here
-                //
-                //      10
-                //    6     17
-                //  5  8  15  20
-                //3  7
-                //
-                //cannot click either, so need to get the parent node of the current node
-                //the last node in the generated array will correspond to ndarr[si - 1] and below
-                //si and above will not have been generated yet
-                
-                //console.log("ndarr[" + (si - 1) + "] = " + ndarr[si - 1]);
-                //console.log("ndarr[" + si + "] = " + ndarr[si]);
-                //console.log("ndarr[" + si + "].ptnd = " + ndarr[si].ptnd);
-
-                let ptndi = -1;
-                for (let n = 0; n < ndarr.length; n++)
-                {
-                    if (ndarr[n].id === ndarr[si].ptnd)
-                    {
-                        ptndi = n;
-                        break;
-                    }
-                    //else;//do nothing
-                }
-                //console.log("ptndi = " + ptndi);
-
-                if (ptndi < 0 || ptndi == ndarr.length || ptndi > ndarr.length)
-                {
-                    throw "illegal value found and used for the ptndi index here!";
-                }
-                //else;//do nothing
-                //console.log("ndarr[" + ptndi + "] = " + ndarr[ptndi]);
-                
-                let mybintnd = mygenndsarr[ptndi];
-                //console.log("mybintnd = " + mybintnd);
-                
-                let myptdomnddiv = document.getElementById(mybintnd.id);
-                let mypttabledomnd = myptdomnddiv.parentNode.parentNode.parentNode;
-                //console.log("mypttabledomnd = " + mypttabledomnd);
-                
-                if (canClickTheParentNode(ndarr, ptndi, si, mypttabledomnd));
-                else throw "the parent node and this node must be related somehow!";
-            }
-        }
-    }
-    else if (si == ndarr.length)
-    {
-        document.getElementById("tree").removeEventListener("treeDOMLoaded", treeLoadedHandler);
-        doneloading = true;
-        console.log("DONE LOADING ALL OF THE NODES!");
-        alert("DONE LOADING ALL OF THE NODES!");
-    }
-    else throw "illegal value found and used here for the si index!";
-}
-
-function loadBinaryOrSearchTree(usesrchtree, useuserbintree)
-{
-    //get the list of nodes from the api
-    //then get the preorder of that list
-    //then build the tree in that order
-    //
-    //GOAL: we want to take this list of nodes from the server and
-    //-build a tree of the Binnodes and of the DOM nodes
-    //
-    //we do not want to modify the example nodes
-    //we want to modify new nodes, so we want a copy of them
-    //
-    //concern: I cannot push them and gurantee the id
-    //to build the tree, I need to have the ids guaranteed
-    //
-    //WAY AROUND THAT: use the event loop and build the tree in the right order,
-    //then we don't care about the ids
-    //but we need a custom event to signal that we are ready to laod the next one
-
-    if (usesrchtree == undefined || usesrchtree == null)
-    {
-        throw "usesrchtree must be a defined boolean variable!";
-    }
-    else
-    {
-        if (usesrchtree === true || usesrchtree === false);
-        else throw "usesrchtree must be a defined boolean variable!";
-    }
-
-    if (useuserbintree == undefined || useuserbintree == null)
-    {
-        throw "useuserbintree must be a defined boolean variable!";
-    }
-    else
-    {
-        if (useuserbintree === true || useuserbintree === false);
-        else throw "useuserbintree must be a defined boolean variable!";
-    }
-
-    if (usesrchtree === useuserbintree)
-    {
-        if (usesrchtree)
-        {
-            throw "we cannot both be loading an example binary search tree and a user binary tree " +
-                "at the same time!";
-        }
-        //else;//do nothing
-    }
-    //else;//do nothing
-    
-    let myurl = "http://localhost:3000/";
-    if (useuserbintree) myurl += "nodes";
-    else
-    {
-        myurl += "exbin";
-        if (usesrchtree) myurl += "search";
-        //else;//do nothing
-        myurl += "treenodes";
-    }
-    console.log("myurl = " + myurl);
-    
-    fetch(myurl).then((response) => response.json()).
-    then(function(response){
-        console.log(response);
-        let mynodesarr = response;
-        
-        //put the array in pre-order transversal: root left right
-        //then build each node calling:
-        //buildUserBinaryTree(domnode=null, binptnd=null, addonleft=false, addonright=false)
-        //when we want to add a left kid we find the left kid button and click it
-
-        if (mynodesarr == undefined || mynodesarr == null || mynodesarr.length < 1)
-        {
-            console.error("no nodes on the server to load in for the user tree!");
-            showLoadFormAfterNoNodes();
-            alert("Error: No nodes were found on the server for a user tree!\n" +
-                "You may build your own, load an example of a binary search tree or of a binary tree!");
-        }
-        else if (mynodesarr.length > 0)
-        {
-            let myrtndi = -1;
-            for (let n = 0; n < mynodesarr.length; n++)
-            {
-                //console.log("mynodesarr[" + n + "] = " + mynodesarr[n]);
-                if (mynodesarr[n].ptnd == null)
-                {
-                    myrtndi = n;
-                    break;
-                }
-                //else;//do nothing
-            }
-            console.log("myrtndi = " + myrtndi);
-            
-            if (myrtndi < 0 || myrtndi > mynodesarr.length || myrtndi == mynodesarr.length)
-            {
-                console.error("myrtndi = " + myrtndi);
-                console.error("illegal root node index found and used here!");
-                debugger;
-                throw "illegal root node index found and used here!";
-            }
-            //else;//do nothing
-
-            let mypretransndarr = getPreOrderTransversalForNodeArray(mynodesarr, mynodesarr[myrtndi]);
-            
-            //console.log("mypretransndarr[0] = " + mypretransndarr[0]);
-            
-            document.getElementById("tree").addEventListener("treeDOMLoaded",
-                treeLoadedHandler.bind(mypretransndarr));
-            
-            buildUserBinaryTree();
-        }
-        else throw "illegal length found and used for the nodes array from the server!";
-        
-        //console.error("NOT DONE YET 7-15-2023 2:53 AM!");
-        //debugger;
-    }).catch(function(err){
-        console.error("there was an error getting the nodes!");
-        console.error(err);
-        alert("Error: There was a problem getting the nodes from the server! See log for details!");
-    });
-}
+//GET DATA AND TRAVERSAL METHODS OVER NODES LIST
 
 function getMyDataOrIDOnlyList(transversalarr, usedata)
 {
-    if (usedata == undefined || usedata == null)
-    {
-        throw "usedata must be a defined boolean variable!";
-    }
-    else
-    {
-        if (usedata === true || usedata === false);
-        else throw "usedata must be a defined boolean variable!";
-    }
+    letMustBeBoolean(usedata, "usedata");
 
-    if (transversalarr == undefined || transversalarr == null) return null;
+    if (isLetUndefinedOrNull(transversalarr)) return null;
+    else if (transversalarr.length < 1) return transversalarr;
     else
     {
-        if (transversalarr.length < 1) return transversalarr;
-        else
-        {
-            return transversalarr.map(function(item){
-                if (item == undefined || item == null) return null;
-                else
-                {
-                    if (usedata) return item.data;
-                    else return item.id;
-                }
-            });
-        }
+        return transversalarr.map(function(item){
+            return (isLetUndefinedOrNull(item) ? null : (usedata ? item.data : item.id));
+        });
     }
 }
 function getMyDataOnlyList(transversalarr) { return getMyDataOrIDOnlyList(transversalarr, true); }
@@ -620,10 +365,7 @@ function getMyIDOnlyList(transversalarr) { return getMyDataOrIDOnlyList(transver
 
 function getTransversalDataStringFromArray(transversaldataarr)
 {
-    if (transversaldataarr == undefined || transversaldataarr == null || transversaldataarr.length < 1)
-    {
-        return "";
-    }
+    if (isLetEmptyNullOrUndefined(transversaldataarr)) return "";
     else
     {
         let myretstr = "";
@@ -639,10 +381,7 @@ function getTransversalDataStringFromArray(transversaldataarr)
 
 function includeAllExceptRoot(transversalarr)
 {
-    if (transversalarr == undefined || transversalarr == null || transversalarr.length < 1)
-    {
-        return null;
-    }
+    if (isLetEmptyNullOrUndefined(transversalarr)) return null;
     else
     {
         return transversalarr.filter(function(item){
@@ -650,15 +389,14 @@ function includeAllExceptRoot(transversalarr)
             //console.log("item.id = " + item.id);
             //console.log("item.data = " + item.data);
             //console.log("item.isRootNode() = " + item.isRootNode());
-            if (item.isRootNode()) return false;
-            else return true;
+            return !item.isRootNode();
         });
     }
 }
 
 function getRootIndexInTransversal(transversalarr)
 {
-    if (transversalarr == undefined || transversalarr == null || transversalarr.length < 1)
+    if (isLetEmptyNullOrUndefined(transversalarr))
     {
         //console.log("transversal array is empty!");
         return null;
@@ -666,7 +404,7 @@ function getRootIndexInTransversal(transversalarr)
     else
     {
         //console.log("transversalarr.length = " + transversalarr.length);
-        if (transversalarr.length == 1) return 0;
+        if (transversalarr.length === 1) return 0;
         else
         {
             for (let n = 0; n < transversalarr.length; n++)
@@ -688,17 +426,9 @@ function getRootIndexInTransversal(transversalarr)
 function getAllBeforeOrAfterRoot(transversalarr, usebefore)
 {
     //console.log("usebefore = " + usebefore);
-    if (usebefore == undefined || usebefore == null)
-    {
-        throw "usebefore must be a defined boolean variable!";
-    }
-    else
-    {
-        if (usebefore === true || usebefore === false);
-        else throw "usebefore must be a defined boolean variable!";
-    }
+    letMustBeBoolean(usebefore, "usebefore");
 
-    if (transversalarr == undefined || transversalarr == null || transversalarr.length < 1)
+    if (isLetEmptyNullOrUndefined(transversalarr))
     {
         //console.log("transversal array is empty!");
         return null;
@@ -706,7 +436,7 @@ function getAllBeforeOrAfterRoot(transversalarr, usebefore)
     else
     {
         //console.log("transversalarr.length = " + transversalarr.length);
-        if (transversalarr.length == 1) return null;
+        if (transversalarr.length === 1) return null;
         else
         {
             let myrtindx = getRootIndexInTransversal(transversalarr);
@@ -738,6 +468,9 @@ function getAllBeforeOrAfterRoot(transversalarr, usebefore)
 function getAllBeforeRoot(transversalarr) { return getAllBeforeOrAfterRoot(transversalarr, true); }
 function getAllAfterRoot(transversalarr) { return getAllBeforeOrAfterRoot(transversalarr, false); }
 
+
+//COMPARTOR METHODS
+
 function myStringComparator(stra, strb)
 {
     //mya, myb
@@ -747,39 +480,25 @@ function myStringComparator(stra, strb)
         if (isNaN(stra));
         else
         {
-            if (stra == undefined || stra == null)
-            {
-                if (strb == undefined || strb == null) return 0;
-                else return -1;
-            }
+            if (isLetUndefinedOrNull(stra)) return (isLetUndefinedOrNull(strb) ? 0 : -1);
             else
             {
-                if (strb == undefined || strb == null) return 1;
+                if (isLetUndefinedOrNull(strb)) return 1;
                 else
                 {
                     let mynuma = Number(stra);
                     let mynumb = Number(strb);
-                    if (mynuma < mynumb) return -1;
-                    else if (mynumb < mynuma) return 1;
-                    else return 0;
+                    return ((mynuma < mynumb) ? -1 : ((mynumb < mynuma) ? 1 : 0));
                 }
             }
         }
     }
-    else
-    {
-        if (isNaN(stra)) return -1;
-        else return 1;
-    }
+    else return (isNaN(stra) ? -1 : 1);
 
-    if (stra.length == strb.length);
+    if (stra.length === strb.length);
     else
     {
-        if (stra.length < 1)
-        {
-            if (strb.length < 1) return 0;
-            else return -1;
-        }
+        if (stra.length < 1) return ((strb.length < 1) ? 0 : -1);
         else
         {
             if (strb.length < 1) return 1;
@@ -801,7 +520,7 @@ function myStringComparator(stra, strb)
 
         let mycodea = stra.charCodeAt(n);
         if (mycodea < mycodeb) return -1;
-        else if (mycodea == mycodeb);
+        else if (mycodea === mycodeb);
         else return 1;
     }
     return 0;
@@ -813,40 +532,26 @@ function mySortCmptr(a, b)
     //-1 b moves on
     //0 otherwise
 
-    if (a == undefined || a == null)
-    {
-        if (b == undefined || b == null) return 0;
-        else return -1;
-    }
+    if (isLetUndefinedOrNull(a)) return (isLetUndefinedOrNull(b) ? 0 : -1);
     else
     {
-        if (b == undefined || b == null) return 1;
+        if (isLetUndefinedOrNull(b)) return 1;
         //else;//do nothing proceed below
     }
 
     if (isNaN(a) || isNaN(b))
     {
-        if (isNaN(a) == isNaN(b))
-        {
-            //they both are nan
-            return myStringComparator("" + a, "" + b);
-        }
-        else
-        {
-            if (isNaN(a)) return -1;
-            else return 1;
-        }
+        return ((isNaN(a) == isNaN(b)) ? myStringComparator("" + a, "" + b) : (isNaN(a) ? -1 : 1));
     }
     else
     {
         let mynuma = Number(a);
         let mynumb = Number(b);
-        if (mynuma < mynumb) return -1;
-        else if (mynumb < mynuma) return 1;
-        else return 0;
+        return ((mynuma < mynumb) ? -1 : ((mynumb < mynuma) ? 1 : 0));
     }
 }
-function testMySortComparator(){
+function testMySortComparator()
+{
     console.log("null < 2: " + mySortCmptr(null, 2));
     console.log("2 > null: " + mySortCmptr(2, null));
     console.log("1 == 1: " + mySortCmptr(1, 1));
@@ -857,6 +562,9 @@ function testMySortComparator(){
     console.log("mya < myb: " + mySortCmptr("mya", "myb"));
 }
 
+
+//SIMPLE BINARY TREE NODE CLASS
+
 class Bintreend {
     constructor(myid, mydatstr, myptnd=null, myleftkdnd=null, myrightkdnd=null)
     {
@@ -866,7 +574,7 @@ class Bintreend {
         this.leftkd = myleftkdnd;
         this.rightkd = myrightkdnd;
     }
-    isRootNode() { return ((this.ptnd == null) ? true : false); }
+    isRootNode() { return isLetUndefinedOrNull(this.ptnd); }
     get isRoot() { return this.isRootNode(); }
     getRootNode(vlistnds=null)
     {
@@ -878,51 +586,38 @@ class Bintreend {
             //add the current node to the visited list
             //console.log("this.ptnd.data = " + this.ptnd.data);
             let myvlistnds = null;
-            if (vlistnds == null || vlistnds.length < 1)
-            {
-                myvlistnds = new Array();
-            }
+            if (isLetEmptyNullOrUndefined(vlistnds)) myvlistnds = [];
             else
             {
                 for (let n = 0; n < vlistnds.length; n++)
                 {
-                    if (vlistnds[n] == null)
+                    letMustBeDefinedAndNotNull(vlistnds[n], "vlistnds[" + n + "]");
+                    
+                    //console.log("vlistnds[" + n + "].data = " + vlistnds[n].data);
+                    if (vlistnds[n] === this)
                     {
-                        throw "no null nodes allowed on the list!";
+                        throw "CircularReferenceError: not a tree! Already visited this node; " +
+                            "root not found!";
                     }
-                    else
-                    {
-                        //console.log("vlistnds[" + n + "].data = " + vlistnds[n].data);
-                        if (vlistnds[n] === this)
-                        {
-                            throw "CircularReferenceError: not a tree! Already visited this node; " +
-                                "root not found!";
-                        }
-                        //else;//do nothing
-                    }
+                    //else;//do nothing
                 }
 
-                myvlistnds = new Array();
+                myvlistnds = [];
                 for (let n = 0; n < vlistnds.length; n++)
                 {
-                    if (vlistnds[n] == null)
-                    {
-                        throw "no null nodes allowed on the list!";
-                    }
-                    else myvlistnds.push(vlistnds[n]);
+                    letMustBeDefinedAndNotNull(vlistnds[n], "vlistnds[" + n + "]");
+                    
+                    myvlistnds.push(vlistnds[n]);
                 }
             }
             myvlistnds.push(this);
             return this.ptnd.getRootNode(myvlistnds);
         }
     }
-    get root()
-    {
-        return this.getRootNode(null);
-    }
+    get root() { return this.getRootNode(null); }
     getNumberOfNodesBelowNode(nd, vlist=null)
     {
-        if (nd == undefined || nd == null) return 0;
+        if (isLetUndefinedOrNull(nd)) return 0;
         else
         {
             //console.log("nd = " + nd);
@@ -935,16 +630,14 @@ class Bintreend {
 
             //visit this node
             //then call method on child nodes
-            if (vlist == undefined || vlist == null || vlist.length < 1);
+            if (isLetEmptyNullOrUndefined(vlist));
             else
             {
                 for (let n = 0; n < vlist.length; n++)
                 {
-                    if (vlist[n] == null)
-                    {
-                        throw "no null nodes allowed on the list!";
-                    }
-                    else if (vlist[n] === nd)
+                    letMustBeDefinedAndNotNull(vlist[n], "vlist[" + n + "]");
+                    
+                    if (vlist[n] === nd)
                     {
                         throw "CircularReferenceError: not a tree! Already visited this node; " +
                             "root not found!";
@@ -955,23 +648,21 @@ class Bintreend {
             //console.log("nd.leftkd = " + nd.leftkd);
             //console.log("nd.rightkd = " + nd.rightkd);
 
-            if (nd.leftkd == null && nd.rightkd == null) return 1;
+            if (isLetUndefinedOrNull(nd.leftkd) && isLetUndefinedOrNull(nd.rightkd)) return 1;
             else
             {
                 //console.log("nd.leftkd.data = " + nd.leftkd.data);
                 //console.log("nd.rightkd.data = " + nd.rightkd.data);
 
-                let myvlist = new Array();
-                if (vlist == undefined || vlist == null || vlist.length < 1);
+                let myvlist = [];
+                if (isLetEmptyNullOrUndefined(vlist));
                 else
                 {
                     for (let n = 0; n < vlist.length; n++)
                     {
-                        if (vlist[n] == null)
-                        {
-                            throw "no null nodes allowed on the list!";
-                        }
-                        else if (vlist[n] === nd)
+                        letMustBeDefinedAndNotNull(vlist[n], "vlist[" + n + "]");
+                        
+                        if (vlist[n] === nd)
                         {
                             throw "CircularReferenceError: not a tree! Already visited this node; " +
                                 "root not found!";
@@ -996,36 +687,22 @@ class Bintreend {
             }
         }
     }
-    get numNodesOnTree()
-    {
-        return this.getNumberOfNodesBelowNode(this.root);
-    }
+    get numNodesOnTree() { return this.getNumberOfNodesBelowNode(this.root); }
     isKidOfParent(kid=this, pt=null)
     {
         //console.log("kid.isRootNode() = " + kid.isRootNode());
-        if (kid.isRootNode())
-        {
-            if (pt == undefined || pt == null) return true;
-            else return false;
-        }
-        else
-        {
-            if (pt == undefined || pt == null) return false;
-            else return (kid.ptnd === pt);
-        }
+        const noptnd = isLetUndefinedOrNull(pt);
+        return (kid.isRootNode() ? noptnd : (noptnd ? false : (kid.ptnd === pt)));
     }
-    isParentOf(kid=null, pt=this)
-    {
-        return this.isKidOfParent(kid, pt);
-    }
+    isParentOf(kid=null, pt=this) { return this.isKidOfParent(kid, pt); }
     numberOfLevelsOnTree(snd=this.root, cnumlevels=1, vlist = null)
     {
-        if (snd == undefined || snd == null) throw "starting node must be defined!";
-        //else;//do nothing
+        letMustBeDefinedAndNotNull(snd, "snd");
+        
         //console.log("snd.data = " + snd.data);
         //console.log("snd.id = " + snd.id);
         //console.log("cnumlevels = " + cnumlevels);
-        if (vlist == undefined || vlist == null || vlist.length < 1)
+        if (isLetEmptyNullOrUndefined(vlist))
         {
             //console.log("vlist is null or empty!");
         }
@@ -1041,27 +718,22 @@ class Bintreend {
 
         let myvlist = null;
         let sndonvlist = false;
-        if (vlist == undefined || vlist == null || vlist.length < 1);
+        if (isLetEmptyNullOrUndefined(vlist));
         else
         {
-            myvlist = new Array();
+            myvlist = [];
             for (let n = 0; n < vlist.length; n++)
             {
-                if (vlist[n] == undefined || vlist[n] == null)
+                letMustBeDefinedAndNotNull(vlist[n], "vlist[" + n + "]");
+                
+                if (vlist[n] === snd)
                 {
-                    throw "null and undefined are not allowed on the visited nodes list!";
+                    if (sndonvlist);
+                    else sndonvlist = true;
                 }
-                else
-                {
-                    if (vlist[n] === snd)
-                    {
-                        if (sndonvlist);
-                        else sndonvlist = true;
-                    }
-                    //else;//do nothing
+                //else;//do nothing
 
-                    myvlist.push(vlist[n]);
-                }
+                myvlist.push(vlist[n]);
             }
         }
         //console.log("sndonvlist = " + sndonvlist);
@@ -1077,16 +749,12 @@ class Bintreend {
         //their kids
         //just the root, return 1
 
-        let visitleftkd = false;
-        if (snd.leftkd == null) visitleftkd = false;
-        else visitleftkd = true;
-        let visitrightkd = false;
-        if (snd.rightkd == null) visitrightkd = false;
-        else visitrightkd = true;
+        let visitleftkd = !isLetUndefinedOrNull(snd.leftkd);
+        let visitrightkd = !isLetUndefinedOrNull(snd.rightkd);
         //console.log("visitleftkd = " + visitleftkd);
         //console.log("visitrightkd = " + visitrightkd);
 
-        if (myvlist == null) myvlist = new Array();
+        if (isLetUndefinedOrNull(myvlist)) myvlist = [];
         //else;//do nothing
         if (sndonvlist);
         else myvlist.push(snd);
@@ -1114,39 +782,23 @@ class Bintreend {
         //console.log("FINAL sndonvlist = " + sndonvlist);
         //console.log("FINAL cnumlevels = " + cnumlevels);
         
-        if (visitleftkd && visitrightkd)
-        {
-            if (numleft > numright) return numleft;
-            else return numright;
-        }
-        else
-        {
-            if (visitleftkd || visitrightkd)
-            {
-                if (visitleftkd) return numleft;
-                else return numright;
-            }
-            else return cnumlevels;
-        }
+        if (visitleftkd && visitrightkd) return ((numright < numleft) ? numleft : numright);
+        else return ((visitleftkd || visitrightkd) ? (visitleftkd ? numleft : numright) : cnumlevels);
     }
-    get numLevelsOnTree()
-    {
-        return this.numberOfLevelsOnTree(this.root, 1, null);
-    }
+    get numLevelsOnTree() { return this.numberOfLevelsOnTree(this.root, 1, null); }
     levelForNode(snd=this.root, fnd=this, clevel=0, vlist=null)
     {
-        if (snd == undefined || snd == null) throw "starting node must be defined!";
-        //else;//do nothing
-        if (fnd == undefined || fnd == null) throw "the node we are looking for must not be null!";
-        //else;//do nothing
+        letMustBeDefinedAndNotNull(snd, "snd");
+        letMustBeDefinedAndNotNull(fnd, "fnd");
+        
         //console.log("snd.data = " + snd.data);
         //console.log("snd.id = " + snd.id);
         //console.log("fnd.data = " + fnd.data);
         //console.log("fnd.id = " + fnd.id);
         //console.log("clevel = " + clevel);
         
-        let myvlist = new Array();
-        if (vlist == undefined || vlist == null || vlist.length < 1)
+        let myvlist = [];
+        if (isLetEmptyNullOrUndefined(vlist))
         {
             //console.log("vlist is null or empty!");
         }
@@ -1172,8 +824,8 @@ class Bintreend {
         //visit the current node
         myvlist.push(snd);
 
-        let visitleftkd = ((snd.leftkd == null) ? false : true);
-        let visitrightkd = ((snd.rightkd == null) ? false : true);
+        let visitleftkd = !isLetUndefinedOrNull(snd.leftkd);
+        let visitrightkd = !isLetUndefinedOrNull(snd.rightkd);
         //console.log("visitleftkd = " + visitleftkd);
         //console.log("visitrightkd = " + visitrightkd);
 
@@ -1183,7 +835,7 @@ class Bintreend {
             if (visitleftkd)
             {
                 leftkdlv = this.levelForNode(snd.leftkd, this, clevel + 1, myvlist);
-                //if (leftkdlv > 0 || leftkdlv == 0) return leftkdlv;
+                //if (0 < leftkdlv || leftkdlv === 0) return leftkdlv;
                 //else;//do nothing
             }
             //else;//do nothing
@@ -1191,7 +843,7 @@ class Bintreend {
             if (visitrightkd)
             {
                 rightkdlv = this.levelForNode(snd.rightkd, this, clevel + 1, myvlist);
-                //if (rightkdlv > 0 || rightkdlv == 0) return rightkdlv;
+                //if (0 < rightkdlv || rightkdlv === 0) return rightkdlv;
                 //else;//do nothing
             }
             //else;//do nothing
@@ -1207,22 +859,22 @@ class Bintreend {
             
             if (visitleftkd && visitrightkd)
             {
-                if (leftkdlv > 0 || leftkdlv == 0) return leftkdlv;
-                else if (rightkdlv > 0 || rightkdlv == 0) return rightkdlv;
+                if (0 < leftkdlv || leftkdlv === 0) return leftkdlv;
+                else if (0 < rightkdlv || rightkdlv === 0) return rightkdlv;
                 //else;//do nothing
             }
             else
             {
                 if (visitleftkd)
                 {
-                    if (leftkdlv > 0 || leftkdlv == 0) return leftkdlv;
+                    if (0 < leftkdlv || leftkdlv === 0) return leftkdlv;
                     //else;//do nothing
                 }
                 else
                 {
                     if (visitrightkd)
                     {
-                        if (rightkdlv > 0 || rightkdlv == 0) return rightkdlv;
+                        if (0 < rightkdlv || rightkdlv === 0) return rightkdlv;
                         //else;//do nothing
                     }
                     else
@@ -1238,22 +890,16 @@ class Bintreend {
         //console.error("the node we were looking for was not found!");
         return -1;
     }
-    get level()
-    {
-        return this.levelForNode(this.root, this, 0, null);
-    }
+    get level() { return this.levelForNode(this.root, this, 0, null); }
     isBinSearchTree()
     {
         //then the data must be in order
         //it will either be all numbers or all strings
         let myinordertransarr = this.inOrderTransversal;
         let mydataarr = getMyDataOnlyList(myinordertransarr);
-        if (mydataarr == undefined || mydataarr == null || mydataarr.length < 1)
-        {
-            throw "there must be at least one item on the data array for the transversal because " +
-                "it includes this node!";
-        }
-        else if (mydataarr.length == 1) return true;
+        
+        letMustNotBeEmpty(mydataarr, "mydataarr");
+        if (mydataarr.length === 1) return true;
         //else;//do nothing
 
         //console.log("orig array:");
@@ -1262,7 +908,7 @@ class Bintreend {
         //    console.log("mydataarr[" + p + "] = " + mydataarr[p]);
         //}
 
-        let mydatacparr = new Array();
+        let mydatacparr = [];
         for (let n = 0; n < mydataarr.length; n++) mydatacparr.push("" + mydataarr[n]);
 
         //console.log("copy array BEFORE SORTING:");
@@ -1294,17 +940,16 @@ class Bintreend {
     get isBinarySearchTree() { return this.isBinSearchTree(); }
     farthestLeftKidOfNode(nd)
     {
-        if (nd == undefined || nd == null)
+        if (isLetUndefinedOrNull(nd))
         {
             console.error("this node is null! So returned null!");
             return null;
         }
         //else;//do nothing
 
-        if (nd.leftkd == null)
+        if (isLetUndefinedOrNull(nd.leftkd))
         {
-            if (nd.rightkd == null) return nd;
-            else return this.farthestLeftKidOfNode(nd.rightkd); 
+            return (isLetUndefinedOrNull(nd.rightkd) ? nd : this.farthestLeftKidOfNode(nd.rightkd));
         }
         else return this.farthestLeftKidOfNode(nd.leftkd);
     }
@@ -1338,8 +983,9 @@ class Bintreend {
     }
     areAllPropertiesNull()
     {
-        return ((this.data == null) && (this.id == null) && (this.leftkd == null) &&
-        (this.rightkd == null) && (this.ptnd == null));
+        return ((isLetUndefinedOrNull(this.data)) && (isLetUndefinedOrNull(this.id)) &&
+            (isLetUndefinedOrNull(this.leftkd)) && (isLetUndefinedOrNull(this.rightkd)) &&
+            (isLetUndefinedOrNull(this.ptnd)));
     }
     get areAllPropertiesCleared() { return this.areAllPropertiesNull(); }
     remove()
@@ -1371,15 +1017,15 @@ class Bintreend {
         console.log("the node we are removing:");
         console.log("this.data = " + this.data);
         console.log("this.id = " + this.id);
-        if (this.ptnd == null) console.log("this is the root! It has no parents!");
+        if (isLetUndefinedOrNull(this.ptnd)) console.log("this is the root! It has no parents!");
         else
         {
             console.log("this.ptnd.data = " + this.ptnd.data);
             console.log("this.ptnd.id = " + this.ptnd.id);
         }
 
-        let noleftkd = (this.leftkd == null);
-        let norightkd = (this.rightkd == null);
+        let noleftkd = isLetUndefinedOrNull(this.leftkd);
+        let norightkd = isLetUndefinedOrNull(this.rightkd);
         console.log("noleftkd = " + noleftkd);
         console.log("norightkd = " + norightkd);
         if (noleftkd)
@@ -1406,17 +1052,17 @@ class Bintreend {
         let islkdofptnd = false;
         let isrkdofptnd = false;
         //debugger;
-        if (this.ptnd == null);
+        if (isLetUndefinedOrNull(this.ptnd));
         else
         {
-            if (this.ptnd.leftkd == this)
+            if (this.ptnd.leftkd === this)
             {
                 islkdofptnd = true;
                 //console.log("this is the left kid of its parent node!");
             }
             else
             {
-                if (this.ptnd.rightkd == this)
+                if (this.ptnd.rightkd === this)
                 {
                     isrkdofptnd = true;
                     //console.log("this is the left kid of its parent node!");
@@ -1463,7 +1109,7 @@ class Bintreend {
             console.log("flkdrkthis.id = " + flkdrkthis.id);
             console.log("flkdrkthis.data = " + flkdrkthis.data);
             console.log("OLD flkdrkthis.ptnd = " + flkdrkthis.ptnd);
-            if (flkdrkthis.ptnd == null);
+            if (isLetUndefinedOrNull(flkdrkthis.ptnd));
             else
             {
                 console.log("OLD flkdrkthis.ptnd.id = " + flkdrkthis.ptnd.id);
@@ -1534,14 +1180,14 @@ class Bintreend {
                 console.log("NEW myrightkd.ptnd.data = " + myrightkd.ptnd.data);
                 console.log("NEW myrightkd.ptnd.id = " + myrightkd.ptnd.id);
                 //console.log("NEW flkdrkthis.leftkd = " + flkdrkthis.leftkd);
-                if (flkdrkthis.leftkd == null);
+                if (isLetUndefinedOrNull(flkdrkthis.leftkd));
                 else
                 {
                     console.log("NEW flkdrkthis.leftkd.data = " + flkdrkthis.leftkd.data);
                     console.log("NEW flkdrkthis.leftkd.id = " + flkdrkthis.leftkd.id);
                 }
                 //console.log("NEW flkdrkthis.rightkd = " + flkdrkthis.rightkd);
-                if (flkdrkthis.rightkd == null);
+                if (isLetUndefinedOrNull(flkdrkthis.rightkd));
                 else
                 {
                     console.log("NEW flkdrkthis.rightkd.data = " + flkdrkthis.rightkd.data);
@@ -1585,7 +1231,7 @@ class Bintreend {
                 else throw "the parent of the node must have the node as one of its kids, but it did not!";
 
                 console.log("OLD flkdrkthis.ptnd = " + flkdrkthis.ptnd);
-                if (flkdrkthis.ptnd == null);
+                if (isLetUndefinedOrNull(flkdrkthis.ptnd));
                 else
                 {
                     console.log("OLD flkdrkthis.ptnd.data = " + flkdrkthis.ptnd.data);
@@ -1595,14 +1241,14 @@ class Bintreend {
                 flkdrkthis.ptnd = myptnd;
 
                 console.log("NEW flkdrkthis.ptnd = " + flkdrkthis.ptnd);
-                if (myptnd == null);
+                if (isLetUndefinedOrNull(myptnd));
                 else
                 {
                     console.log("NEW flkdrkthis.ptnd.data = " + flkdrkthis.ptnd.data);
                     console.log("NEW flkdrkthis.ptnd.id = " + flkdrkthis.ptnd.id);
                 }
 
-                if (myptnd == null);
+                if (isLetUndefinedOrNull(myptnd));
                 else
                 {
                     if (islkdofptnd)
@@ -1668,7 +1314,7 @@ class Bintreend {
                 //console.log("NEW flkdrkthis.id = " + flkdrkthis.id);
                 //console.log("NEW flkdrkthis.data = " + flkdrkthis.data);
                 //console.log("NEW flkdrkthis.ptnd = " + flkdrkthis.ptnd);
-                if (flkdrkthis.ptnd == null);
+                if (isLetUndefinedOrNull(flkdrkthis.ptnd));
                 else
                 {
                     //console.log("NEW flkdrkthis.ptnd.id = " + flkdrkthis.ptnd.id);
@@ -1685,13 +1331,10 @@ class Bintreend {
         //console.log("usepost = " + usepost);
         //console.log("snd = " + snd);
         //console.log("vlist = " + vlist);
-        if (snd == undefined || snd == null)
-        {
-            throw "the starting node must be defined and not null!";
-            //return null;
-        }
-        //else;//do nothing
-        //if (vlist == null || vlist.length < 1) console.log("vlist is empty!");
+
+        letMustBeDefinedAndNotNull(snd, "snd");
+        
+        //if (isLetEmptyNullOrUndefined(vlist)) console.log("vlist is empty!");
         //else
         //{
         //    for (let p = 0; p < vlist.length; p++)
@@ -1699,16 +1342,10 @@ class Bintreend {
         //        console.log("vlist[" + n + "].data = " + vlist[n].data);
         //    }
         //}
-        if (useinorder == undefined || usepost == undefined || useinorder == null || usepost == null)
-        {
-            throw "useinorder and usepost must be defined boolean variables!";
-        }
-        else
-        {
-            if ((usepost === true || usepost === false) && (useinorder === true || useinorder === false));
-            else throw "useinorder and usepost must be defined boolean variables!";
-        }
 
+        letMustBeBoolean(useinorder, "useinorder");
+        letMustBeBoolean(usepost, "usepost");
+        
         if (useinorder === true && usepost === true)
         {
             throw "illegal transversal selected; you there is no transversal for in and post orders!";
@@ -1729,8 +1366,8 @@ class Bintreend {
         //  IN ORDER: a b c d e f g h i k l m n
         // PRE ORDER: f d b a c e k h g i m l n
         //POST ORDER: a c b e d g i h l n m k f
-        let rlist = new Array();
-        if (vlist == null || vlist.length < 1);
+        let rlist = [];
+        if (isLetEmptyNullOrUndefined(vlist));
         else for (let n = 0; n < vlist.length; n++) rlist.push(vlist[n]);
 
         if (useinorder || usepost);
@@ -1744,7 +1381,7 @@ class Bintreend {
             //console.log("added snd.data = " + snd.data + " to the list!");
         }
 
-        if (snd.leftkd == null)
+        if (isLetUndefinedOrNull(snd.leftkd))
         {
             //console.log("left kid is null!");
             
@@ -1759,14 +1396,14 @@ class Bintreend {
             }
             //else;//do nothing
 
-            if (snd.rightkd == null)
+            if (isLetUndefinedOrNull(snd.rightkd))
             {
                 //console.log("right kid is null!");
             }
             else
             {
                 let myrightrlist = this.transversal(useinorder, usepost, snd.rightkd, null);
-                if (myrightrlist == null || myrightrlist.length < 1);
+                if (isLetEmptyNullOrUndefined(myrightrlist));
                 else
                 {
                     for (let n = 0; n < myrightrlist.length; n++)
@@ -1781,7 +1418,7 @@ class Bintreend {
         else
         {
             let myleftrlist = this.transversal(useinorder, usepost, snd.leftkd, null);
-            if (myleftrlist == null || myleftrlist.length < 1);
+            if (isLetEmptyNullOrUndefined(myleftrlist));
             else
             {
                 for (let n = 0; n < myleftrlist.length; n++)
@@ -1803,14 +1440,14 @@ class Bintreend {
             }
             //else;//do nothing
 
-            if (snd.rightkd == null)
+            if (isLetUndefinedOrNull(snd.rightkd))
             {
                 //console.log("right kid is null!");
             }
             else
             {
                 let myrightrlist = this.transversal(useinorder, usepost, snd.rightkd, null);
-                if (myrightrlist == null || myrightrlist.length < 1);
+                if (isLetEmptyNullOrUndefined(myrightrlist));
                 else
                 {
                     for (let n = 0; n < myrightrlist.length; n++)
@@ -1835,12 +1472,7 @@ class Bintreend {
         }
         //else;//do nothing
 
-        if (rlist == undefined || rlist == null || rlist.length < 1)
-        {
-            throw "the return list must have at minimum the starting node on it!";
-        }
-        //else;//do nothing
-
+        letMustNotBeEmpty(rlist, "rlist");
         return rlist;
     }
     get inOrderTransversal()
@@ -1855,11 +1487,14 @@ class Bintreend {
     {
         return this.transversal(false, true, this.root, null);//inorder, post, snd, vlist
     }
-}
+}//end of SIMPLE BINARY TREE NODE CLASS
+
+
+//OTHER TRAVERSAL METHODS
 
 function printDataAndIDAndErrorCheckTransversal(mytransarr, typestr, arrname, expectedtotal)
 {
-    if (typestr == undefined || typestr == null || typestr.length < 5)
+    if (isLetEmptyNullOrUndefined(typestr) || typestr.length < 5)
     {
         throw "illegal type string found and used here!";
     }
@@ -1881,13 +1516,13 @@ function printDataAndIDAndErrorCheckTransversal(mytransarr, typestr, arrname, ex
         else throw "the type string for the type of the transversal is not valid!";
     }
 
-    if (arrname == undefined || arrname == null || arrname.length < 5)
+    if (isLetEmptyNullOrUndefined(arrname) || arrname.length < 5)
     {
         throw "illegal name of the transversal array found and used here!";
     }
     //else;//do nothing
 
-    if (expectedtotal == undefined || expectedtotal == null || isNaN(expectedtotal))
+    if (isLetUndefinedOrNull(expectedtotal) || isNaN(expectedtotal))
     {
         throw "expected total must be a number that is at least zero!";
     }
@@ -1898,7 +1533,7 @@ function printDataAndIDAndErrorCheckTransversal(mytransarr, typestr, arrname, ex
     }
 
     console.log(typestr + ":");
-    if (mytransarr == undefined || mytransarr == null || mytransarr.length < 1)
+    if (isLetEmptyNullOrUndefined(mytransarr))
     {
         console.log("is null or empty!");
     }
@@ -1912,22 +1547,22 @@ function printDataAndIDAndErrorCheckTransversal(mytransarr, typestr, arrname, ex
     }
     
     let showerr = false;
-    if (mytransarr == undefined || mytransarr == null)
+    if (isLetUndefinedOrNull(mytransarr))
     {
-        if (expectedtotal == 0);
-        else if (expectedtotal > 0) showerr = true;
+        if (expectedtotal === 0);
+        else if (0 < expectedtotal) showerr = true;
         else throw "illegal expected total of elements was found and used here!";
     }
     else
     {
-        if (mytransarr.length == expectedtotal)
+        if (mytransarr.length === expectedtotal)
         {
             let myidonlylisttran = getMyIDOnlyList(mytransarr);
             for (let n = 0; n < myidonlylisttran.length; n++)
             {
                 for (let k = n + 1; k < myidonlylisttran.length; k++)
                 {
-                    if (myidonlylisttran[n] == myidonlylisttran[k])
+                    if (myidonlylisttran[n] === myidonlylisttran[k])
                     {
                         console.log("myidonlylisttran[" + n + "] = " + myidonlylisttran[n]);
                         console.log("myidonlylisttran[" + k + "] = " + myidonlylisttran[k]);
@@ -1946,24 +1581,16 @@ function printDataAndIDAndErrorCheckTransversal(mytransarr, typestr, arrname, ex
 
 function removeAllDOMKidsOfDOMNode(domnd=null, remself=false)
 {
-    if (remself == undefined || remself == null)
-    {
-        throw "remself must be a defined boolean variable!";
-    }
-    else
-    {
-        if (remself === true || remself === false);
-        else throw "remself must be a defined boolean variable!";
-    }
+    letMustBeBoolean(remself, "remself");
     
-    if (domnd == undefined || domnd == null)
+    if (isLetUndefinedOrNull(domnd))
     {
         //console.log("no nodes found!");
         return;
     }
     else
     {
-        if (domnd.children == null || domnd.children.length < 1);
+        if (isLetEmptyNullOrUndefined(domnd.children));
         else
         {
             for (let n = 0; n < domnd.children.length; n++)
@@ -1981,7 +1608,7 @@ function clearAndHideAllTransversals()
 {
     //clear and remove all of the normal nodes in the pre order here now
     let myprordernormalnds = document.getElementById("prorder").getElementsByClassName("normalnds");
-    if (myprordernormalnds == null || myprordernormalnds.length < 1)
+    if (isLetEmptyNullOrUndefined(myprordernormalnds))
     {
         //console.log("number of normal nodes on the preorder initially = 0");
     }
@@ -2023,41 +1650,17 @@ function clearAndHideAllTransversals()
     document.getElementById("psorder").getElementsByClassName("normalnds")[0].style.display = "none";
 
     let myrtnds = document.getElementsByClassName("rtnd");
-    for (let n = 0; n < myrtnds.length; n++)
-    {
-        myrtnds[n].style.display = "none";
-    }
+    for (let n = 0; n < myrtnds.length; n++) myrtnds[n].style.display = "none";
 }
 
 function showOrHideToolTip(pdivelem, showelem, useclick)
 {
     //console.log("showelem = " + showelem);
     //console.log("useclick = " + useclick);
-    if (showelem == undefined || showelem == null)
-    {
-        throw "showelem must be a defined boolean variable!";
-    }
-    else
-    {
-        if (showelem === true || showelem === false);
-        else throw "showelem must be a defined boolean variable!";
-    }
-
-    if (useclick == undefined || useclick == null)
-    {
-        throw "useclick must be a defined boolean variable!";
-    }
-    else
-    {
-        if (useclick === true || useclick === false);
-        else throw "useclick must be a defined boolean variable!";
-    }
-
-    if (pdivelem == undefined || pdivelem == null)
-    {
-        throw "the div containing the span element is not allowed to be null!";
-    }
-    //else;//do nothing
+    
+    letMustBeBoolean(showelem, "showelem");
+    letMustBeBoolean(useclick, "useclick");
+    letMustBeDefinedAndNotNull(pdivelem, "pdivelem");
 
     if (useclick) console.log("clicked node in transversal!");
     else console.log("hovered " + (showelem ? "on" : "off") + " node in transversal!");
@@ -2076,8 +1679,7 @@ function showOrHideToolTip(pdivelem, showelem, useclick)
     }
     else
     {
-        if (showelem) mydatinfospan.style.display = "inline-block";
-        else mydatinfospan.style.display = "none";
+        mydatinfospan.style.display = (showelem ? "inline-block" : "none");
         //debugger;
     }
 }
@@ -2090,41 +1692,15 @@ function hideToolTip(pdivelem)
     showOrHideToolTip.call(this, pdivelem, false, false);//showelem, useclick
 }
 
-function generateTransversalDOMNodesFor(binnd, lenpreordertrans, exdomnode, islastnd=false, isrtnd=false)
+function generateTransversalDOMNodesFor(binnd, lenpreordertrans, exdomnode, islastnd=false,
+    isrtnd=false)
 {
-    if (binnd == undefined || binnd == null)
-    {
-        throw "the incoming binary tree node whose data is being displayed must not be null!";
-    }
-    //else;//do nothing
+    letMustBeDefinedAndNotNull(binnd, "binnd");
+    letMustBeDefinedAndNotNull(exdomnode, "exdomnode");
+    letMustBeBoolean(islastnd, "islastnd");
+    letMustBeBoolean(isrtnd, "isrtnd");
 
-    if (exdomnode == undefined || exdomnode == null)
-    {
-        throw "the incoming binary tree node whose data is being displayed must not be null!";
-    }
-    //else;//do nothing
-
-    if (islastnd == undefined || islastnd == null)
-    {
-        throw "islastnd must be a defined boolean variable!";
-    }
-    else
-    {
-        if (islastnd === true || islastnd === false);
-        else throw "islastnd must be a defined boolean variable!";
-    }
-
-    if (isrtnd == undefined || isrtnd == null)
-    {
-        throw "isrtnd must be a defined boolean variable!";
-    }
-    else
-    {
-        if (isrtnd === true || isrtnd === false);
-        else throw "isrtnd must be a defined boolean variable!";
-    }
-
-    if (lenpreordertrans == undefined || lenpreordertrans == null || isNaN(lenpreordertrans))
+    if (isLetUndefinedOrNull(lenpreordertrans) || isNaN(lenpreordertrans))
     {
         throw "illegal length found and used for the lenpreordertrans!";
     }
@@ -2205,7 +1781,7 @@ function generateTransversalDOMNodesFor(binnd, lenpreordertrans, exdomnode, isla
 
 function doTransversalsHaveAllGenNodes()
 {
-    if (mygenndsarr == null || mygenndsarr.length < 1) return;
+    if (isLetEmptyNullOrUndefined(mygenndsarr)) return;
     //else;//do nothing
 
     for (let n = 0; n < mygenndsarr.length; n++)
@@ -2268,7 +1844,7 @@ function displayTransversals(mybinnd)
 {
     clearAndHideAllTransversals();
 
-    if (mybinnd == undefined || mybinnd == null)
+    if (isLetUndefinedOrNull(mybinnd))
     {
         //console.log("calling clear transversals binary tree node was null!");
         return;
@@ -2298,10 +1874,7 @@ function displayTransversals(mybinnd)
 
     
     let myrtnds = document.getElementsByClassName("rtnd");
-    for (let n = 0; n < myrtnds.length; n++)
-    {
-        myrtnds[n].style.display = "inline";
-    }
+    for (let n = 0; n < myrtnds.length; n++) myrtnds[n].style.display = "inline";
     
     //document.getElementById("prorder").getElementsByClassName("rtnd")[0].textContent = "" +
     //    mypreordertrans[0].data;
@@ -2326,7 +1899,7 @@ function displayTransversals(mybinnd)
     //NOTE: when there is only the root, the arrays before root and after root will both be null!
     let myinordertransafterrt = getAllAfterRoot(myinordertrans);
     let myinordertransbeforert = getAllBeforeRoot(myinordertrans);
-    if (myinordertransbeforert == null)
+    if (isLetUndefinedOrNull(myinordertransbeforert))
     {
         console.log("number of items in in-order transversal before root = null"); 
     }
@@ -2335,7 +1908,7 @@ function displayTransversals(mybinnd)
         console.log("number of items in in-order transversal before root = " +
             myinordertransbeforert.length);
     }
-    if (myinordertransafterrt == null)
+    if (isLetUndefinedOrNull(myinordertransafterrt))
     {
         console.log("number of items in in-order transversal after root = null");
     }
@@ -2345,15 +1918,15 @@ function displayTransversals(mybinnd)
             myinordertransafterrt.length);
     }
     
-    if (myinordertransbeforert == null || myinordertransbeforert.length < 1);
+    if (isLetEmptyNullOrUndefined(myinordertransbeforert));
     else document.getElementById("innrmalndsparta").style.display = "inline";
-    if (myinordertransafterrt == null || myinordertransafterrt.length < 1);
+    if (isLetEmptyNullOrUndefined(myinordertransafterrt));
     else document.getElementById("innrmalndspartb").style.display = "inline";
     
     //document.getElementById("innrmalndsparta").textContent = "" +
     //    getTransversalDataStringFromArray(getMyDataOnlyList(myinordertransbeforert)) +
     //    ((myinordertransbeforert != null && myinordertransbeforert.length > 0) ? ", " : "");
-    if (myinordertransbeforert == null || myinordertransbeforert.length < 1);
+    if (isLetEmptyNullOrUndefined(myinordertransbeforert));
     else
     {
         for (let n = 0; n < myinordertransbeforert.length; n++)
@@ -2376,7 +1949,7 @@ function displayTransversals(mybinnd)
     //document.getElementById("innrmalndspartb").textContent = "" +
     //    ((myinordertransafterrt != null && myinordertransafterrt.length > 0) ? ", " : "") +
     //    getTransversalDataStringFromArray(getMyDataOnlyList(myinordertransafterrt));
-    if (myinordertransafterrt == null || myinordertransafterrt.length < 1);
+    if (isLetEmptyNullOrUndefined(myinordertransafterrt));
     else
     {
         for (let n = 0; n < myinordertransafterrt.length; n++)
@@ -2389,9 +1962,10 @@ function displayTransversals(mybinnd)
     let mypostordertrans = mybinnd.postOrderTransversal;
     console.log("number of items in post-order transversal = " + mypostordertrans.length);
     
-    if (mypostordertrans.length > 1)
+    if (1 < mypostordertrans.length)
     {
-        document.getElementById("psorder").getElementsByClassName("normalnds")[0].style.display = "inline";
+        let tempnd = document.getElementById("psorder").getElementsByClassName("normalnds")[0];
+        tempnd.style.display = "inline";
     }
     //else;//do nothing
 
@@ -2399,14 +1973,14 @@ function displayTransversals(mybinnd)
     //    mypostordertrans[mypostordertrans.length - 1].data;
     generateTransversalDOMNodesFor(mypostordertrans[mypostordertrans.length - 1], 1,
         document.getElementById("psorder").getElementsByClassName("rtnd")[0],
-        (mypostordertrans.length > 1), true);//islastnd, isrtnd
+        (1 < mypostordertrans.length), true);//islastnd, isrtnd
     //document.getElementById("psorder").getElementsByClassName("normalnds")[0].textContent = 
     //    getTransversalDataStringFromArray(getMyDataOnlyList(includeAllExceptRoot(mypostordertrans))) +
     //        ((mypostordertrans.length > 1) ? ", " : "");
     for (let n = 0; n < mypostordertrans.length - 1; n++)
     {
         let myuselenvar;
-        if (n == 0) myuselenvar = 1;
+        if (n === 0) myuselenvar = 1;
         else myuselenvar = mypostordertrans.length - 1;
         let myislastnd = (n + 1 === myuselenvar);
         generateTransversalDOMNodesFor(mypostordertrans[n], myuselenvar,
@@ -2418,7 +1992,7 @@ function displayTreeStatsAndUpdateThem(mybinnd)
 {
     displayTransversals(mybinnd);
 
-    if (mybinnd == undefined || mybinnd == null)
+    if (isLetUndefinedOrNull(mybinnd))
     {
         document.getElementById("numnodes").textContent = "0";
         document.getElementById("numlevels").textContent = "0";
@@ -2435,43 +2009,38 @@ function displayTreeStatsAndUpdateThem(mybinnd)
     }
 }
 
+
+//TEST DELETE NODES AND MAKE BINARY SEARCH TREE NODES METHODS
+
 function getAndGenerateServerObject(binnd=null, usepost=true)
 {
-    if (usepost == undefined || usepost == null)
-    {
-        throw "usepost must be a defined boolean variable!";
-    }
-    else
-    {
-        if (usepost == true || usepost == false);
-        else throw "usepost must be a defined boolean variable!";
-    }
+    letMustBeBoolean(usepost, "usepost");
 
-    if (binnd == undefined || binnd == null) return null;
+    if (isLetUndefinedOrNull(binnd)) return null;
     else
     {
         let initptndid = null;
-        if (binnd.ptnd == null);
+        if (isLetUndefinedOrNull(binnd.ptnd));
         else
         {
             console.log("binnd.ptnd.id = " + binnd.ptnd.id);
-            if (binnd.ptnd.id == undefined || binnd.ptnd.id == null || binnd.ptnd.id === "");
+            if (isLetEmptyNullOrUndefined(binnd.ptnd.id));
             else initptndid = binnd.ptnd.id;
         }
         let initrkdndid = null;
-        if (binnd.rightkd == null);
+        if (isLetUndefinedOrNull(binnd.rightkd));
         else
         {
             console.log("binnd.rightkd.id = " + binnd.rightkd.id);
-            if (binnd.rightkd.id == undefined || binnd.rightkd.id == null || binnd.rightkd.id === "");
+            if (isLetEmptyNullOrUndefined(binnd.rightkd.id));
             else initrkdndid = binnd.rightkd.id;
         }
         let initlkdndid = null;
-        if (binnd.leftkd == null);
+        if (isLetUndefinedOrNull(binnd.leftkd));
         else
         {
             console.log("binnd.leftkd.id = " + binnd.leftkd.id);
-            if (binnd.leftkd.id == undefined || binnd.leftkd.id == null || binnd.leftkd.id === "");
+            if (isLetEmptyNullOrUndefined(binnd.leftkd.id));
             else initlkdndid = binnd.leftkd.id;
         }
         console.log("initptndid = " + initptndid);
@@ -2479,49 +2048,34 @@ function getAndGenerateServerObject(binnd=null, usepost=true)
         console.log("initrkdndid = " + initrkdndid);
         console.log("usepost = " + usepost);
 
-        if (usepost)
-        {
-            return {
-                "ptnd" : initptndid,
-                "leftkd" : initlkdndid,
-                "rightkd" : initrkdndid,
-                "data" : binnd.data,
-                "isbinsrchtree" : binnd.isBinarySearchTree
-            };
-        }
-        else
-        {
-            return {
-                "ptnd" : initptndid,
-                "leftkd" : initlkdndid,
-                "rightkd" : initrkdndid,
-                "data" : binnd.data,
-                "id" : binnd.id,
-                "isbinsrchtree" : binnd.isBinarySearchTree
-            };
-        }
+        let myobj = {
+            "ptnd" : initptndid,
+            "leftkd" : initlkdndid,
+            "rightkd" : initrkdndid,
+            "data" : binnd.data
+        };
+        if (usepost);
+        else myobj["id"] = binnd.id;
+        myobj["isbinsrchtree"] = binnd.isBinarySearchTree;
+        return myobj;
     }
 }
 
 function testDeletingNodes(mytransarr, arrnm="mytransarr")
 {
-    if (mytransarr == undefined || mytransarr == null || mytransarr.length < 1);
+    if (isLetEmptyNullOrUndefined(mytransarr));
     else
     {
-        if (arrnm == undefined || arrnm == null || arrnm.length < 1)
-        {
-            throw "arrname must be defined!";
-        }
-        //else;//do nothing
+        letMustNotBeEmpty(arrnm, "arrnm");
 
         for (let n = 0; n < mytransarr.length; n++)
         {
             let mybgtstnd = null;
-            if (mytransarr[n] == null)
+            if (isLetUndefinedOrNull(mytransarr[n]))
             {
                 for (let k = 0; k < mytransarr.length; k++)
                 {
-                    if (mytransarr[k] == null);
+                    if (isLetUndefinedOrNull(mytransarr[k]));
                     else
                     {
                         mybgtstnd = mytransarr[k];
@@ -2531,7 +2085,7 @@ function testDeletingNodes(mytransarr, arrnm="mytransarr")
             }
             else mybgtstnd = mytransarr[n];
             let oldnumnodesontree = 0;
-            if (mybgtstnd == null);
+            if (isLetUndefinedOrNull(mybgtstnd));
             else oldnumnodesontree = mybgtstnd.numNodesOnTree;
             console.log("");
             console.log("oldnumnodesontree = " + oldnumnodesontree);
@@ -2541,7 +2095,7 @@ function testDeletingNodes(mytransarr, arrnm="mytransarr")
 
             //for (let p = 0; p < mytransarr.length; p++)
             //{
-                //if (mytransarr[p] == null)
+                //if (isLetUndefinedOrNull(mytransarr[p]))
                 //{
                     //console.log("NEW mytransarr[" + p + "] = null");
                 //}
@@ -2550,7 +2104,7 @@ function testDeletingNodes(mytransarr, arrnm="mytransarr")
                     //console.log("NEW " + arrnm + "[" + p + "].id = " + mytransarr[p].id);
                     //console.log("NEW " + arrnm + "[" + p + "].data = " + mytransarr[p].data);
                     //console.log("NEW " + arrnm + "[" + p + "].leftkd = " + mytransarr[p].leftkd);
-                    //if (mytransarr[p].leftkd == null);
+                    //if (isLetUndefinedOrNull(mytransarr[p].leftkd));
                     //else
                     //{
                         //console.log("NEW " + arrnm + "[" + p + "].leftkd.id = " +
@@ -2559,7 +2113,7 @@ function testDeletingNodes(mytransarr, arrnm="mytransarr")
                         //    mytransarr[p].leftkd.data);
                     //}
                     //console.log("NEW " + arrnm + "[" + p + "].rightkd = " + mytransarr[p].rightkd);
-                    //if (mytransarr[p].rightkd == null);
+                    //if (isLetUndefinedOrNull(mytransarr[p].rightkd));
                     //else
                     //{
                         //console.log("NEW " + arrnm + "[" + p + "].rightkd.id = " +
@@ -2568,7 +2122,7 @@ function testDeletingNodes(mytransarr, arrnm="mytransarr")
                         //    mytransarr[p].rightkd.data);
                     //}
                     //console.log("NEW " + arrnm + "[" + p + "].ptnd = " + mytransarr[p].ptnd);
-                    //if (mytransarr[p].ptnd == null);
+                    //if (isLetUndefinedOrNull(mytransarr[p].ptnd));
                     //else
                     //{
                         //console.log("NEW " + arrnm + "[" + p + "].ptnd.id = " + mytransarr[p].ptnd.id);
@@ -2581,7 +2135,7 @@ function testDeletingNodes(mytransarr, arrnm="mytransarr")
             let myotstnd = null;
             for (let k = 0; k < mytransarr.length; k++)
             {
-                if (mytransarr[k] == null);
+                if (isLetUndefinedOrNull(mytransarr[k]));
                 else
                 {
                     myotstnd = mytransarr[k];
@@ -2589,7 +2143,7 @@ function testDeletingNodes(mytransarr, arrnm="mytransarr")
                 }
             }
             let nwnumnodesbintree = 0;
-            if (myotstnd == null);
+            if (isLetUndefinedOrNull(myotstnd));
             else nwnumnodesbintree = myotstnd.numNodesOnTree;
             console.log("oldnumnodesontree = " + oldnumnodesontree);
             console.log("nwnumnodesbintree = " + nwnumnodesbintree);
@@ -2668,7 +2222,7 @@ function makeBinarySearchTreeNodesToSave()
     else throw "my root node must be the root for this test tree!";
     let numnodes = myrt.numNodesOnTree;
     console.log("numnodes = " + numnodes);
-    if (numnodes == 13);
+    if (numnodes === 13);
     else throw "illegal number of nodes found on the tree!";
     
     let myinordertree = myrt.inOrderTransversal;
@@ -2687,7 +2241,7 @@ function makeBinarySearchTreeNodesToSave()
         //console.log("mypreordertree[" + n + "].isRootNode() = " + mypreordertree[n].isRootNode());
         if (mypreordertree[n].isRootNode())
         {
-            if (cndlv == 0);
+            if (cndlv === 0);
             else throw "the root's level must be 0!";
         }
         else
@@ -2704,24 +2258,24 @@ function makeBinarySearchTreeNodesToSave()
             //    mypreordertree[n].isKidOfParent(mypreordertree[n], mypreordertree[n].root));
             if (mypreordertree[n].root.isParentOf(mypreordertree[n]))
             {
-                if (cndlv == 1);
+                if (cndlv === 1);
                 else throw "the root's kids' level must be 1!";
             }
             else
             {
-                if (cndlv > 1);
+                if (1 < cndlv);
                 else throw "the root's kids' kids level must be at least 2!";
             }
         }
     }
-    if (myrt.level == 0);
+    if (myrt.level === 0);
     else throw "the root's level must be 0!";
-    if (myndd.level == 1 && myndk.level == 1);
+    if (myndd.level === 1 && myndk.level === 1);
     else throw "the root's kids' level must be 1!";
-    if (myndb.level == 2 && mynde.level == 2 && myndh.level == 2 && myndm.level == 2);
+    if (myndb.level === 2 && mynde.level === 2 && myndh.level === 2 && myndm.level === 2);
     else throw "all of these nodes are on level 2!";
-    if (mynda.level == 3 && myndc.level == 3 && myndg.level == 3 && myndi.level == 3 &&
-        myndl.level == 3 && myndn.level == 3)
+    if (mynda.level === 3 && myndc.level === 3 && myndg.level === 3 && myndi.level === 3 &&
+        myndl.level === 3 && myndn.level === 3)
     {
         //do nothing valid
     }
@@ -2763,11 +2317,11 @@ function makeBinarySearchTreeNodesToSave()
     myndsbyid.push(myndthree);
     
     console.log("myrtten.isRootNode() = " + myrtten.isRootNode());
-    if (myrtten.isRootNode() == true);
+    if (myrtten.isRootNode());
     else throw "my root node ten must be the root for this test tree!";
     let numnodesbintree = myrtten.numNodesOnTree;
     console.log("numnodesbintree = " + numnodesbintree);
-    if (numnodesbintree == 9);
+    if (numnodesbintree === 9);
     else throw "illegal number of nodes found on the tree!";
     
     let myinorderbintree = myrtten.inOrderTransversal;
@@ -2830,36 +2384,34 @@ function makeBinarySearchTreeNodesToSave()
 }
 //makeBinarySearchTreeNodesToSave();
 
+
+//GET BINARY TREE NODE METHODS
+
 function getBintreendObjForIdFromArray(myid)
 {
-    if (myid == undefined || myid == null) throw "myid must be defined!";
-    else
-    {
-        let myidstr = "" + myid;
-        if (myidstr.length < 1) throw "myid must not be empty!";
-        //else;//do nothing
-    }
+    letMustBeDefinedAndNotNull(myid, "myid");
+    let myidstr = "" + myid;
+    if (myidstr.length < 1) throw "myid must not be empty!";
+    //else;//do nothing
 
     let mybinnd = null;
-    if (mygenndsarr == undefined || mygenndsarr == null || mygenndsarr.length < 1);
+    if (isLetEmptyNullOrUndefined(mygenndsarr));
     else
     {
         for (let n = 0; n < mygenndsarr.length; n++)
         {
-            if (mygenndsarr[n] == null) throw "not allowed to have null nodes on this list!";
-            else
+            letMustBeDefinedAndNotNull(mygenndsarr[n], "mygenndsarr[" + n + "]");
+            
+            //console.log("mygenndsarr[" + n + "] = " + mygenndsarr[n]);
+            //console.log("mygenndsarr[" + n + "].id = " + mygenndsarr[n].id);
+            //console.log("myid = " + myid);
+            if (mygenndsarr[n].id == myid)
             {
-                //console.log("mygenndsarr[" + n + "] = " + mygenndsarr[n]);
-                //console.log("mygenndsarr[" + n + "].id = " + mygenndsarr[n].id);
-                //console.log("myid = " + myid);
-                if (mygenndsarr[n].id == myid)
-                {
-                    //console.log("found the node we were looking for!");
-                    mybinnd = mygenndsarr[n];
-                    break;
-                }
-                //else;//do nothing
+                //console.log("found the node we were looking for!");
+                mybinnd = mygenndsarr[n];
+                break;
             }
+            //else;//do nothing
         }//end of n for loop
     }
     return mybinnd;
@@ -2867,26 +2419,24 @@ function getBintreendObjForIdFromArray(myid)
 
 function getArrayIndexForNodeOnArray(mybinnd)
 {
-    if (mybinnd == undefined || mybinnd == null)
+    if (isLetUndefinedOrNull(mybinnd))
     {
         console.error("the bin node was null, so not on the array!");
         return -1;
     }
     else
     {
-        if (mygenndsarr == undefined || mygenndsarr == null || mygenndsarr.length < 1);
+        if (isLetEmptyNullOrUndefined(mygenndsarr));
         else
         {
             for (let n = 0; n < mygenndsarr.length; n++)
             {
-                if (mygenndsarr[n] == null) throw "not allowed to have null nodes on this list!";
-                else
-                {
-                    //console.log("mygenndsarr[" + n + "] = " + mygenndsarr[n]);
-                    //console.log("mygenndsarr[" + n + "].id = " + mygenndsarr[n].id);
-                    if (mygenndsarr[n] == mybinnd) return n;
-                    //else;//do nothing
-                }
+                letMustBeDefinedAndNotNull(mygenndsarr[n], "mygenndsarr[" + n + "]");
+
+                //console.log("mygenndsarr[" + n + "] = " + mygenndsarr[n]);
+                //console.log("mygenndsarr[" + n + "].id = " + mygenndsarr[n].id);
+                if (mygenndsarr[n] === mybinnd) return n;
+                //else;//do nothing
             }//end of n for loop
         }
         console.error("the bin node was not on the array!");
@@ -2897,49 +2447,32 @@ function getArrayIndexForNodeOnArray(mybinnd)
 function getFirstNonNullBinTreeNodeFromArray()
 {
     let mybinnd = null;
-    if (mygenndsarr == undefined || mygenndsarr == null || mygenndsarr.length < 1);
+    if (isLetEmptyNullOrUndefined(mygenndsarr));
     else
     {
         for (let n = 0; n < mygenndsarr.length; n++)
         {
             //console.log("mygenndsarr[" + n + "] = " + mygenndsarr[n]);
             //debugger;
-            if (mygenndsarr[n] == null) throw "not allowed to have null nodes on this list!";
-            else
-            {
-                //console.log("mygenndsarr[" + n + "] = " + mygenndsarr[n]);
-                //console.log("mygenndsarr[" + n + "].id = " + mygenndsarr[n].id);
-                mybinnd = mygenndsarr[n];
-                break;
-            }
+            
+            letMustBeDefinedAndNotNull(mygenndsarr[n], "mygenndsarr[" + n + "]");
+
+            //console.log("mygenndsarr[" + n + "] = " + mygenndsarr[n]);
+            //console.log("mygenndsarr[" + n + "].id = " + mygenndsarr[n].id);
+            mybinnd = mygenndsarr[n];
+            break;
         }
     }
     return mybinnd;
 }
 
+//SET UP METHODS FOR THE DOM
+
 function addLeftOrRightKidBtnListener(mybtn, mybinnd, useleft)
 {
-    if (mybtn == undefined || mybtn == null)
-    {
-        throw "the button must not be null or undefined!";
-    }
-    //else;//do nothing
-
-    if (mybinnd == undefined ||mybinnd == null)
-    {
-        throw "the binary tree node must not be null or undefined!";
-    }
-    //else;//do nothing
-
-    if (useleft == undefined || useleft == null)
-    {
-        throw "useleft must be a defined boolean variable!";
-    }
-    else
-    {
-        if (useleft == true || useleft == false);
-        else throw "useleft must be a defined boolean variable!";
-    }
+    letMustBeDefinedAndNotNull(mybtn, "mybtn");
+    letMustBeDefinedAndNotNull(mybinnd, "mybinnd");
+    letMustBeBoolean(useleft, "useleft");
 
     mybtn.addEventListener("click", function(event){
         console.log("clicked the " + (useleft ? "left" : "right") + " button!");
@@ -2965,6 +2498,8 @@ function addLeftKidBtnListener(mybtn, mybinnd)
     addLeftOrRightKidBtnListener(mybtn, mybinnd, true);
 }
 
+//GET DOM NODE METHODS
+
 function getNumKidsDOMNodeHas(tabledomnd)
 {
     //the id if we are removing dom node only implies that the dom node has no kids
@@ -2986,7 +2521,7 @@ function getNumKidsDOMNodeHas(tabledomnd)
     //  <td> <span> button and table or just button </span></td>
     //</table>
 
-    if (tabledomnd == undefined || tabledomnd == null) return 0;
+    if (isLetUndefinedOrNull(tabledomnd)) return 0;
     else
     {
         let myrwsontable = tabledomnd.children;
@@ -2994,9 +2529,7 @@ function getNumKidsDOMNodeHas(tabledomnd)
         let numkids = 0;
         for (let n = 0; n < 2; n++)
         {
-            let mycolindx = -1;
-            if (n == 0) mycolindx = 0;
-            else mycolindx = 2;
+            let mycolindx = ((n === 0) ? 0 : 2);
             let myspan = mykidsrw.children[mycolindx].firstChild;
             let myspankids = myspan.children;
             //for (let k = 0; k < myspankids.length; k++)
@@ -3004,7 +2537,7 @@ function getNumKidsDOMNodeHas(tabledomnd)
             //    console.log("myspankids[" + k + "].tagName = " + myspankids[k].tagName);
             //}
             if (myspankids.length < 2);
-            else if (myspankids.length == 2)
+            else if (myspankids.length === 2)
             {
                 let mybtnortableelem = myspankids[1];
                 if (mybtnortableelem.tagName === "TABLE") numkids++;
@@ -3018,50 +2551,19 @@ function getNumKidsDOMNodeHas(tabledomnd)
 
 function getLeftOrRightKidDOMNodeHas(tabledomnd, useleft, usespan=false, usetable=true)
 {
-    if (useleft == undefined || useleft == null)
-    {
-        throw "useleft must be a defined boolean variable!";
-    }
-    else
-    {
-        if (useleft == true || useleft == false);
-        else throw "useleft must be a defined boolean variable!";
-    }
+    letMustBeBoolean(useleft, "useleft");
+    letMustBeBoolean(usetable, "usetable");
+    letMustBeBoolean(usespan, "usespan");
 
-    if (usetable == undefined || usetable == null)
-    {
-        throw "usetable must be a defined boolean variable!";
-    }
-    else
-    {
-        if (usetable == true || usetable == false);
-        else throw "usetable must be a defined boolean variable!";
-    }
-
-    if (usespan == undefined || usespan == null)
-    {
-        throw "usespan must be a defined boolean variable!";
-    }
-    else
-    {
-        if (usespan == true || usespan == false);
-        else throw "usespan must be a defined boolean variable!";
-    }
-
-    if (tabledomnd == undefined || tabledomnd == null) return null;
+    if (isLetUndefinedOrNull(tabledomnd)) return null;
     //else;//do nothing
 
-    let mytindx = -1;
-    if (usetable) mytindx = 1;
-    else mytindx = 0;
-    let mykdindx = -1;
-    if (useleft) mykdindx = 0;
-    else mykdindx = 2;
+    let mytindx = (usetable ? 1 : 0);
+    let mykdindx = (useleft ? 0 : 2);
     
     //table.tr.td.span.(table or button)
     let myspan = tabledomnd.children[1].children[mykdindx].firstChild;
-    if (usespan) return myspan;
-    else return myspan.children[mytindx];
+    return (usespan ? myspan : myspan.children[mytindx]);
 }
 function getLeftKidSpanDOMNodeHas(tabledomnd)
 {
@@ -3082,7 +2584,7 @@ function getRightKidDOMNodeHas(tabledomnd, usetable=true)
 
 function getParentDOMNodeHas(tabledomnd)
 {
-    if (tabledomnd == undefined || tabledomnd == null) return null;
+    if (isLetUndefinedOrNull(tabledomnd)) return null;
     else
     {
         //console.log("tabledomnd.parentNode = " + tabledomnd.parentNode);
@@ -3096,14 +2598,14 @@ function getParentDOMNodeHas(tabledomnd)
 
 function getFarthestLeftHTMLDOMNodeOfDOMNode(tabledomnd)
 {
-    if (tabledomnd == undefined || tabledomnd == null) return null;
+    if (isLetUndefinedOrNull(tabledomnd)) return null;
     else
     {
         let mylkd = getLeftKidDOMNodeHas(tabledomnd);
-        if (mylkd == null)
+        if (isLetUndefinedOrNull(mylkd))
         {
             let myrkd = getRightKidDOMNodeHas(tabledomnd);
-            if (myrkd == null) return tabledomnd;
+            if (isLetUndefinedOrNull(myrkd)) return tabledomnd;
             else return getFarthestLeftHTMLDOMNodeOfDOMNode(myrkd);
         }
         else return getFarthestLeftHTMLDOMNodeOfDOMNode(mylkd);
@@ -3113,14 +2615,14 @@ function getFarthestLeftHTMLDOMNodeOfDOMNode(tabledomnd)
 function trimTreeToMemory(mysnd=null)
 {
     let treendkds = document.getElementById("tree").children;
-    if (treendkds == undefined || treendkds == null || treendkds.length < 2) return;
+    if (isLetEmptyNullOrUndefined(treendkds) || treendkds.length < 2) return;
     //else;//do nothing
 
-    if (treendkds.length == 2);//do nothing proceed below
+    if (treendkds.length === 2);//do nothing proceed below
     else throw "illegal number of dom kids of the tree section found here!";
 
     //eliminate all dom nodes that do not have a bintreenode associated with it
-    if (mysnd == null) return trimTreeToMemory(treendkds[1]);
+    if (isLetUndefinedOrNull(mysnd)) return trimTreeToMemory(treendkds[1]);
     //else;//do nothing
 
     let mydiv = mysnd.children[0].children[1].firstChild;
@@ -3130,41 +2632,27 @@ function trimTreeToMemory(mysnd=null)
     let btnsdisable = (mydividstr.indexOf("nwnd") == 0);
     //console.log("btnsdisable = " + btnsdisable);
 
-    if (btnsdisable)
-    {
-        removeAllDOMKidsOfDOMNode(mysnd, true);
-    }
+    if (btnsdisable) removeAllDOMKidsOfDOMNode(mysnd, true);
     else
     {
         let myleftkd = getLeftKidDOMNodeHas(mysnd);
-        if (myleftkd == null);
+        if (isLetUndefinedOrNull(myleftkd));
         else trimTreeToMemory(myleftkd);
         let myrightkd = getRightKidDOMNodeHas(mysnd);
-        if (myrightkd == null);
+        if (isLetUndefinedOrNull(myrightkd));
         else trimTreeToMemory(myrightkd);
     }
 }
 
 function removeDOMNode(mytabledomnode, isfirst=true)
 {
-    if (isfirst == undefined || isfirst == null)
-    {
-        throw "isfirst must be a defined boolean variable!";
-    }
-    else
-    {
-        if (isfirst == true || isfirst == false);
-        else throw "isfirst must be a defined boolean variable!";
-    }
+    letMustBeBoolean(isfirst, "isfirst");
 
     let numkidsofdomnd = getNumKidsDOMNodeHas(mytabledomnode);
     //console.log("numkidsofdomnd = " + numkidsofdomnd);
 
-    if (numkidsofdomnd == 0)
-    {
-        removeAllDOMKidsOfDOMNode(mytabledomnode, true);
-    }
-    else if (numkidsofdomnd > 0 && numkidsofdomnd < 3)
+    if (numkidsofdomnd === 0) removeAllDOMKidsOfDOMNode(mytabledomnode, true);
+    else if (0 < numkidsofdomnd && numkidsofdomnd < 3)
     {
         //   4
         // 2   6
@@ -3213,8 +2701,8 @@ function removeDOMNode(mytabledomnode, isfirst=true)
         
         console.log("this has at one or two kids!");
         
-        let noleftkd = (getLeftKidDOMNodeHas(mytabledomnode) == null);
-        let norightkd = (getRightKidDOMNodeHas(mytabledomnode) == null);
+        let noleftkd = isLetUndefinedOrNull(getLeftKidDOMNodeHas(mytabledomnode));
+        let norightkd = isLetUndefinedOrNull(getRightKidDOMNodeHas(mytabledomnode));
         
         console.log("noleftkd = " + noleftkd);
         console.log("norightkd = " + norightkd);
@@ -3245,17 +2733,17 @@ function removeDOMNode(mytabledomnode, isfirst=true)
         let mynwptndref = getParentDOMNodeHas(mytabledomnode);
         //console.log("mynwptndref = " + mynwptndref);
 
-        if (mynwptndref == null);
+        if (isLetUndefinedOrNull(mynwptndref));
         else
         {
-            if (getLeftKidDOMNodeHas(mynwptndref) == mytabledomnode)
+            if (getLeftKidDOMNodeHas(mynwptndref) === mytabledomnode)
             {
                 islkdofptnd = true;
                 //console.log("this is the left kid of its parent node!");
             }
             else
             {
-                if (getRightKidDOMNodeHas(mynwptndref) == mytabledomnode)
+                if (getRightKidDOMNodeHas(mynwptndref) === mytabledomnode)
                 {
                     isrkdofptnd = true;
                     //console.log("this is the left kid of its parent node!");
@@ -3280,7 +2768,7 @@ function removeDOMNode(mytabledomnode, isfirst=true)
         //we also set the left and right kids new parent node
         //then we are free to set that parent node to null after we nullify all of the properties
 
-        if (numkidsofdomnd == 1)
+        if (numkidsofdomnd === 1)
         {
             //   4
             // 2   6 <- remove this
@@ -3442,35 +2930,30 @@ function removeDOMNode(mytabledomnode, isfirst=true)
     else throw "illegal number of kids of the dom node was found and used here!";
 }
 
+
+//SOME MORE LOADING METHODS
+
 function makeSureAllButtonsAreDisplayedIfTheyAreSupposedTo(snddomnode=null, usert=true)
 {
     //go through every node on the dom tree and make sure that the buttons are showing correctly
     //get the root node
     //the tree section contains an h2 and if there is at least one node a table as the other kid
-    if (usert == undefined || usert == null)
-    {
-        throw "usert must be a defined boolean variable!";
-    }
-    else
-    {
-        if (usert == true || usert == false);
-        else throw "usert must be a defined boolean variable!";
-    }
+    letMustBeBoolean(usert, "usert");
 
     let mydomrootnd = null;
-    if (usert && (snddomnode == undefined || snddomnode == null))
+    if (usert && isLetUndefinedOrNull(snddomnode))
     {
         let mytreesectkds = document.getElementById("tree").children;
-        if (mytreesectkds == undefined || mytreesectkds == null || mytreesectkds.length < 1);
+        if (isLetEmptyNullOrUndefined(mytreesectkds));
         else
         {
-            if (mytreesectkds.length > 1) mydomrootnd = mytreesectkds[1];
+            if (1 < mytreesectkds.length) mydomrootnd = mytreesectkds[1];
             //else;//do nothing
         }
     }
     else mydomrootnd = snddomnode;
 
-    if (mydomrootnd == null) return;
+    if (isLetUndefinedOrNull(mydomrootnd)) return;
     //else;//do nothing
 
     //take care of it for this node
@@ -3479,12 +2962,12 @@ function makeSureAllButtonsAreDisplayedIfTheyAreSupposedTo(snddomnode=null, user
     for (let n = 0; n < 2; n++)
     {
         let myspan = null;
-        if (n == 0) myspan = getLeftKidSpanDOMNodeHas(mydomrootnd);
-        else if (n == 1) myspan = getRightKidSpanDOMNodeHas(mydomrootnd);
+        if (n === 0) myspan = getLeftKidSpanDOMNodeHas(mydomrootnd);
+        else if (n === 1) myspan = getRightKidSpanDOMNodeHas(mydomrootnd);
         else throw "illegal value for index n was found and used here!";
 
         //console.log("myspan.children.length = " + myspan.children.length);
-        if (myspan.children.length == 2)
+        if (myspan.children.length === 2)
         {
             if (myspan.children[0].tagName === "BUTTON" && myspan.children[1].tagName === "TABLE")
             {
@@ -3502,13 +2985,13 @@ function makeSureAllButtonsAreDisplayedIfTheyAreSupposedTo(snddomnode=null, user
             }
             else throw "this kid must be a table, but it was not!";
         }
-        else if (myspan.children.length == 1)
+        else if (myspan.children.length === 1)
         {
             let mydiv = mydomrootnd.children[0].children[1].firstChild;
             //console.log("mydiv = " + mydiv);
             //console.log("mydiv.id = " + mydiv.id);
             let mydividstr = "" + mydiv.id;
-            let btnsdisable = (mydividstr.indexOf("nwnd") == 0);
+            let btnsdisable = (mydividstr.indexOf("nwnd") === 0);
             console.log("btnsdisable = " + btnsdisable);
             
             let myhbtn = myspan.firstChild;
@@ -3516,15 +2999,9 @@ function makeSureAllButtonsAreDisplayedIfTheyAreSupposedTo(snddomnode=null, user
             //console.log("(myhbtn.tagName === 'BUTTON') = " + (myhbtn.tagName === "BUTTON"));
             if (myhbtn.tagName === "BUTTON")
             {
-                if (btnsdisable)
-                {
-                    myhbtn.disabled = true;
-                }
-                else
-                {
-                    myhbtn.style.display = "block";
-                    myhbtn.disabled = false;
-                }
+                if (btnsdisable);
+                else myhbtn.style.display = "block";
+                myhbtn.disabled = btnsdisable;
                 console.log("displayed the button!");
             }
             else throw "this must be a button!";
@@ -3548,11 +3025,7 @@ function makeSureAllButtonsAreDisplayedIfTheyAreSupposedTo(snddomnode=null, user
 
 function removeDOMNodeAndShowButton(mypttable)
 {
-    if (mypttable == undefined || mypttable == null)
-    {
-        throw "mypttable must be defined and not null!";
-    }
-    //else;//do nothing
+    letMustBeDefinedAndNotNull(mypttable, "mypttable");
 
     removeDOMNode(mypttable, true);
     
@@ -3566,15 +3039,15 @@ function showLoadFormAfterNoNodes()
 {
     let mytreesectkds = document.getElementById("tree").children;
     let hasatleastonendontree = false;
-    if (mytreesectkds == undefined || mytreesectkds == null || mytreesectkds.length < 1);
+    if (isLetEmptyNullOrUndefined(mytreesectkds));
     else
     {
-        if (mytreesectkds.length > 1) hasatleastonendontree = true;
+        if (1 < mytreesectkds.length) hasatleastonendontree = true;
         //else;//do nothing
     }
     console.log("hasatleastonendontree = " + hasatleastonendontree);
     
-    if (!hasatleastonendontree && (mygenndsarr == null || mygenndsarr.length < 1))
+    if (!hasatleastonendontree && isLetEmptyNullOrUndefined(mygenndsarr))
     {
         let myloadfrm = document.getElementById("myloadingform");
         myloadfrm.style.display = "block";
@@ -3585,11 +3058,7 @@ function showLoadFormAfterNoNodes()
 
 function deleteAndUpdateDOMNodesOnly(mypttable)
 {
-    if (mypttable == undefined || mypttable == null)
-    {
-        throw "mypttable must be defined and not null!";
-    }
-    //else;//do nothing
+    letMustBeDefinedAndNotNull(mypttable, "mypttable");
 
     removeDOMNodeAndShowButton(mypttable);//, domnode
     
@@ -3604,92 +3073,35 @@ function deleteAndUpdateDOMNodesOnly(mypttable)
     console.log("successfully updated the DOM ONLY after deleting a node!");
 }
 
-function clearAllNodesFromTheServer()
-{
-    fetch("http://localhost:3000/nodes").then((response) => response.json()).
-    then(function(response){
-        let myndsarr = response;
-        if (response == undefined || response == null || response.length < 1)
-        {
-            console.log("the list was cleared successfully!");
-
-            let clearsvrevent = new Event("serverNodesCleared");
-            document.getElementById("tree").dispatchEvent(clearsvrevent);
-
-            alert("server nodes cleared successfully!");
-        }
-        else
-        {
-            //let myidsarr = new Array();
-            //for (let n = 0; n < myndsarr.length; n++) myidsarr.push(myndsarr[n].id);
-            let myconfigobj = {
-                method : "DELETE",
-                headers: {
-                    "Content-Type" : "application/json",
-                    "Accept" : "application/json"
-                },
-                body: ""
-            };
-            // + myndsarr[n].id, myidsarr
-            fetch("http://localhost:3000/nodes/" + myndsarr[0].id, myconfigobj).
-            then((response) => response.json()).then(function(response){
-                console.log("the item was deleted successfully!");
-                clearAllNodesFromTheServer();
-            }).catch(function(err){
-                console.error("failed to delete the node on the server!");
-                console.error(err);
-                alert("failed to remove a node already on the server! See log for details!");
-            });
-        }
-    }).catch(function(err){
-        console.error("failed to get the nodes on the server for deletion!");
-        console.error(err);
-        alert("failed to clear the list of nodes already on the server! See log for details!");
-    });
-}
-
-function finishLoadingDOMOptionsAfterServerCleared(event)
-{
-    if (loadbinsrchtree === true || loadbintree === true || loaduserbintree == true)
-    {
-        loadBinaryOrSearchTree(loadbinsrchtree, loaduserbintree);
-    }
-    else
-    {
-        doneloading = true;
-        buildUserBinaryTree();
-    }
-}
-
 function updateTheEntireTreeOnTheServer(si=0)
 {
     console.log("si = " + si);
-    if (si == undefined || si == null || isNaN(si))
+    if (isLetUndefinedOrNull(si) || isNaN(si))
     {
         throw "illegal value found and used for starting index si! It must be a number!";
     }
     //else;//do nothing
 
-    if (mygenndsarr == undefined || mygenndsarr == null || mygenndsarr.length < 1)
+    if (isLetEmptyNullOrUndefined(mygenndsarr))
     {
         console.log("done no nodes on the tree!");
         return;
     }
     else
     {
-        if (si == undefined || si == null || isNaN(si) || si < 0 || si > mygenndsarr.length)
+        if (isLetUndefinedOrNull(si) || isNaN(si) || si < 0 || mygenndsarr.length < si)
         {
             throw "illegal value found and used for starting index si for the node array update tree " +
                 "request!";
         }
-        else if (si == mygenndsarr.length)
+        else if (si === mygenndsarr.length)
         {
             console.log("finished updating the tree nodes on the server!");
             return;
         }
         else
         {
-            if (mygenndsarr[si] == null)
+            if (isLetUndefinedOrNull(mygenndsarr[si]))
             {
                 updateTheEntireTreeOnTheServer(si + 1);
                 return;
@@ -3728,35 +3140,297 @@ function updateTheEntireTreeOnTheServer(si=0)
     }
 }
 
+
+//STEP 5: EVENT HANDLER FOR TREE LOADED FIRES
+function treeLoadedHandler(event)
+{
+    console.log("inside of other dom loaded function");
+    console.log("myprevtabledomnd = ", myprevtabledomnd);
+    console.log("myndsloaded = ", myndsloaded);
+    //debugger;
+    loadDOMFromTreeNodesArray(this, myprevtabledomnd, myndsloaded);
+}
+
+function loadDOMFromTreeNodesArray(ndarr, prevtbldomnd, si=0)
+{
+    if (isLetEmptyNullOrUndefined(ndarr)) return;
+    else
+    {
+        if (isLetUndefinedOrNull(si) || si < 0 || isNaN(si))
+        {
+            throw "illegal value found and used for the starting node array index si index here!";
+        }
+        else
+        {
+            if (0 < si) letMustBeDefinedAndNotNull(prevtbldomnd, "prevtbldomnd");
+            //else;//do nothing
+        }
+    }
+
+    if (si === 0)
+    {
+        //now get the text area for the first node and provide the data
+        addDataAndFireChangeListener(ndarr[si], document.getElementById("tree").children[1], true);
+        console.log("DONE ADDING DATA FOR THE FIRST NODE!");
+    }
+    else if (0 < si && si < ndarr.length)
+    {
+        //get the previous node and the current node and check to see if they are directly related
+        //if they are related, use the relationship to determine which kid to click
+        //if they are not related, get the parent node and
+        //then get the dom id for that node
+        //determine which kid to click
+        //click the kid
+        console.log("si is greater than zero!");
+        console.log("addmydatanow = " + addmydatanow);
+
+        if (addmydatanow) addDataAndFireChangeListener(ndarr[si], prevtbldomnd);
+        else
+        {
+            console.log("determinging the node to click!");
+            if (canClickTheParentNode(ndarr, si - 1, si, prevtbldomnd));
+            else
+            {
+                //build the binary tree here
+                //
+                //      10
+                //    6     17
+                //  5  8  15  20
+                //3  7
+                //
+                //cannot click either, so need to get the parent node of the current node
+                //the last node in the generated array will correspond to ndarr[si - 1] and below
+                //si and above will not have been generated yet
+                
+                //console.log("ndarr[" + (si - 1) + "] = " + ndarr[si - 1]);
+                //console.log("ndarr[" + si + "] = " + ndarr[si]);
+                //console.log("ndarr[" + si + "].ptnd = " + ndarr[si].ptnd);
+
+                let ptndi = -1;
+                for (let n = 0; n < ndarr.length; n++)
+                {
+                    if (ndarr[n].id === ndarr[si].ptnd)
+                    {
+                        ptndi = n;
+                        break;
+                    }
+                    //else;//do nothing
+                }
+                //console.log("ptndi = " + ptndi);
+
+                if (ptndi < 0 || ptndi == ndarr.length || ndarr.length < ptndi)
+                {
+                    throw "illegal value found and used for the ptndi index here!";
+                }
+                //else;//do nothing
+                //console.log("ndarr[" + ptndi + "] = " + ndarr[ptndi]);
+                
+                let mybintnd = mygenndsarr[ptndi];
+                //console.log("mybintnd = " + mybintnd);
+                
+                let myptdomnddiv = document.getElementById(mybintnd.id);
+                let mypttabledomnd = myptdomnddiv.parentNode.parentNode.parentNode;
+                //console.log("mypttabledomnd = " + mypttabledomnd);
+                
+                if (canClickTheParentNode(ndarr, ptndi, si, mypttabledomnd));
+                else throw "the parent node and this node must be related somehow!";
+            }
+        }
+    }
+    else if (si === ndarr.length)
+    {
+        document.getElementById("tree").removeEventListener("treeDOMLoaded", treeLoadedHandler);
+        doneloading = true;
+        console.log("DONE LOADING ALL OF THE NODES!");
+        alert("DONE LOADING ALL OF THE NODES!");
+    }
+    else throw "illegal value found and used here for the si index!";
+}
+
+//STEP 3: LOAD THE BINARY OR BINARY SEARCH TREE THEN BUILD IT (STEP 4)
+function loadBinaryOrSearchTree(usesrchtree, useuserbintree)
+{
+    //get the list of nodes from the api
+    //then get the preorder of that list
+    //then build the tree in that order
+    //
+    //GOAL: we want to take this list of nodes from the server and
+    //-build a tree of the Binnodes and of the DOM nodes
+    //
+    //we do not want to modify the example nodes
+    //we want to modify new nodes, so we want a copy of them
+    //
+    //concern: I cannot push them and gurantee the id
+    //to build the tree, I need to have the ids guaranteed
+    //
+    //WAY AROUND THAT: use the event loop and build the tree in the right order,
+    //then we don't care about the ids
+    //but we need a custom event to signal that we are ready to laod the next one
+
+    letMustBeBoolean(usesrchtree, "usesrchtree");
+    letMustBeBoolean(useuserbintree, "useuserbintree");
+
+    if (usesrchtree === useuserbintree)
+    {
+        if (usesrchtree)
+        {
+            throw "we cannot both be loading an example binary search tree and a user binary tree " +
+                "at the same time!";
+        }
+        //else;//do nothing
+    }
+    //else;//do nothing
+    
+    let myurl = "http://localhost:3000/";
+    if (useuserbintree) myurl += "nodes";
+    else
+    {
+        myurl += "exbin";
+        if (usesrchtree) myurl += "search";
+        //else;//do nothing
+        myurl += "treenodes";
+    }
+    console.log("myurl = " + myurl);
+    
+    fetch(myurl).then((response) => response.json()).
+    then(function(response){
+        console.log(response);
+        let mynodesarr = response;
+        
+        //put the array in pre-order transversal: root left right
+        //then build each node calling:
+        //buildUserBinaryTree(domnode=null, binptnd=null, addonleft=false, addonright=false)
+        //when we want to add a left kid we find the left kid button and click it
+
+        if (isLetEmptyNullOrUndefined(mynodesarr))
+        {
+            console.error("no nodes on the server to load in for the user tree!");
+            showLoadFormAfterNoNodes();
+            alert("Error: No nodes were found on the server for a user tree!\n" +
+                "You may build your own, load an example of a binary search tree or of a binary tree!");
+        }
+        else if (0 < mynodesarr.length)
+        {
+            let myrtndi = -1;
+            for (let n = 0; n < mynodesarr.length; n++)
+            {
+                //console.log("mynodesarr[" + n + "] = " + mynodesarr[n]);
+                if (isLetUndefinedOrNull(mynodesarr[n].ptnd))
+                {
+                    myrtndi = n;
+                    break;
+                }
+                //else;//do nothing
+            }
+            console.log("myrtndi = " + myrtndi);
+            
+            if (myrtndi < 0 || mynodesarr.length < myrtndi || myrtndi === mynodesarr.length)
+            {
+                console.error("myrtndi = " + myrtndi);
+                console.error("illegal root node index found and used here!");
+                debugger;
+                throw "illegal root node index found and used here!";
+            }
+            //else;//do nothing
+
+            let mypretransndarr = getPreOrderTransversalForNodeArray(mynodesarr, mynodesarr[myrtndi]);
+            
+            //console.log("mypretransndarr[0] = " + mypretransndarr[0]);
+            
+            document.getElementById("tree").addEventListener("treeDOMLoaded",
+                treeLoadedHandler.bind(mypretransndarr));
+            
+            buildUserBinaryTree();
+        }
+        else throw "illegal length found and used for the nodes array from the server!";
+        
+        //console.error("NOT DONE YET 7-15-2023 2:53 AM!");
+        //debugger;
+    }).catch(function(err){
+        console.error("there was an error getting the nodes!");
+        console.error(err);
+        alert("Error: There was a problem getting the nodes from the server! See log for details!");
+    });
+}
+
+//STEP 1: CLEAR ALL NODES ON THE SERVER
+//INDEPENDENT OF THE OTHER LOADING METHODS
+//WHEN DONE FIRES THE SERVER NODES CLEARED EVENT
+function clearAllNodesFromTheServer()
+{
+    fetch("http://localhost:3000/nodes").then((response) => response.json()).
+    then(function(response){
+        let myndsarr = response;
+        if (isLetEmptyNullOrUndefined(response))
+        {
+            console.log("the list was cleared successfully!");
+
+            let clearsvrevent = new Event("serverNodesCleared");
+            document.getElementById("tree").dispatchEvent(clearsvrevent);
+
+            alert("server nodes cleared successfully!");
+        }
+        else
+        {
+            //let myidsarr = [];
+            //for (let n = 0; n < myndsarr.length; n++) myidsarr.push(myndsarr[n].id);
+            let myconfigobj = {
+                method : "DELETE",
+                headers: {
+                    "Content-Type" : "application/json",
+                    "Accept" : "application/json"
+                },
+                body: ""
+            };
+            // + myndsarr[n].id, myidsarr
+            fetch("http://localhost:3000/nodes/" + myndsarr[0].id, myconfigobj).
+            then((oresponse) => oresponse.json()).then(function(ooresponse){
+                console.log("the item was deleted successfully!");
+                clearAllNodesFromTheServer();
+            }).catch(function(err){
+                console.error("failed to delete the node on the server!");
+                console.error(err);
+                alert("failed to remove a node already on the server! See log for details!");
+            });
+        }
+    }).catch(function(err){
+        console.error("failed to get the nodes on the server for deletion!");
+        console.error(err);
+        alert("failed to clear the list of nodes already on the server! See log for details!");
+    });
+}
+
+//STEP 2: DETERMINE WHICH METHOD TO CALL BUILD THE BINARY TREE (STEP 4) OR LOAD ONE IN (STEP 3)
+//NOTE: THIS IS THE SERVER NODES CLEARED EVENT HANDLER
+//IF THE USER ELECTED TO MANUALLY BUILD THEIR OWN TREE, STARTING WITH NO NODES,
+//THEN IMMEDIATELY CALLS buildUserBinaryTree() OTHERWISE LOADS THE NODES FROM THE SERVER
+function finishLoadingDOMOptionsAfterServerCleared(event)
+{
+    if (loadbinsrchtree || loadbintree || loaduserbintree)
+    {
+        loadBinaryOrSearchTree(loadbinsrchtree, loaduserbintree);
+    }
+    else
+    {
+        doneloading = true;
+        buildUserBinaryTree();
+    }
+}
+
+
+//STEP 4: BUILD THE USER BINARY TREE WITH ALL DEFAULTS IF CALLED ABOVE
 let numids = 0;
 function buildUserBinaryTree(domnode=null, binptnd=null, addonleft=false, addonright=false)
 {
-    if (addonleft == undefined || addonleft == null)
-    {
-        throw "addonleft must be a defined boolean variable!";
-    }
-    else
-    {
-        if (addonleft == true || addonleft == false);
-        else throw "addonleft must be a defined boolean variable!";
-    }
+    letMustBeBoolean(addonleft, "addonleft");
+    letMustBeBoolean(addonright, "addonright");
 
-    if (addonright == undefined || addonright == null)
-    {
-        throw "addonright must be a defined boolean variable!";
-    }
-    else
-    {
-        if (addonright == true || addonright == false);
-        else throw "addonright must be a defined boolean variable!";
-    }
-
-    if (addonleft == addonright)
+    if (addonleft === addonright)
     {
         if (addonleft)
         {
-            throw "both cannot be true! One must be true and the other must be false OR " +
-                "both must be false!"
+            throw new Error("both cannot be true! One must be true and the other must be false OR " +
+                "both must be false!");
         }
         //else;//do nothing safe
     }
@@ -3778,8 +3452,11 @@ function buildUserBinaryTree(domnode=null, binptnd=null, addonleft=false, addonr
     //
     //inside x we will have:
     //a 1 row 3 column table to center the delete button
-    //
+    
 
+    //creates a table with 2 rows
+    //one row with the node data
+    //the other row with the buttons or child nodes
     let mytable = document.createElement("table");
     let mytxtandsvgrw = document.createElement("tr");
     let myleftcolrwa = document.createElement("td");
@@ -3789,13 +3466,16 @@ function buildUserBinaryTree(domnode=null, binptnd=null, addonleft=false, addonr
     let myleftcol = document.createElement("td");
     let mydelbtntablecol = document.createElement("td");
     let myrightcol = document.createElement("td");
+    
+    //one table with one row and 3 cols for the delete button to be centered on it
     let mydelbtntable = document.createElement("table");
     let mydelbtntablerw = document.createElement("tr");
     let myemptyleftdelbtncol = document.createElement("td");
     let mydelbtncol = document.createElement("td");
     let myemptyrightdelbtncol = document.createElement("td");
+    
 
-
+    //holds the nodes data
     let mydiv = document.createElement("div");
     let mycntelem = document.createElement("textarea");
     myemptyleftdelbtncol.style.width = "80px";
@@ -3823,6 +3503,7 @@ function buildUserBinaryTree(domnode=null, binptnd=null, addonleft=false, addonr
     myleftbtn.textContent = "add left kid";
     myrightbtn.textContent = "add right kid";
     mydelbtn.textContent = "delete node";
+
     let myleftimg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
     let myleftline = document.createElementNS("http://www.w3.org/2000/svg", "line");
     let myrightline = document.createElementNS("http://www.w3.org/2000/svg", "line");
@@ -3856,10 +3537,11 @@ function buildUserBinaryTree(domnode=null, binptnd=null, addonleft=false, addonr
     myrkddiv.style.position="relative";
 
     myleftcol.appendChild(mylkddiv);
-    mydelbtnrw.appendChild(myleftcol);
-    mydelbtnrw.appendChild(mydelbtntablecol);
+    mydelbtnrw.appendChild(myleftcol);//holds the left kid or add left kid
+    mydelbtnrw.appendChild(mydelbtntablecol);//holds a table for x delete button x
+    //(so it can be centered)
     myrightcol.appendChild(myrkddiv);
-    mydelbtnrw.appendChild(myrightcol);
+    mydelbtnrw.appendChild(myrightcol);//holds the right kid or add left kid
     
     mytxtandsvgcol.appendChild(mydiv);
     mytxtandsvgrw.appendChild(myleftcolrwa);
@@ -3868,12 +3550,12 @@ function buildUserBinaryTree(domnode=null, binptnd=null, addonleft=false, addonr
     
     mytable.appendChild(mytxtandsvgrw);
     mytable.appendChild(mydelbtnrw);
-    let mydomnode = null;
-    if (domnode == null) mydomnode = document.getElementById("tree");
-    else mydomnode = domnode;
+    
+    let mydomnode = (isLetUndefinedOrNull(domnode) ? document.getElementById("tree") : domnode);
     mydomnode.appendChild(mytable);
     
     //build the svg and add it to the DOM now
+    //SVG IS A KID OF THE TEXT AREA
 
     let mydivondoc = document.getElementById(mynwndidstr);
     //let myelemcoords = mydivondoc.getBoundingClientRect();
@@ -3943,43 +3625,34 @@ function buildUserBinaryTree(domnode=null, binptnd=null, addonleft=false, addonr
         //id, data, ptnd, leftkdnd, rightkdnd
         
         //validate the data here first
-        if (event.target.value == undefined || event.target.value == null || event.target.value.length < 1)
+        if (isLetEmptyNullOrUndefined(event.target.value))
         {
             //fetch the old data from the old data object and refuse to push
             console.error("data is empty! Data must not be empty so reverting!");
 
-            //console.log("mygenndsarr = " + mygenndsarr);
+            //console.log("mygenndsarr = ", mygenndsarr);
             //debugger;
             let mybinnd = getBintreendObjForIdFromArray(event.target.parentNode.id);
+            letMustBeDefinedAndNotNull(mybinnd, "mybinnd");
             
-            if (mybinnd == null) throw "the node must have been on the list!";
-            else
-            {
-                console.log("mybinnd = " + mybinnd);
-                console.log("mybinnd.id = " + mybinnd.id);
-                console.log("mybinnd.data = " + mybinnd.data);
-                console.log("mybinnd.ptnd = " + mybinnd.ptnd);
-                console.log("event.target.parentNode.id = " + event.target.parentNode.id);
-                event.target.value = "" + mybinnd.data;
-                console.error("cannot have a node with empty data");
-                alert("error: cannot have a node with empty data, so reverted!");
-                return;
-            }
+            console.log("mybinnd = " + mybinnd);
+            console.log("mybinnd.id = " + mybinnd.id);
+            console.log("mybinnd.data = " + mybinnd.data);
+            console.log("mybinnd.ptnd = " + mybinnd.ptnd);
+            console.log("event.target.parentNode.id = " + event.target.parentNode.id);
+            event.target.value = "" + mybinnd.data;
+            console.error("cannot have a node with empty data");
+            alert("error: cannot have a node with empty data, so reverted!");
+            return;
         }
         //else;//do nothing duplicate data allowed
 
-        let usepost = true;
-        if (event.target.parentNode.id === mynwndidstr) usepost = true;
-        else usepost = false;
+        let usepost = (event.target.parentNode.id === mynwndidstr);
         console.log("usepost = " + usepost);
 
         let mybinnd = null;
-        let mybinptnd = null;
-        let treatasrt = false;
-        if (binptnd == null) treatasrt = true;
-        else treatasrt = binptnd.areAllPropertiesNull();
-        if (treatasrt) mybinptnd = null;
-        else mybinptnd = binptnd;
+        let treatasrt = (isLetUndefinedOrNull(binptnd) ? true : binptnd.areAllPropertiesNull());
+        let mybinptnd = (treatasrt ? null : binptnd);
         console.log("treatasrt = " + treatasrt);
 
         if (usepost)
@@ -4003,21 +3676,20 @@ function buildUserBinaryTree(domnode=null, binptnd=null, addonleft=false, addonr
             //debugger;
             mybinnd = getBintreendObjForIdFromArray(event.target.parentNode.id);
             
-            if (mybinnd == null) throw "the node must have been on the list!";
-            else
-            {
-                //set the new data value here...
-                mybinnd.data = "" + event.target.value;
-            }
+            letMustBeDefinedAndNotNull(mybinnd, "mybinnd");
+
+            //set the new data value here...
+            mybinnd.data = "" + event.target.value;
         }
 
         let myptchbdystr = JSON.stringify(getAndGenerateServerObject(mybinnd, false));
         console.log("myptchbdystr = " + myptchbdystr);
+        
         let myidindx = myptchbdystr.indexOf('"id":');
         let cmaafteridindx = -1;
         for (let i = myidindx + 5; i < myptchbdystr.length; i++)
         {
-            if (myptchbdystr.charAt(i) == ',')
+            if (myptchbdystr.charAt(i) === ',')
             {
                 cmaafteridindx = i;
                 break;
@@ -4026,7 +3698,7 @@ function buildUserBinaryTree(domnode=null, binptnd=null, addonleft=false, addonr
         }
         //console.log("cmaafteridindx = " + cmaafteridindx);
         let cori = 0;
-        if (cmaafteridindx < 0 || cmaafteridindx > myptchbdystr.length - 1)
+        if (cmaafteridindx < 0 || myptchbdystr.length - 1 < cmaafteridindx)
         {
             cmaafteridindx = myptchbdystr.length - 2;
             cori = 1;
@@ -4034,7 +3706,7 @@ function buildUserBinaryTree(domnode=null, binptnd=null, addonleft=false, addonr
         }
         //else;//do nothing
         //console.log("NEW cori = " + cori);
-        if (cmaafteridindx < 0 || cmaafteridindx > myptchbdystr.length - 1)
+        if (cmaafteridindx < 0 || myptchbdystr.length - 1 < cmaafteridindx)
         {
             throw "illegal value found and used for the cmaafteridindx index!";
         }
@@ -4073,14 +3745,15 @@ function buildUserBinaryTree(domnode=null, binptnd=null, addonleft=false, addonr
         };
         fetch(myresurl, myconfigobj).then((response) => response.json()).
         then(function(response){
-            console.log("response = " + response);
+            console.log("response = ", response);
             console.log("response.id = " + response.id);
+            
             let myresidstr = "" + response.id;
             console.log("usepost = " + usepost);
             //debugger;
-            if (response.id == undefined || response.id == null || myresidstr.length < 1)
+            if (isLetUndefinedOrNull(response.id) || myresidstr.length < 1)
             {
-                throw "illegal response id found and used here!";
+                throw new Error("illegal response id found and used here!");
             }
             //else;//do nothing
 
@@ -4088,7 +3761,7 @@ function buildUserBinaryTree(domnode=null, binptnd=null, addonleft=false, addonr
             {
                 mybinnd.id = response.id;
                 //add the object to the list of nodes now
-                if (mygenndsarr == null) mygenndsarr = new Array();
+                if (isLetUndefinedOrNull(mygenndsarr)) mygenndsarr = [];
                 //else;//do nothing
                 mygenndsarr.push(mybinnd);
                 //then enable the buttons
@@ -4142,16 +3815,16 @@ function buildUserBinaryTree(domnode=null, binptnd=null, addonleft=false, addonr
                     body: JSON.stringify(getAndGenerateServerObject(mybinptnd, false))
                 };
                 fetch("http://localhost:3000/nodes/" + mybinptnd.id, myoconfigobj).
-                then((response) => response.json()).
-                then(function(response){
-                    //console.log("response = " + response);
-                    //console.log("response.id = " + response.id);
-                    let myresidstr = "" + response.id;
-                    //console.log("response.data = " + response.data);
+                then((oresponse) => oresponse.json()).
+                then(function(oresponse){
+                    //console.log("oresponse = ", oresponse);
+                    //console.log("oresponse.id = " + oresponse.id);
+                    let myresidstr = "" + oresponse.id;
+                    //console.log("oresponse.data = ", oresponse.data);
                     
-                    if (response.id == undefined || response.id == null || myresidstr.length < 1)
+                    if (isLetUndefinedOrNull(oresponse.id) || myresidstr.length < 1)
                     {
-                        throw "illegal response id found and used here!";
+                        throw new Error("illegal response id found and used here!");
                     }
                     //else;//do nothing
         
@@ -4195,7 +3868,7 @@ function buildUserBinaryTree(domnode=null, binptnd=null, addonleft=false, addonr
         //console.log("mydivtarget = " + mydivtarget);
         //console.log("mydivtarget.id = " + mydivtarget.id);
         let mydividstr = "" + mydivtarget.id;
-        let remdomonly = (mydividstr.indexOf("nwnd") == 0);
+        let remdomonly = (mydividstr.indexOf("nwnd") === 0);
         console.log("remdomonly = " + remdomonly);
         
         //if the node has no kids, then it can be removed immediately
@@ -4245,10 +3918,9 @@ function buildUserBinaryTree(domnode=null, binptnd=null, addonleft=false, addonr
         {
             //remove software node and
             //remove dom nodes
-            //
             mybinnd = getBintreendObjForIdFromArray(mydivtarget.id);
             
-            if (mybinnd == null)
+            if (isLetUndefinedOrNull(mybinnd))
             {
                 console.error("the node must have been on the list!");
                 deleteAndUpdateDOMNodesOnly(mypttable);
@@ -4268,8 +3940,8 @@ function buildUserBinaryTree(domnode=null, binptnd=null, addonleft=false, addonr
                 fetch("http://localhost:3000/nodes/" + mydivtarget.id, mydelconfigobj).
                 then((response) => response.json()).
                 then(function(response){
-                    //console.log("response = " + response);
-                    //console.log("mygenndsarr = " + mygenndsarr);
+                    //console.log("response = ", response);
+                    //console.log("mygenndsarr = ", mygenndsarr);
                     //debugger;
                     let myndi = getArrayIndexForNodeOnArray(mybinnd);
                     //console.log("myndi = " + myndi);
@@ -4277,12 +3949,12 @@ function buildUserBinaryTree(domnode=null, binptnd=null, addonleft=false, addonr
                     
                     mybinnd.remove();
                     mybinnd = null;
-                    if (myndi < 0 || myndi > mygenndsarr.length - 1);
+                    if (myndi < 0 || mygenndsarr.length - 1 < myndi);
                     else
                     {
                         mygenndsarr[myndi] = null;
                         mygenndsarr = mygenndsarr.filter(function(item, index){
-                            if (index == myndi) return false;//get rid of this
+                            if (index === myndi) return false;//get rid of this
                             else return true;//keep these
                         });
                     }
@@ -4318,6 +3990,8 @@ function buildUserBinaryTree(domnode=null, binptnd=null, addonleft=false, addonr
         document.getElementById("tree").dispatchEvent(mytreebuiltevent);
     }
 }
+
+//MAIN METHOD
 
 document.addEventListener("DOMContentLoaded", function(event){
     //makeBinarySearchTreeNodesToSave();
